@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FE49745C-01F6-4A3F-BF08-828113D3E19F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Mapbox</RootNamespace>
+    <RootNamespace>Mapbox.Platform</RootNamespace>
     <AssemblyName>Mapbox.Platform</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <ReleaseVersion>0.0.1</ReleaseVersion>
@@ -29,10 +29,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\opt\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityFileSource.cs" />
+    <Compile Include="UnityHTTPRequest.cs" />
+    <Compile Include="IAsyncRequest.cs" />
+    <Compile Include="Response.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.csproj">

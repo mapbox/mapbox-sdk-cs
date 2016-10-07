@@ -1,10 +1,21 @@
-namespace Mapbox
+using System;
+
+namespace Mapbox.Platform
 {
-    public class FileSource
+    public abstract class FileSource
     {
-        public double Request()
+        protected string accessToken;
+
+        public string GetAccessToken()
         {
-            return 123;
+            return accessToken;
         }
+
+        public void SetAccessToken(string token)
+        {
+            accessToken = token;
+        }
+
+        public abstract IAsyncRequest Request(string url, Action<Response> callback);
     }
 }

@@ -1,12 +1,31 @@
+using System;
+using System.Text;
+
+using Mapbox.Platform;
+
 namespace Mapbox
 {
-    public class Geocoder
+    public sealed class Geocoder
     {
-        readonly FileSource fs = new FileSource();
+        const string API = "https://api.mapbox.com/geocoding/v5/";
+        readonly FileSource fileSource;
 
-        public LatLng Forward()
+        public Geocoder(FileSource fileSource)
         {
-            return new LatLng(fs.Request(), 10);
+            this.fileSource = fileSource;
+        }
+
+        public IAsyncRequest Reverse(LatLng coordinate, Action<string> callback)
+        {
+            const string mode = "mapbox.places/";
+            string url = API + mode + coordinate.longitude + "," + coordinate.latitude + ".json";
+
+            return fileSource.Request(url, (Response response) => {
+                {
+                    // TODO: Parse the data.
+                    callback(Encoding.UTF8.GetString(response.data));
+                }
+            });
         }
     }
 }
