@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform", "src\Platform\Pl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocoding", "src\Geocoding\Geocoding.csproj", "{89F8BAB2-2E7A-425E-B715-2CC4519D561F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity", "src\Unity\Unity.csproj", "{24CA1FB8-BE9B-46ED-8E09-3767505128B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{89F8BAB2-2E7A-425E-B715-2CC4519D561F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89F8BAB2-2E7A-425E-B715-2CC4519D561F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89F8BAB2-2E7A-425E-B715-2CC4519D561F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24CA1FB8-BE9B-46ED-8E09-3767505128B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24CA1FB8-BE9B-46ED-8E09-3767505128B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24CA1FB8-BE9B-46ED-8E09-3767505128B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24CA1FB8-BE9B-46ED-8E09-3767505128B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

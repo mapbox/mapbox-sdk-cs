@@ -4,14 +4,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Mapbox.Platform.Unity
+namespace Mapbox.Unity
 {
-    sealed class UnityHTTPRequest : IAsyncRequest
+    sealed class HTTPRequest : IAsyncRequest
     {
         readonly UnityWebRequest request;
         readonly Action<Response> callback;
 
-        public UnityHTTPRequest(MonoBehaviour behaviour, string url, Action<Response> callback)
+        public HTTPRequest(MonoBehaviour behaviour, string url, Action<Response> callback)
         {
             request = UnityWebRequest.Get(url);
             this.callback = callback;

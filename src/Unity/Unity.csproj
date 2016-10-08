@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE49745C-01F6-4A3F-BF08-828113D3E19F}</ProjectGuid>
+    <ProjectGuid>{24CA1FB8-BE9B-46ED-8E09-3767505128B6}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Mapbox.Platform</RootNamespace>
-    <AssemblyName>Mapbox.Platform</AssemblyName>
+    <RootNamespace>Mapbox.Unity</RootNamespace>
+    <AssemblyName>Mapbox.Unity</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <ReleaseVersion>0.0.1</ReleaseVersion>
   </PropertyGroup>
@@ -29,14 +29,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>\opt\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFileSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IAsyncRequest.cs" />
-    <Compile Include="Response.cs" />
+    <Compile Include="HTTPRequest.cs" />
+    <Compile Include="FileSource.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Platform\Platform.csproj">
+      <Project>{FE49745C-01F6-4A3F-BF08-828113D3E19F}</Project>
+      <Name>Platform</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{48BE9D66-3A19-4248-BBDD-4DB4A52B3FE5}</Project>
       <Name>Utils</Name>

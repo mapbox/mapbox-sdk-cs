@@ -1,16 +1,14 @@
 using System;
 using System.Text;
 
-using Mapbox.Platform;
-
 namespace Mapbox
 {
     public sealed class Geocoder
     {
         const string API = "https://api.mapbox.com/geocoding/v5/";
-        readonly FileSource fileSource;
+        readonly IFileSource fileSource;
 
-        public Geocoder(FileSource fileSource)
+        public Geocoder(IFileSource fileSource)
         {
             this.fileSource = fileSource;
         }

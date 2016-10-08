@@ -1,4 +1,4 @@
-﻿namespace Mapbox.Platform
+﻿namespace Mapbox
 {
     public interface IAsyncRequest
     {
