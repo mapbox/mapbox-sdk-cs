@@ -5,7 +5,8 @@ namespace Mapbox
 {
     public sealed class Geocoder
     {
-        const string API = "https://api.mapbox.com/geocoding/v5/";
+        const string GeocoderAPI = Constants.BaseAPI + "geocoding/v5/";
+
         readonly IFileSource fileSource;
 
         public Geocoder(IFileSource fileSource)
@@ -16,7 +17,7 @@ namespace Mapbox
         public IAsyncRequest Reverse(LatLng coordinate, Action<string> callback)
         {
             const string mode = "mapbox.places/";
-            string url = API + mode + coordinate.longitude + "," + coordinate.latitude + ".json";
+            string url = GeocoderAPI + mode + coordinate.longitude + "," + coordinate.latitude + ".json";
 
             return fileSource.Request(url, (Response response) => {
                 {
