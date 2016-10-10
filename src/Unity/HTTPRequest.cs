@@ -1,38 +1,43 @@
-﻿using System;
-using System.Collections;
-
-using UnityEngine;
-using UnityEngine.Networking;
+﻿//-----------------------------------------------------------------------
+// <copyright file="HTTPRequest.cs" company="Mapbox">
+//     Copyright (c) 2016 Mapbox. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Mapbox.Unity
 {
-    sealed class HTTPRequest : IAsyncRequest
+    using System;
+    using System.Collections;
+    using UnityEngine;
+    using UnityEngine.Networking;
+
+    internal sealed class HTTPRequest : IAsyncRequest
     {
-        readonly UnityWebRequest request;
-        readonly Action<Response> callback;
+        private readonly UnityWebRequest request;
+        private readonly Action<Response> callback;
 
         public HTTPRequest(MonoBehaviour behaviour, string url, Action<Response> callback)
         {
-            request = UnityWebRequest.Get(url);
+            this.request = UnityWebRequest.Get(url);
             this.callback = callback;
 
-            behaviour.StartCoroutine(doRequest());
+            behaviour.StartCoroutine(this.DoRequest());
         }
 
         public void Cancel()
         {
-            request.Abort();
+            this.request.Abort();
         }
 
-        IEnumerator doRequest()
+        private IEnumerator DoRequest()
         {
-            yield return request.Send();
+            yield return this.request.Send();
 
             var response = new Response();
-            response.error = request.error;
-            response.data = request.downloadHandler.data;
+            response.Error = this.request.error;
+            response.Data = this.request.downloadHandler.data;
 
-            callback(response);
+            this.callback(response);
         }
     }
 }
