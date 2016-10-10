@@ -7,7 +7,7 @@
 namespace Mapbox
 {
     /// <summary> Collection of constants used across the project. </summary>
-    public struct Constants
+    public static class Constants
     {
         /// <summary> Base URL for all the Mapbox APIs. </summary>
         public const string BaseAPI = "https://api.mapbox.com/";
