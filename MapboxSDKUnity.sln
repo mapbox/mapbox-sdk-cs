@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Directions", "src\Direction
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono", "src\Mono\Mono.csproj", "{346B1208-1587-490B-A7DE-A96B86E81CD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "test\UnitTest\UnitTest.csproj", "{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{346B1208-1587-490B-A7DE-A96B86E81CD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{346B1208-1587-490B-A7DE-A96B86E81CD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{346B1208-1587-490B-A7DE-A96B86E81CD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
