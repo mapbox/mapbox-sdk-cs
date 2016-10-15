@@ -32,8 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="UnityEngine">
+    <Reference Include="UnityEngine-Linux" Condition="Exists('\opt\Unity\Editor\Data\Managed\UnityEngine.dll')" >
       <HintPath>\opt\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine-macOS" Condition="Exists('\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll')" >
+      <HintPath>\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
