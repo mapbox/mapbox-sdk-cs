@@ -31,6 +31,11 @@
   <PropertyGroup>
     <StyleCopOverrideSettingsFile>..\..\data\Settings.StyleCop</StyleCopOverrideSettingsFile>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TravisCI|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\TravisCI</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
