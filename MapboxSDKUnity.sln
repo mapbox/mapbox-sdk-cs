@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono", "src\Mono\Mono.cspro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "test\UnitTest\UnitTest.csproj", "{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map", "src\Map\Map.csproj", "{6AECAE3C-A1F3-4B94-976B-D27AA4610879}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,12 @@ Global
 		{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}.TravisCI|Any CPU.ActiveCfg = TravisCI|Any CPU
 		{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}.TravisCI|Any CPU.Build.0 = TravisCI|Any CPU
+		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.TravisCI|Any CPU.ActiveCfg = Release|Any CPU
+		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.TravisCI|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

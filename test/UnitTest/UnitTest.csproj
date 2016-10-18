@@ -47,6 +47,7 @@
     <Compile Include="BearingFilterTest.cs" />
     <Compile Include="GeoCoordinateTest.cs" />
     <Compile Include="GeoCoordinateBoundsTest.cs" />
+    <Compile Include="TileCoverTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">
@@ -68,6 +69,10 @@
     <ProjectReference Include="..\..\src\Utils\Utils.csproj">
       <Project>{48BE9D66-3A19-4248-BBDD-4DB4A52B3FE5}</Project>
       <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Map\Map.csproj">
+      <Project>{6AECAE3C-A1F3-4B94-976B-D27AA4610879}</Project>
+      <Name>Map</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
