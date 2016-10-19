@@ -41,6 +41,9 @@
   <ItemGroup>
     <Compile Include="Geocoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GeocodeResource.cs" />
+    <Compile Include="ForwardGeocodeResource.cs" />
+    <Compile Include="ReverseGeocodeResource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.csproj">

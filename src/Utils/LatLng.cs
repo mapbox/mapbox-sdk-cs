@@ -23,5 +23,12 @@ namespace Mapbox
             this.Latitude = latitude;
             this.Longitude = longitude;
         }
+
+        /// <summary> Converts LatLng to a URL snippet. </summary>
+        /// <returns> Returns a string for use in a Mapbox query URL. </returns>
+        public override string ToString()
+        {
+            return this.Latitude.ToString() + "," + this.Longitude.ToString();
+        }
     }
 }

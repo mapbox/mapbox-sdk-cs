@@ -42,6 +42,9 @@
     <Compile Include="Directions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingProfile.cs" />
+    <Compile Include="DirectionResource.cs" />
+    <Compile Include="Geometries.cs" />
+    <Compile Include="Overview.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Platform\Platform.csproj">

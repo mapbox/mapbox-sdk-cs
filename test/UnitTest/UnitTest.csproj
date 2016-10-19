@@ -40,7 +40,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSource.cs" />
+    <Compile Include="FileSourceTest.cs" />
+    <Compile Include="ForwardGeocodeResourceTest.cs" />
+    <Compile Include="ReverseGeocodeResourceTest.cs" />
+    <Compile Include="DirectionResourceTest.cs" />
+    <Compile Include="BearingFilterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">

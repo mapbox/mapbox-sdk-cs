@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Directions
 {
     /// <summary>
     ///     Routing profile, affects how the route is calculated, prioritizing routes that fit

@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Directions
 {
     using System;
     using System.Text;
@@ -27,23 +27,17 @@ namespace Mapbox
         }
 
         /// <summary> Performs asynchronously a directions lookup. </summary>
-        /// <param name="origin"> Geographic coordinates of the origin. </param>
-        /// <param name="destination"> Geographic coordinates of the destination. </param>
-        /// <param name="profile"> The routing <see cref="RoutingProfile"/>. </param>
+        /// <param name="direction"> Direction resource. </param>
         /// <param name="callback"> Callback to be called after the request is completed. </param>
         /// <returns>
         ///     Returns a <see cref="IAsyncRequest" /> that can be used for canceling a pending
         ///     request. This handle can be completely ignored if there is no intention of ever
         ///     canceling the request.
         /// </returns>
-        public IAsyncRequest Query(LatLng origin, LatLng destination, RoutingProfile profile, Action<string> callback)
+        public IAsyncRequest Query(DirectionResource direction, Action<string> callback)
         {
-            string url = DirectionsAPI + profile
-                + origin.Longitude + "," + origin.Latitude + ";"
-                + destination.Longitude + "," + destination.Latitude + ".json";
-
             return this.fileSource.Request(
-                url,
+                direction.GetUrl(),
                 (Response response) =>
                 {
                     // TODO: Parse the data.

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FileSource.cs" company="Mapbox">
+// <copyright file="FileSourceTest.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
@@ -11,7 +11,7 @@ namespace Mapbox.UnitTest
     using NUnit.Framework;
 
     [TestFixture]
-    internal class FileSource
+    internal class FileSourceTest
     {
         private const string Uri = "https://api.mapbox.com/geocoding/v5/mapbox.places/helsinki.json";
         private Mono.FileSource fs;
@@ -90,7 +90,7 @@ namespace Mapbox.UnitTest
         {
             // Mapbox servers will return a forbidden when attempting
             // to access a page outside the API space with a token
-            // o the query. Let's hope the behaviour stay like this.
+            // on the query. Let's hope the behaviour stay like this.
             this.fs.Request(
                 "https://mapbox.com/forbidden",
                 (Response res) =>

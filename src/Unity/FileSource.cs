@@ -21,6 +21,7 @@ namespace Mapbox.Unity
     public sealed class FileSource : IFileSource
     {
         private readonly MonoBehaviour behaviour;
+
         private string accessToken;
 
         /// <summary> Initializes a new instance of the <see cref="FileSource" /> class. </summary>
@@ -33,6 +34,20 @@ namespace Mapbox.Unity
             this.behaviour = behaviour;
         }
 
+        /// <summary> Gets or sets the access token. </summary>
+        public string AccessToken
+        {
+            get
+            {
+                return this.accessToken;
+            }
+
+            set
+            {
+                this.accessToken = value;
+            }
+        }
+
         /// <summary> Performs a request asynchronously. </summary>
         /// <param name="url"> The HTTP/HTTPS url. </param>
         /// <param name="callback"> Callback to be called after the request is completed. </param>
@@ -43,29 +58,24 @@ namespace Mapbox.Unity
         /// </returns>
         public IAsyncRequest Request(string url, Action<Response> callback)
         {
-            if (this.accessToken != null)
+            // Make a uri builder in order to set access token.
+            var uriBuilder = new UriBuilder(url);
+
+            if (this.AccessToken != null)
             {
-                url += "?access_token=" + this.accessToken;
+                string accessTokenQuery = "access_token=" + this.accessToken;
+
+                if (uriBuilder.Query != null && uriBuilder.Query.Length > 1)
+                {
+                    uriBuilder.Query = uriBuilder.Query.Substring(1) + "&" + accessTokenQuery;
+                }
+                else
+                {
+                    uriBuilder.Query = accessTokenQuery;
+                }
             }
 
-            return new HTTPRequest(this.behaviour, url, callback);
-        }
-
-        /// <summary> Gets the access token. </summary>
-        /// <returns> The access token. </returns>
-        public string GetAccessToken()
-        {
-            return this.accessToken;
-        }
-
-        /// <summary>
-        ///     Sets the <see hef="https://www.mapbox.com/help/define-access-token/">access token</see>
-        ///     needed for accessing Mapbox services.
-        /// </summary>
-        /// <param name="token"> The access token. </param>
-        public void SetAccessToken(string token)
-        {
-            this.accessToken = token;
+            return new HTTPRequest(this.behaviour, uriBuilder.ToString(), callback);    
         }
     }
 }
