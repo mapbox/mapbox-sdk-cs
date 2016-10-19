@@ -39,11 +39,11 @@ namespace Mapbox.Geocoding
         /// <returns> A complete, valid reverse geocode URL string. </returns>
         public override string GetUrl()
         {
-            var opts = new List<string>();
+            Dictionary<string, string> opts = new Dictionary<string, string>();
 
             if (this.Types != null)
             {
-                opts.Add("types=" + ReverseGeocodeResource.GetUrlQueryFromArray(this.Types));
+                opts.Add("types", GetUrlQueryFromArray(this.Types));
             }
 
             return Constants.BaseAPI +
@@ -51,7 +51,7 @@ namespace Mapbox.Geocoding
                             this.Mode +
                             this.Query.ToString() +
                             ".json" +
-                            ReverseGeocodeResource.GetOptsString(opts);
+                            EncodeQueryString(opts);
         }
     }
 }

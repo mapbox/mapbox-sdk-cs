@@ -7,7 +7,11 @@
 namespace Mapbox.Platform
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Web;
 
     /// <summary> Abstract class representing a Mapbox resource URL. </summary>
     public abstract class Resource
@@ -19,28 +23,30 @@ namespace Mapbox.Platform
         /// <returns>Returns URL string.</returns>
         public abstract string GetUrl();
 
-        /// <summary>Gets a string from a List of options.</summary>
-        /// <param name="list"> List of URL query options. </param>
-        /// <returns>Returns URL query options string.</returns>
-        protected static string GetOptsString(List<string> list)
+        /// <summary> Encodes a URI with a querystring </summary>
+        /// <param name="values"> Querystring values </param>
+        /// <returns> Encoded URL </returns>
+        protected static String EncodeQueryString(IEnumerable<KeyValuePair<string, string>> values)
         {
-            string str = string.Empty;
-
-            for (int i = 0; i < list.Count; i++)
+            if (values != null)
             {
-                if (i == 0)
+                var encodedValues = from p in values
+                                    let k = Uri.EscapeDataString(p.Key.Trim())
+                                    let v = Uri.EscapeDataString(p.Value)
+                                    orderby k
+                                    select string.IsNullOrEmpty(v) ? k : $"{k}={v}";
+                if (encodedValues.Count() == 0)
                 {
-                    str += "?";
+                    return string.Empty;
                 }
-                else 
+                else
                 {
-                    str += "&";
+                    return "?" + string.Join(
+                        "&", encodedValues.ToArray());
                 }
-
-                str += list[i];
             }
 
-            return str;
+            return string.Empty;
         }
 
         /// <summary>Builds a string from an array of options for use in URLs.</summary>
@@ -50,14 +56,7 @@ namespace Mapbox.Platform
         /// <typeparam name="U">Type in the array.</typeparam>
         protected static string GetUrlQueryFromArray<U>(U[] items, string separator = ",")
         {
-            string str = string.Empty;
-
-            for (int i = 0; i < items.Length; i++)
-            {
-                str = str + items[i].ToString() + (i + 1 == items.Length ? string.Empty : separator);
-            }
-
-            return str;
+            return string.Join(separator, items.Select(item => item.ToString()).ToArray());
         }
     }
 }

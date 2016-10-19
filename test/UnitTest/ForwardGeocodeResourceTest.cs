@@ -13,8 +13,7 @@ namespace Mapbox.UnitTest
     [TestFixture]
     internal class ForwardGeocodeResourceTest
     {
-        private const string Query = "Minneapolis";
-        private const string Base = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
+        private const string Query = "Minneapolis, MN";
         private Geocoding.ForwardGeocodeResource fgr;
 
         [SetUp]
@@ -61,35 +60,35 @@ namespace Mapbox.UnitTest
         public void GetUrl()
         {
             // With only constructor
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json", this.fgr.GetUrl());
 
             // With autocomplete
             this.fgr.Autocomplete = false;
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json?autocomplete=false");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false", this.fgr.GetUrl());
 
             // With bbox
             this.fgr.Bbox = new LatLngBounds(new LatLng(10, 15), new LatLng(20, 25));
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json?autocomplete=false&bbox=10,15,20,25");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25", this.fgr.GetUrl());
 
             // With one country
             this.fgr.Country = new string[] { "ar" };
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json?autocomplete=false&bbox=10,15,20,25&country=ar");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar", this.fgr.GetUrl());
 
             // With multiple countries
             this.fgr.Country = new string[] { "ar", "fi" };
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json?autocomplete=false&bbox=10,15,20,25&country=ar,fi");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi", this.fgr.GetUrl());
 
             // With proximity
             this.fgr.Proximity = new LatLng(5, 10);
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json?autocomplete=false&bbox=10,15,20,25&country=ar,fi&proximity=5,10");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi&proximity=5%2C10", this.fgr.GetUrl());
 
             // With one types
             this.fgr.Types = new string[] { "country" };
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json?autocomplete=false&bbox=10,15,20,25&country=ar,fi&proximity=5,10&types=country");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi&proximity=5%2C10&types=country", this.fgr.GetUrl());
 
             // With multiple types
             this.fgr.Types = new string[] { "country", "region" };
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json?autocomplete=false&bbox=10,15,20,25&country=ar,fi&proximity=5,10&types=country,region");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi&proximity=5%2C10&types=country%2Cregion", this.fgr.GetUrl());
 
             // Set all to null
             this.fgr.Autocomplete = null;
@@ -97,7 +96,7 @@ namespace Mapbox.UnitTest
             this.fgr.Country = null;
             this.fgr.Proximity = null;
             this.fgr.Types = null;
-            Assert.AreEqual(this.fgr.GetUrl(), Base + Query + ".json");
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json", this.fgr.GetUrl());
         }
     }
 }

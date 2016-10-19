@@ -8,6 +8,7 @@ namespace Mapbox.Geocoding
 {
     using System;
     using System.Collections.Generic;
+    using System.Web;
 
     /// <summary> A forward geocode request. </summary>
     public sealed class ForwardGeocodeResource : GeocodeResource<string>
@@ -141,41 +142,41 @@ namespace Mapbox.Geocoding
         /// <returns> A complete, valid forward geocode URL. </returns>
         public override string GetUrl()
         {
-            var opts = new List<string>();
+            Dictionary<string, string> opts = new Dictionary<string, string>();
 
             if (this.Autocomplete != null)
             {
-                opts.Add("autocomplete=" + this.Autocomplete.ToString().ToLower());
+                opts.Add("autocomplete", this.Autocomplete.ToString().ToLower());
             }
 
             if (this.Bbox != null)
             {
                 var nonNullableBbox = (LatLngBounds)this.Bbox;
-                opts.Add("bbox=" + nonNullableBbox.ToString());
+                opts.Add("bbox", nonNullableBbox.ToString());
             }
 
             if (this.Country != null)
             {
-                opts.Add("country=" + ForwardGeocodeResource.GetUrlQueryFromArray<string>(this.Country));
+                opts.Add("country", ForwardGeocodeResource.GetUrlQueryFromArray<string>(this.Country));
             }
 
             if (this.Proximity != null)
             {
                 var nonNullableProx = (LatLng)this.Proximity;
-                opts.Add("proximity=" + nonNullableProx.ToString());
+                opts.Add("proximity", nonNullableProx.ToString());
             }
 
             if (this.Types != null)
             {
-                opts.Add("types=" + ForwardGeocodeResource.GetUrlQueryFromArray<string>(this.Types));
+                opts.Add("types", GetUrlQueryFromArray(this.Types));
             }
 
             return Constants.BaseAPI +
                             this.ApiEndpoint +
                             this.Mode +
-                            this.Query +
+                            Uri.EscapeDataString(this.Query) +
                             ".json" +
-                            ForwardGeocodeResource.GetOptsString(opts);
+                            EncodeQueryString(opts);
         }
     }
 }

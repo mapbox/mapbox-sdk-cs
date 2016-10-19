@@ -42,9 +42,9 @@ namespace Mapbox.Geocoding
         /// <summary> Gets the mode. </summary>
         public string Mode
         {
-            get 
-            { 
-                return this.mode; 
+            get
+            {
+                return this.mode;
             }
         }
 

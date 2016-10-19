@@ -45,19 +45,19 @@ namespace Mapbox.UnitTest
         public void GetUrl()
         {
             // With only constructor
-            Assert.AreEqual(this.rgr.GetUrl(), Base + this.expectedQueryString + ".json");
+            Assert.AreEqual(Base + this.expectedQueryString + ".json", this.rgr.GetUrl());
 
             // With one types
             this.rgr.Types = new string[] { "country" };
-            Assert.AreEqual(this.rgr.GetUrl(), Base + this.expectedQueryString + ".json?types=country");
+            Assert.AreEqual(Base + this.expectedQueryString + ".json?types=country", this.rgr.GetUrl());
 
             // With multiple types
             this.rgr.Types = new string[] { "country", "region" };
-            Assert.AreEqual(this.rgr.GetUrl(), Base + this.expectedQueryString + ".json?types=country,region");
+            Assert.AreEqual(Base + this.expectedQueryString + ".json?types=country%2Cregion", this.rgr.GetUrl());
 
             // Set all to null
             this.rgr.Types = null;
-            Assert.AreEqual(this.rgr.GetUrl(), Base + this.expectedQueryString + ".json");
+            Assert.AreEqual(Base + this.expectedQueryString + ".json", this.rgr.GetUrl());
         }
     }
 }

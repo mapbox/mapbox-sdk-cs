@@ -245,49 +245,49 @@ namespace Mapbox.Directions
         /// <returns>The URL string.</returns>
         public override string GetUrl()
         {
-            var opts = new List<string>();
+            Dictionary<string, string> opts = new Dictionary<string, string>();
 
             if (this.Alternatives != null)
             {
-                opts.Add("alternatives=" + this.Alternatives.ToString().ToLower());
+                opts.Add("alternatives", this.Alternatives.ToString().ToLower());
             }
 
             if (this.Bearings != null)
             {
-                opts.Add("bearings=" + DirectionResource.GetUrlQueryFromArray<BearingFilter>(this.Bearings, ";"));
+                opts.Add("bearings", GetUrlQueryFromArray(this.Bearings, ";"));
             }
 
             if (this.ContinueStraight != null)
             {
-                opts.Add("continue_straight=" + this.ContinueStraight.ToString().ToLower());
+                opts.Add("continue_straight", this.ContinueStraight.ToString().ToLower());
             }
 
             if (this.Geometries != null)
             {
-                opts.Add("geometries=" + this.Geometries);
+                opts.Add("geometries", this.Geometries.ToString());
             }
 
             if (this.Overview != null)
             {
-                opts.Add("overview=" + this.Overview);
+                opts.Add("overview", this.Overview.ToString());
             }
 
             if (this.Radiuses != null)
             {
-                opts.Add("radiuses=" + DirectionResource.GetUrlQueryFromArray<double>(this.Radiuses));
+                opts.Add("radiuses", GetUrlQueryFromArray(this.Radiuses));
             }
 
             if (this.Steps != null)             
             {                 
-                opts.Add("steps=" + this.Steps.ToString().ToLower());             
+                opts.Add("steps", this.Steps.ToString().ToLower());             
             } 
 
             return Constants.BaseAPI +
                             this.ApiEndpoint +
                             this.RoutingProfile +
-                            DirectionResource.GetUrlQueryFromArray<LatLng>(this.Coordinates, ";") +
+                            GetUrlQueryFromArray<LatLng>(this.Coordinates, ";") +
                             ".json" +
-                            DirectionResource.GetOptsString(opts);
+                            EncodeQueryString(opts);
         }
     }
 }

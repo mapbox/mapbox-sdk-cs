@@ -2,15 +2,15 @@
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
        <Rule Name="DocumentationTextMustBeginWithACapitalLetter">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">True</BooleanProperty>
-          </RuleSettings>
-        </Rule>
-        <Rule Name="DocumentationTextMustEndWithAPeriod">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">True</BooleanProperty>
-          </RuleSettings>
-        </Rule>
+        <RuleSettings>
+          <BooleanProperty Name="Enabled">True</BooleanProperty>
+        </RuleSettings>
+      </Rule>
+      <Rule Name="DocumentationTextMustEndWithAPeriod">
+        <RuleSettings>
+          <BooleanProperty Name="Enabled">True</BooleanProperty>
+        </RuleSettings>
+      </Rule>
       <Rules>
         <Rule Name="FileHeaderMustHaveValidCompanyText">
           <RuleSettings>
@@ -22,6 +22,15 @@
         <BooleanProperty Name="IgnorePrivates">True</BooleanProperty>
         <BooleanProperty Name="IgnoreInternals">True</BooleanProperty>
       </AnalyzerSettings>
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.ReadabilityRules">
+      <Rules>
+        <Rule Name="PrefixCallsCorrectly">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
     </Analyzer>
   </Analyzers>
 </StyleCopSettings>
