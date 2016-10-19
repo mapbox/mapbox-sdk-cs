@@ -45,6 +45,8 @@
     <Compile Include="ReverseGeocodeResourceTest.cs" />
     <Compile Include="DirectionResourceTest.cs" />
     <Compile Include="BearingFilterTest.cs" />
+    <Compile Include="GeoCoordinateTest.cs" />
+    <Compile Include="GeoCoordinateBoundsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">

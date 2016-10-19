@@ -19,7 +19,7 @@ namespace Mapbox.Directions
         private RoutingProfile profile;
 
         // Optional
-        private LatLng[] coordinates;
+        private GeoCoordinate[] coordinates;
 
         // Optional
         private bool? alternatives;
@@ -49,7 +49,7 @@ namespace Mapbox.Directions
         /// <param name="profile">
         ///     A routing profile, <see cref="RoutingProfile"/> for all profile options.
         /// </param>
-        public DirectionResource(LatLng[] coordinates, RoutingProfile profile)
+        public DirectionResource(GeoCoordinate[] coordinates, RoutingProfile profile)
         {
             this.Coordinates = coordinates;
             this.RoutingProfile = profile;
@@ -68,7 +68,7 @@ namespace Mapbox.Directions
         ///     Gets or sets the coordinates. Array of LatLng points along route,
         ///     between 2 and 25 elements in length.
         /// </summary>
-        public LatLng[] Coordinates
+        public GeoCoordinate[] Coordinates
         {
             get
             {
@@ -285,7 +285,7 @@ namespace Mapbox.Directions
             return Constants.BaseAPI +
                             this.ApiEndpoint +
                             this.RoutingProfile +
-                            GetUrlQueryFromArray<LatLng>(this.Coordinates, ";") +
+                            GetUrlQueryFromArray<GeoCoordinate>(this.Coordinates, ";") +
                             ".json" +
                             EncodeQueryString(opts);
         }

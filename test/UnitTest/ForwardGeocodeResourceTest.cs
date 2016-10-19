@@ -67,28 +67,28 @@ namespace Mapbox.UnitTest
             Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false", this.fgr.GetUrl());
 
             // With bbox
-            this.fgr.Bbox = new LatLngBounds(new LatLng(10, 15), new LatLng(20, 25));
-            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25", this.fgr.GetUrl());
+            this.fgr.Bbox = new GeoCoordinateBounds(new GeoCoordinate(15, 10), new GeoCoordinate(25, 20));
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000", this.fgr.GetUrl());
 
             // With one country
             this.fgr.Country = new string[] { "ar" };
-            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar", this.fgr.GetUrl());
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000&country=ar", this.fgr.GetUrl());
 
             // With multiple countries
             this.fgr.Country = new string[] { "ar", "fi" };
-            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi", this.fgr.GetUrl());
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000&country=ar%2Cfi", this.fgr.GetUrl());
 
             // With proximity
-            this.fgr.Proximity = new LatLng(5, 10);
-            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi&proximity=5%2C10", this.fgr.GetUrl());
+            this.fgr.Proximity = new GeoCoordinate(10, 5);
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000&country=ar%2Cfi&proximity=5.00000%2C10.00000", this.fgr.GetUrl());
 
             // With one types
             this.fgr.Types = new string[] { "country" };
-            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi&proximity=5%2C10&types=country", this.fgr.GetUrl());
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000&country=ar%2Cfi&proximity=5.00000%2C10.00000&types=country", this.fgr.GetUrl());
 
             // With multiple types
             this.fgr.Types = new string[] { "country", "region" };
-            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10%2C15%2C20%2C25&country=ar%2Cfi&proximity=5%2C10&types=country%2Cregion", this.fgr.GetUrl());
+            Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000&country=ar%2Cfi&proximity=5.00000%2C10.00000&types=country%2Cregion", this.fgr.GetUrl());
 
             // Set all to null
             this.fgr.Autocomplete = null;

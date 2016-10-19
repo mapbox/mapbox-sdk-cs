@@ -9,20 +9,20 @@ namespace Mapbox.Geocoding
     using System.Collections.Generic;
 
     /// <summary> A reverse geocode request. </summary>
-    public sealed class ReverseGeocodeResource : GeocodeResource<LatLng>
+    public sealed class ReverseGeocodeResource : GeocodeResource<GeoCoordinate>
     {
         // Required
-        private LatLng query;
+        private GeoCoordinate query;
 
         /// <summary> Initializes a new instance of the <see cref="ReverseGeocodeResource" /> class.</summary>
         /// <param name="query"> Location to reverse geocode. </param>
-        public ReverseGeocodeResource(LatLng query)
+        public ReverseGeocodeResource(GeoCoordinate query)
         {
             this.Query = query;
         }
 
         /// <summary> Gets or sets the location. </summary>
-        public override LatLng Query
+        public override GeoCoordinate Query
         {
             get
             {

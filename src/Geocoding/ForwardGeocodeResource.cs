@@ -32,10 +32,10 @@ namespace Mapbox.Geocoding
         private string[] country;
 
         // Optional
-        private LatLng? proximity;
+        private GeoCoordinate? proximity;
 
         // Optional
-        private LatLngBounds? bbox;
+        private GeoCoordinateBounds? bbox;
 
         /// <summary> Initializes a new instance of the <see cref="ForwardGeocodeResource" /> class.</summary>
         /// <param name="query"> Place name for forward geocoding. </param>
@@ -76,7 +76,7 @@ namespace Mapbox.Geocoding
         ///     Gets or sets the bounding box option. Bounding box is a rectangle within which to
         ///     limit results, given as <see cref="Bbox"/>.
         /// </summary>
-        public LatLngBounds? Bbox
+        public GeoCoordinateBounds? Bbox
         {
             get
             {
@@ -123,9 +123,9 @@ namespace Mapbox.Geocoding
 
         /// <summary>
         ///     Gets or sets the proximity option, which is a location around which to bias results,
-        ///     given as <see cref="LatLng"/>.
+        ///     given as <see cref="GeoCoordinate"/>.
         /// </summary>
-        public LatLng? Proximity
+        public GeoCoordinate? Proximity
         {
             get
             {
@@ -151,7 +151,7 @@ namespace Mapbox.Geocoding
 
             if (this.Bbox != null)
             {
-                var nonNullableBbox = (LatLngBounds)this.Bbox;
+                var nonNullableBbox = (GeoCoordinateBounds)this.Bbox;
                 opts.Add("bbox", nonNullableBbox.ToString());
             }
 
@@ -162,7 +162,7 @@ namespace Mapbox.Geocoding
 
             if (this.Proximity != null)
             {
-                var nonNullableProx = (LatLng)this.Proximity;
+                var nonNullableProx = (GeoCoordinate)this.Proximity;
                 opts.Add("proximity", nonNullableProx.ToString());
             }
 
