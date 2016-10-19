@@ -23,9 +23,9 @@ namespace Mapbox.Platform
         /// <returns>Returns URL string.</returns>
         public abstract string GetUrl();
 
-        /// <summary> Encodes a URI with a querystring </summary>
-        /// <param name="values"> Querystring values </param>
-        /// <returns> Encoded URL </returns>
+        /// <summary> Encodes a URI with a querystring. </summary>
+        /// <param name="values"> Querystring values. </param>
+        /// <returns> Encoded URL. </returns>
         protected static String EncodeQueryString(IEnumerable<KeyValuePair<string, string>> values)
         {
             if (values != null)
