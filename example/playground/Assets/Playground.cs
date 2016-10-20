@@ -7,75 +7,110 @@ using UnityEngine.UI;
 using Mapbox;
 using Mapbox.Geocoding;
 using Mapbox.Directions;
+using Mapbox.Map;
 
-public class Playground : MonoBehaviour 
+public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
 {
 
-	private Directions directions;
-	private DirectionResource direction;
-	private ReverseGeocodeResource reverseGeocode;
-	private ForwardGeocodeResource forwardGeocode;
-	private Geocoder geocoder;
+    private Directions directions;
+    private DirectionResource direction;
+    private ReverseGeocodeResource reverseGeocode;
+    private ForwardGeocodeResource forwardGeocode;
+    private Geocoder geocoder;
+    private Map<VectorTile> map;
 
-	void Start()
+    void Start()
     {
-		string token = "pk.eyJ1IjoidG1wc2FudG9zIiwiYSI6IkpRS0p1VHcifQ.y5bSLhPlxM21hyiDBizcMg";
+        string token = "pk.eyJ1IjoidG1wc2FudG9zIiwiYSI6IkpRS0p1VHcifQ.y5bSLhPlxM21hyiDBizcMg";
 
-		var fileSource = new Mapbox.Unity.FileSource(this);
-		fileSource.AccessToken = token;
+        var fileSource = new Mapbox.Unity.FileSource(this);
+        fileSource.AccessToken = token;
 
-		string[] types = { "country", "place" };
-		string[] country = { "us", "al", "dz" };
+        string[] types = { "country", "place" };
+        string[] country = { "us", "al", "dz" };
 
-		reverseGeocode = new ReverseGeocodeResource(new LatLng(38.897, -77.036));
-		
-		reverseGeocode.Types = types;
+        reverseGeocode = new ReverseGeocodeResource(new GeoCoordinate(38.897, -77.036));
+        reverseGeocode.Types = types;
 
-		forwardGeocode = new ForwardGeocodeResource("Minneapolis, MN");
+        forwardGeocode = new ForwardGeocodeResource("Minneapolis, MN");
+        forwardGeocode.Country = country;
+        forwardGeocode.Autocomplete = true;
 
-		forwardGeocode.Country = country;
+        geocoder = new Geocoder(fileSource);
 
-		forwardGeocode.Autocomplete = true;
+        GeoCoordinate[] coordinates = { new GeoCoordinate(-73.989, 40.733), new GeoCoordinate(-74, 40.733) };
 
-		geocoder = new Geocoder(fileSource);
+        direction = new DirectionResource(coordinates, RoutingProfile.Driving);
+        direction.Alternatives = true;
 
-		LatLng[] coordinates = { new LatLng(-73.989, 40.733), new LatLng(-74, 40.733) };
+        directions = new Directions(fileSource);
 
-		direction = new DirectionResource(coordinates, RoutingProfile.Driving);
-		
-		direction.Alternatives = true;
+        map = new Map<VectorTile>(fileSource);
+        map.Subscribe(this);
+    }
 
-		directions = new Directions(fileSource);
-
-	}
-
-	public void Directions()
+    void SetInputField(string text)
     {
-		print(direction.GetUrl());
-		directions.Query(direction,
-	        (string json) => {
-				var input = this.GetComponent<InputField>();
-				input.text = json;
-			});
-	}
+        var input = this.GetComponent<InputField>();
+        input.text = text;
+    }
 
-	public void ForwardGeocoder()
-	{
-		print(forwardGeocode.GetUrl());
-		geocoder.Forward(forwardGeocode, (string json) =>
-		{
-			var input = this.GetComponent<InputField>();
-			input.text = json;
-		});
-	}
+    void AppendToInputField(string text)
+    {
+        var input = this.GetComponent<InputField>();
+        input.text += "\n" + text;
+    }
 
-	public void ReverseGeocoder()
-	{
-		print(reverseGeocode.GetUrl());
-		geocoder.Reverse(reverseGeocode, (string json) =>
-		{
-			var input = this.GetComponent<InputField>();
-			input.text = json;
-		});
-	}
+    public void Directions()
+    {
+        print(direction.GetUrl());
+        directions.Query(direction, SetInputField);
+    }
+
+    public void ForwardGeocoder()
+    {
+        print(forwardGeocode.GetUrl());
+        geocoder.Forward(forwardGeocode, SetInputField);
+    }
+
+    public void ReverseGeocoder()
+    {
+        print(reverseGeocode.GetUrl());
+        geocoder.Reverse(reverseGeocode, SetInputField);
+    }
+
+    public void FetchTiles()
+    {
+        SetInputField(""); // clear
+        map.Zoom = 0;
+
+        map.GeoCoordinateBounds = GeoCoordinateBounds.World();
+        map.Zoom = 3;
+    }
+
+    public void OnCompleted()
+    {
+        AppendToInputField("Completed.");
+    }
+
+    public void OnNext(VectorTile tile)
+    {
+        var text = tile.ToString() + ": ";
+
+        if (tile.Error != null)
+        {
+            text += tile.Error;
+        }
+        else
+        {
+            text += tile.Data.Length + " bytes";
+        }
+
+        AppendToInputField(text);
+    }
+
+    public void OnError(string error)
+    {
+        AppendToInputField("Error.");
+    }
 }
