@@ -17,12 +17,14 @@ namespace Mapbox.Map
     ///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
     ///     <see cref="T:Mapbox.Map.Raster"/>.
     /// </typeparam>
-    public sealed class Map<T> where T : Tile, new()
+    public sealed class Map<T> : IObservable<T> where T : Tile, new()
     {
         private readonly IFileSource fs;
         private GeoCoordinateBounds latLngBounds;
         private double zoom;
+
         private HashSet<T> tiles = new HashSet<T>();
+        private List<IObserver<T>> observers = new List<IObserver<T>>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:Mapbox.Map.Map`1"/> class.
@@ -96,6 +98,52 @@ namespace Mapbox.Map
             }
         }
 
+        /// <summary> Add an <see cref="T:IObserver" /> to the observer list. </summary>
+        /// <param name="observer"> The object subscribing to events. </param>
+        public void Subscribe(IObserver<T> observer)
+        {
+            this.observers.Add(observer);
+        }
+
+        /// <summary> Remove an <see cref="T:IObserver" /> to the observer list. </summary>
+        /// <param name="observer"> The object unsubscribing to events. </param>
+        public void Unsubscribe(IObserver<T> observer)
+        {
+            this.observers.Remove(observer);
+        }
+
+        private void NotifyError(string error)
+        {
+            // Copying the list because you may unsubscribe when
+            // notifying the observers.
+            var copy = new List<IObserver<T>>(this.observers);
+
+            foreach (IObserver<T> observer in copy)
+            {
+                observer.OnError(error);
+            }
+        }
+
+        private void NotifyNext(Tile next)
+        {
+            var copy = new List<IObserver<T>>(this.observers);
+
+            foreach (IObserver<T> observer in copy)
+            {
+                observer.OnNext((T)Convert.ChangeType(next, typeof(T)));
+            }
+        }
+
+        private void NotifyCompleted()
+        {
+            var copy = new List<IObserver<T>>(this.observers);
+
+            foreach (IObserver<T> observer in copy)
+            {
+                observer.OnCompleted();
+            }
+        }
+
         private void Update()
         {
             var cover = TileCover.Get(this.latLngBounds, (int)Math.Ceiling(this.zoom));
@@ -119,7 +167,7 @@ namespace Mapbox.Map
             foreach (CanonicalTileId id in cover)
             {
                 var tile = new T();
-                tile.Initialize(id, this.fs);
+                tile.Initialize(id, this.fs, this.NotifyNext);
 
                 this.tiles.Add(tile);
             }

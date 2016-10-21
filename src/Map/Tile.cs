@@ -6,6 +6,8 @@
 
 namespace Mapbox.Map
 {
+    using System;
+
     /// <summary>
     ///    A Map tile, a square with vector or raster data representing a geographic
     ///    bounding box. More info <see href="https://en.wikipedia.org/wiki/Tiled_web_map">
@@ -14,7 +16,11 @@ namespace Mapbox.Map
     public abstract class Tile
     {
         private CanonicalTileId id;
+        private string error;
+        private bool loaded = false;
+
         private IAsyncRequest request;
+        private Action<Tile> callback;
 
         /// <summary> Gets the canonical tile identifier. </summary>
         /// <value> The canonical tile identifier. </value>
@@ -26,13 +32,26 @@ namespace Mapbox.Map
             }
         }
 
-        /// <summary> Cancel any further processing on this tile. </summary>
-        public void Cancel()
+        /// <summary> Gets the error message if any. </summary>
+        /// <value> The error string. </value>
+        public string Error
         {
-            if (this.request != null)
+            get
             {
-                this.request.Cancel();
-                this.request = null;
+                return this.error;
+            }
+        }
+
+        /// <summary>
+        ///     Gets a value indicating whether the tile is loaded. A loaded
+        ///     tile doesn't necessarily contain data, as it could have error'ed.
+        /// </summary>
+        /// <value> True if loaded, false otherwise. </value>
+        public bool Loaded
+        {
+            get
+            {
+                return this.loaded;
             }
         }
 
@@ -49,16 +68,27 @@ namespace Mapbox.Map
             return this.Id.ToString();
         }
 
+        internal void Cancel()
+        {
+            if (this.request != null)
+            {
+                this.request.Cancel();
+                this.request = null;
+            }
+        }
+
         // TODO: Currently the tile decoding is done on the main thread. We must implement
         // a Worker class to abstract this, so on platforms that support threads (like Unity
         // on the desktop, Android, etc) we can use worker threads and when building for
         // the browser, we keep it single-threaded.
-        internal void Initialize(CanonicalTileId id, IFileSource fs)
+        internal void Initialize(CanonicalTileId id, IFileSource fs, Action<Tile> callback)
         {
             this.id = id;
             this.request = fs.Request(this.MakeTileResource().GetUrl(), this.HandleTileResponse);
+            this.callback = callback;
         }
 
+        // Get the tile resource (raster/vector/etc).
         internal abstract TileResource MakeTileResource();
 
         // Decode the tile.
@@ -66,7 +96,17 @@ namespace Mapbox.Map
 
         private void HandleTileResponse(Response response)
         {
-            this.ParseTileData(response.Data);
+            if (response.Error != null)
+            {
+                this.error = response.Error;
+            } 
+            else if (this.ParseTileData(response.Data) == false)
+            {
+                this.error = "Parse error.";
+            }
+
+            this.loaded = true;
+            this.callback(this);
         }
     }
 }

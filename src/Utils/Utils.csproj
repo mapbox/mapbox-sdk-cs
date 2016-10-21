@@ -45,6 +45,8 @@
     <Compile Include="Constants.cs" />
     <Compile Include="GeoCoordinateBounds.cs" />
     <Compile Include="BearingFilter.cs" />
+    <Compile Include="IObserver.cs" />
+    <Compile Include="IObservable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
