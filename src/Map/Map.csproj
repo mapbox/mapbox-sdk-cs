@@ -40,6 +40,9 @@
     <Compile Include="UnwrappedTileId.cs" />
     <Compile Include="TileCover.cs" />
     <Compile Include="CanonicalTileId.cs" />
+    <Compile Include="VectorTile.cs" />
+    <Compile Include="TileResource.cs" />
+    <Compile Include="Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -48,6 +48,7 @@
     <Compile Include="GeoCoordinateTest.cs" />
     <Compile Include="GeoCoordinateBoundsTest.cs" />
     <Compile Include="TileCoverTest.cs" />
+    <Compile Include="MapTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">

@@ -6,20 +6,46 @@
 
 namespace Mapbox.Map
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     ///     The Mapbox Map abstraction will take care of fetching and decoding
     ///     data for a geographic bounding box at a certain zoom level.
     /// </summary>
-    public sealed class Map
+    /// <typeparam name="T">
+    ///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
+    ///     <see cref="T:Mapbox.Map.Raster"/>.
+    /// </typeparam>
+    public sealed class Map<T> where T : Tile, new()
     {
+        private readonly IFileSource fs;
         private GeoCoordinateBounds latLngBounds;
         private double zoom;
+        private HashSet<T> tiles = new HashSet<T>();
 
-        /// <summary> Initializes a new instance of the <see cref="Map" /> class. </summary>
-        public Map()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="T:Mapbox.Map.Map`1"/> class.
+        /// </summary>
+        /// <param name="fs"> The data source abstraction. </param>
+        public Map(IFileSource fs)
         {
+            this.fs = fs;
             this.GeoCoordinateBounds = new GeoCoordinateBounds();
             this.zoom = 0;
+        }
+
+        /// <summary>
+        ///     Gets the tiles, vector or raster. Tiles might be
+        ///     in a incomplete state.
+        /// </summary>
+        /// <value> The tiles. </value>
+        public HashSet<T> Tiles
+        {
+            get
+            {
+                return this.tiles;
+            }
         }
 
         /// <summary>Gets or sets a geographic bounding box.</summary>
@@ -72,6 +98,31 @@ namespace Mapbox.Map
 
         private void Update()
         {
+            var cover = TileCover.Get(this.latLngBounds, (int)Math.Ceiling(this.zoom));
+
+            // Do not request tiles that we are already requesting
+            // but at the same time exclude the ones we don't need
+            // anymore, cancelling the network request.
+            this.tiles.RemoveWhere((T tile) =>
+                {
+                    if (cover.Remove(tile.Id))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        tile.Cancel();
+                        return true;
+                    }
+                });
+
+            foreach (CanonicalTileId id in cover)
+            {
+                var tile = new T();
+                tile.Initialize(id, this.fs);
+
+                this.tiles.Add(tile);
+            }
         }
     }
 }

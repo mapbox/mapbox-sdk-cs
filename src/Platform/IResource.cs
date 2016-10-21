@@ -14,9 +14,6 @@ namespace Mapbox.Platform
     /// </summary>
     public interface IResource
     {
-        /// <summary> Gets the API endpoint, which is a partial URL path. </summary>
-        string ApiEndpoint { get; }
-
         /// <summary>Builds a complete, valid URL string.</summary>
         /// <returns>URL string.</returns>
         string GetUrl();

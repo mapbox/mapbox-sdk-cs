@@ -22,7 +22,7 @@ namespace Mapbox.Map
                 return tiles;
             }
 
-            var hull = GeoCoordinateBounds.Hull(
+            var hull = GeoCoordinateBounds.FromCoordinates(
                 new GeoCoordinate(Math.Max(bounds.South, -Constants.LatitudeMax), bounds.West),
                 new GeoCoordinate(Math.Min(bounds.North, Constants.LatitudeMax), bounds.East));
 
