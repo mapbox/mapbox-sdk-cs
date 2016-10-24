@@ -21,7 +21,8 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
 
     void Start()
     {
-        string token = "pk.eyJ1IjoidG1wc2FudG9zIiwiYSI6IkpRS0p1VHcifQ.y5bSLhPlxM21hyiDBizcMg";
+        // Token created only for these examples, will get rotated. Do not use in production.
+        string token = "pk.eyJ1IjoidG1wc2FudG9zIiwiYSI6ImNpdW56YmxrYTAwMTUydGw4bjdvbDB0djkifQ.sSt9IrAODfFnkzMsPHRU1A";
 
         var fileSource = new Mapbox.Unity.FileSource(this);
         fileSource.AccessToken = token;
