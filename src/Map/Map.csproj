@@ -43,6 +43,7 @@
     <Compile Include="VectorTile.cs" />
     <Compile Include="TileResource.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="RasterTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
