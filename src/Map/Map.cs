@@ -22,6 +22,7 @@ namespace Mapbox.Map
         private readonly IFileSource fs;
         private GeoCoordinateBounds latLngBounds;
         private double zoom;
+        private string source;
 
         private HashSet<T> tiles = new HashSet<T>();
         private List<IObserver<T>> observers = new List<IObserver<T>>();
@@ -35,6 +36,38 @@ namespace Mapbox.Map
             this.fs = fs;
             this.GeoCoordinateBounds = new GeoCoordinateBounds();
             this.zoom = 0;
+        }
+
+        /// <summary>
+        ///     Gets or sets the tile source. If not set, it will use the default
+        ///     source for the tile type. I.e. "mapbox.satellite" for raster tiles
+        ///     and "mapbox.mapbox-streets-v7" for vector tiles.
+        /// </summary>
+        /// <value> The tile source. </value>
+        public string Source
+        {
+            get
+            {
+                return this.source;
+            }
+
+            set
+            {
+                if (this.source == value)
+                {
+                    return;
+                }
+
+                this.source = value;
+
+                foreach (Tile tile in this.tiles)
+                {
+                    tile.Cancel();
+                }
+
+                this.tiles.Clear();
+                this.Update();
+            }
         }
 
         /// <summary>
@@ -167,7 +200,13 @@ namespace Mapbox.Map
             foreach (CanonicalTileId id in cover)
             {
                 var tile = new T();
-                tile.Initialize(id, this.fs, this.NotifyNext);
+
+                Tile.Parameters param;
+                param.Id = id;
+                param.Source = this.Source;
+                param.Fs = this.fs;
+
+                tile.Initialize(param, this.NotifyNext);
 
                 this.tiles.Add(tile);
             }

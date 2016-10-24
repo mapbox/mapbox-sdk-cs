@@ -63,6 +63,37 @@ namespace Mapbox.UnitTest
 
             map.Unsubscribe(mapObserver);
         }
+
+        [Test]
+        public void ChangeSource()
+        {
+            var map = new Map<RasterTile>(this.fs);
+
+            var mapObserver = new RasterMapObserver();
+            map.Subscribe(mapObserver);
+
+            map.Center = new GeoCoordinate(60.163200, 24.937700);
+            map.Zoom = 13;
+            map.Source = "invalid";
+
+            this.fs.WaitForAllRequests();
+            Assert.AreEqual(0, mapObserver.Tiles.Count);
+
+            map.Source = "mapbox.terrain-rgb";
+
+            this.fs.WaitForAllRequests();
+            Assert.AreEqual(1, mapObserver.Tiles.Count);
+
+            map.Source = null; // Use default source.
+
+            this.fs.WaitForAllRequests();
+            Assert.AreEqual(2, mapObserver.Tiles.Count);
+
+            // Should have fetched tiles from different sources.
+            Assert.AreNotEqual(mapObserver.Tiles[0], mapObserver.Tiles[1]);
+
+            map.Unsubscribe(mapObserver);
+        }
     }
 
     internal class VectorMapObserver : Mapbox.IObserver<VectorTile>
@@ -120,8 +151,11 @@ namespace Mapbox.UnitTest
 
         public void OnNext(RasterTile tile)
         {
-            var image = Image.FromStream(new MemoryStream(tile.Data));
-            tiles.Add(image);
+            if (tile.Error == null)
+            {
+                var image = Image.FromStream(new MemoryStream(tile.Data));
+                tiles.Add(image);
+            }
         }
 
         public void OnError(string error)

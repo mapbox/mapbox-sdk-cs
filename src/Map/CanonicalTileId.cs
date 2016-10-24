@@ -22,6 +22,13 @@ namespace Mapbox.Map
         /// <summary> The Y coordinate in the tile grid. </summary>
         public readonly int Y;
 
+        internal CanonicalTileId(int z, int x, int y)
+        {
+            this.Z = z;
+            this.X = x;
+            this.Y = y;
+        }
+
         internal CanonicalTileId(UnwrappedTileId unwrapped)
         {
             var z = unwrapped.Z;

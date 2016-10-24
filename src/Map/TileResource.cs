@@ -18,14 +18,14 @@ namespace Mapbox.Map
             this.query = query;
         }
 
-        public static TileResource MakeRaster(CanonicalTileId id, string source = "mapbox.satellite")
+        public static TileResource MakeRaster(CanonicalTileId id, string source)
         {
-            return new TileResource(string.Format("{0}/{1}.png", source, id));
+            return new TileResource(string.Format("{0}/{1}.png", source ?? "mapbox.satellite", id));
         }
 
-        public static TileResource MakeVector(CanonicalTileId id, string source = "mapbox.mapbox-streets-v7")
+        public static TileResource MakeVector(CanonicalTileId id, string source)
         {
-            return new TileResource(string.Format("{0}/{1}.vector.pbf", source, id));
+            return new TileResource(string.Format("{0}/{1}.vector.pbf", source ?? "mapbox.mapbox-streets-v7", id));
         }
 
         public string GetUrl()

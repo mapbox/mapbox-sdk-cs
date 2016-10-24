@@ -81,15 +81,15 @@ namespace Mapbox.Map
         // a Worker class to abstract this, so on platforms that support threads (like Unity
         // on the desktop, Android, etc) we can use worker threads and when building for
         // the browser, we keep it single-threaded.
-        internal void Initialize(CanonicalTileId id, IFileSource fs, Action<Tile> callback)
+        internal void Initialize(Parameters param, Action<Tile> callback)
         {
-            this.id = id;
-            this.request = fs.Request(this.MakeTileResource().GetUrl(), this.HandleTileResponse);
+            this.id = param.Id;
+            this.request = param.Fs.Request(this.MakeTileResource(param.Source).GetUrl(), this.HandleTileResponse);
             this.callback = callback;
         }
 
         // Get the tile resource (raster/vector/etc).
-        internal abstract TileResource MakeTileResource();
+        internal abstract TileResource MakeTileResource(string source);
 
         // Decode the tile.
         internal abstract bool ParseTileData(byte[] data);
@@ -107,6 +107,13 @@ namespace Mapbox.Map
 
             this.loaded = true;
             this.callback(this);
+        }
+
+        internal struct Parameters
+        {
+            public CanonicalTileId Id;
+            public string Source;
+            public IFileSource Fs;
         }
     }
 }
