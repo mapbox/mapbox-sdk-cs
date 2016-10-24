@@ -23,6 +23,11 @@ namespace Mapbox.Map
             return new TileResource(string.Format("{0}/{1}.png", source ?? "mapbox.satellite", id));
         }
 
+        public static TileResource MakeRawPngRaster(CanonicalTileId id, string source)
+        {
+            return new TileResource(string.Format("{0}/{1}.pngraw", source ?? "mapbox.terrain-rgb", id));
+        }
+
         public static TileResource MakeVector(CanonicalTileId id, string source)
         {
             return new TileResource(string.Format("{0}/{1}.vector.pbf", source ?? "mapbox.mapbox-streets-v7", id));

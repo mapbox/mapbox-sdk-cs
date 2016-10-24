@@ -10,7 +10,7 @@ namespace Mapbox.Map
     ///    A raster tile, a encoded image representing a geographic
     ///    bounding box. Usually JPEG or PNG encoded.
     /// </summary>
-    public sealed class RasterTile : Tile
+    public class RasterTile : Tile
     {
         private byte[] data;
 
