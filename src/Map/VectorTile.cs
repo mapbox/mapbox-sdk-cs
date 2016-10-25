@@ -7,6 +7,7 @@
 namespace Mapbox.Map
 {
     using Mapbox.Utils;
+    using Mapbox.VectorTile;
 
     /// <summary>
     ///    A decoded vector tile, as specified by the
@@ -16,15 +17,27 @@ namespace Mapbox.Map
     /// </summary>
     public sealed class VectorTile : Tile
     {
-        private byte[] data;
+        // FIXME: Namespace here is very confusing and conflicts (sematically)
+        // with his class. Something has to be renamed here.
+        private Mapbox.VectorTile.VectorTile data;
 
-        /// <summary> Gets the vector tile raw data. </summary>
-        /// <value> The raw data. </value>
-        public byte[] Data
+        /// <summary> Gets the vector decoded using Mapbox.VectorTile library. </summary>
+        /// <value> The GeoJson data. </value>
+        public Mapbox.VectorTile.VectorTile Data
         {
             get
             {
                 return this.data;
+            }
+        }
+
+        /// <summary> Gets the vector in a GeoJson format. </summary>
+        /// <value> The GeoJson data. </value>
+        public string GeoJson
+        {
+            get
+            {
+                return this.data.ToGeoJson();
             }
         }
 
@@ -35,10 +48,18 @@ namespace Mapbox.Map
 
         internal override bool ParseTileData(byte[] data)
         {
-            // TODO: Parse.
-            this.data = Compression.Decompress(data);
+            try
+            {
+                // TODO: Move this to a threaded worker.
+                var decompressed = Compression.Decompress(data);
+                this.data = VectorTileReader.Decode((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y, decompressed);
 
-            return true;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
