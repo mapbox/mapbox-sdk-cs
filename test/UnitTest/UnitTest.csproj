@@ -42,6 +42,18 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Mapbox.VectorTile.Geometry">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.Geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapbox.VectorTile.PbfReader">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.PbfReader.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapbox.VectorTile.Util">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapbox.VectorTile.VectorTileReader">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSourceTest.cs" />
@@ -58,6 +70,8 @@
     <Compile Include="PolylineUtilsTest.cs" />
     <Compile Include="DirectionsTest.cs" />
     <Compile Include="TileTest.cs" />
+    <Compile Include="VectorTileTest.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">

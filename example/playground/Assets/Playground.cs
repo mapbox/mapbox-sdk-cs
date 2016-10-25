@@ -118,7 +118,7 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
         }
         else
         {
-            text += tile.Data.Length + " bytes";
+            text += tile.GeoJson.Length + " bytes";
         }
 
         AppendToInputField(text);

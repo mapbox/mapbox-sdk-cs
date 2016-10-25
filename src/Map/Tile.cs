@@ -113,7 +113,7 @@ namespace Mapbox.Map
             } 
             else if (this.ParseTileData(response.Data) == false)
             {
-                this.error = "Parse error.";
+                this.error = "ParseError";
             }
 
             this.loaded = true;
