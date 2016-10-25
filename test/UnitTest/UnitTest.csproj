@@ -51,6 +51,7 @@
     <Compile Include="TileCoverTest.cs" />
     <Compile Include="MapTest.cs" />
     <Compile Include="TileResourceTest.cs" />
+    <Compile Include="CompressionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">
