@@ -6,6 +6,8 @@
 
 namespace Mapbox.Map
 {
+    using Mapbox.Utils;
+
     /// <summary>
     ///    A decoded vector tile, as specified by the
     ///    <see href="https://www.mapbox.com/vector-tiles/specification/">
@@ -34,7 +36,7 @@ namespace Mapbox.Map
         internal override bool ParseTileData(byte[] data)
         {
             // TODO: Parse.
-            this.data = data;
+            this.data = Compression.Decompress(data);
 
             return true;
         }
