@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{48BE9D66-3A19-4248-BBDD-4DB4A52B3FE5}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Mapbox</RootNamespace>
+    <RootNamespace>Mapbox.Utils</RootNamespace>
     <AssemblyName>Mapbox.Utils</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <ReleaseVersion>0.0.1</ReleaseVersion>
@@ -38,6 +38,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeoCoordinate.cs" />
@@ -47,6 +50,7 @@
     <Compile Include="BearingFilter.cs" />
     <Compile Include="IObserver.cs" />
     <Compile Include="IObservable.cs" />
+    <Compile Include="Compression.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
