@@ -21,6 +21,9 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
 
     void Start()
     {
+        // Redirect Console.Write*() messages from the DLLs.
+        Mapbox.Unity.TextWriter.Register();
+
         // Token created only for these examples, will get rotated. Do not use in production.
         string token = "pk.eyJ1IjoidG1wc2FudG9zIiwiYSI6ImNpdW56YmxrYTAwMTUydGw4bjdvbDB0djkifQ.sSt9IrAODfFnkzMsPHRU1A";
 
