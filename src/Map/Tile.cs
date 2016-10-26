@@ -20,7 +20,7 @@ namespace Mapbox.Map
         private bool loaded = false;
 
         private IAsyncRequest request;
-        private Action<Tile> callback;
+        private Action callback;
 
         /// <summary> Gets the canonical tile identifier. </summary>
         /// <value> The canonical tile identifier. </value>
@@ -56,6 +56,24 @@ namespace Mapbox.Map
         }
 
         /// <summary>
+        ///     Initializes the <see cref="T:Mapbox.Map.Tile"/> object. It will
+        ///     start a network request and fire the callback when completed.
+        /// </summary>
+        /// <param name="param"> Initialization parameters. </param>
+        /// <param name="callback"> The completion callback. </param>
+        public void Initialize(Parameters param, Action callback)
+        {
+            if (this.request != null)
+            {
+                this.request.Cancel();
+            }
+
+            this.id = param.Id;
+            this.request = param.Fs.Request(this.MakeTileResource(param.Source).GetUrl(), this.HandleTileResponse);
+            this.callback = callback;
+        }
+
+        /// <summary>
         ///     Returns a <see cref="T:System.String"/> that represents the current
         ///     <see cref="T:Mapbox.Map.Tile"/>.
         /// </summary>
@@ -77,23 +95,16 @@ namespace Mapbox.Map
             }
         }
 
-        // TODO: Currently the tile decoding is done on the main thread. We must implement
-        // a Worker class to abstract this, so on platforms that support threads (like Unity
-        // on the desktop, Android, etc) we can use worker threads and when building for
-        // the browser, we keep it single-threaded.
-        internal void Initialize(Parameters param, Action<Tile> callback)
-        {
-            this.id = param.Id;
-            this.request = param.Fs.Request(this.MakeTileResource(param.Source).GetUrl(), this.HandleTileResponse);
-            this.callback = callback;
-        }
-
         // Get the tile resource (raster/vector/etc).
         internal abstract TileResource MakeTileResource(string source);
 
         // Decode the tile.
         internal abstract bool ParseTileData(byte[] data);
 
+        // TODO: Currently the tile decoding is done on the main thread. We must implement
+        // a Worker class to abstract this, so on platforms that support threads (like Unity
+        // on the desktop, Android, etc) we can use worker threads and when building for
+        // the browser, we keep it single-threaded.
         private void HandleTileResponse(Response response)
         {
             if (response.Error != null)
@@ -106,13 +117,21 @@ namespace Mapbox.Map
             }
 
             this.loaded = true;
-            this.callback(this);
+            this.callback();
         }
 
-        internal struct Parameters
+        /// <summary>
+        ///    Parameters for initializing a Tile object.
+        /// </summary>
+        public struct Parameters
         {
+            /// <summary> The tile id. </summary>
             public CanonicalTileId Id;
+
+            /// <summary> The tile source, will use the default if not set. </summary>
             public string Source;
+
+            /// <summary> The data source abstraction. </summary>
             public IFileSource Fs;
         }
     }

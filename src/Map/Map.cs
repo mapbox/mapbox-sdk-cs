@@ -157,13 +157,13 @@ namespace Mapbox.Map
             }
         }
 
-        private void NotifyNext(Tile next)
+        private void NotifyNext(T next)
         {
             var copy = new List<IObserver<T>>(this.observers);
 
             foreach (IObserver<T> observer in copy)
             {
-                observer.OnNext((T)Convert.ChangeType(next, typeof(T)));
+                observer.OnNext(next);
             }
         }
 
@@ -206,7 +206,7 @@ namespace Mapbox.Map
                 param.Source = this.Source;
                 param.Fs = this.fs;
 
-                tile.Initialize(param, this.NotifyNext);
+                tile.Initialize(param, () => { this.NotifyNext(tile); });
 
                 this.tiles.Add(tile);
             }
