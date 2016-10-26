@@ -21,4 +21,4 @@ install:
 
 script:
   - xbuild /p:Configuration=TravisCI /p:StyleCopTreatErrorsAsWarnings=false MapboxSDKUnity.sln
-  - mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe bin/TravisCI/Mapbox.UnitTest.dll
+  - mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe bin/TravisCI/test/Mapbox.UnitTest.dll
