@@ -40,7 +40,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\3rdparty\Json.Net.Unity3D\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Mapbox.VectorTile.Geometry">
       <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.Geometry.dll</HintPath>
