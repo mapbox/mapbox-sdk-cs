@@ -42,18 +42,18 @@ namespace Mapbox.Directions
                 {
                     var str = Encoding.UTF8.GetString(response.Data);
 
-                    var data = Serialize(str);
+                    var data = Deserialize(str);
 
                     callback(data);
                 });
         }
 
         /// <summary>
-        /// Serialize the geocode response string into a <see cref="DirectionsResponse"/>.
+        /// Deserialize the geocode response string into a <see cref="DirectionsResponse"/>.
         /// </summary>
         /// <param name="str">JSON String.</param>
         /// <returns>A <see cref="DirectionsResponse"/>.</returns>
-        internal DirectionsResponse Serialize(string str)
+        internal DirectionsResponse Deserialize(string str)
         {
             return JsonConvert.DeserializeObject<DirectionsResponse>(str, JsonConverters.Converters);
         }

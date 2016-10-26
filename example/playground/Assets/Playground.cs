@@ -9,6 +9,8 @@ using Mapbox.Geocoding;
 using Mapbox.Directions;
 using Mapbox.Map;
 
+using Newtonsoft.Json;
+
 public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
 {
 
@@ -70,25 +72,25 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
         print(direction.GetUrl());
         directions.Query(direction, (DirectionsResponse res) =>
             {
-                SetInputField("FIXME: Directions");
+                SetInputField(JsonConvert.SerializeObject(res, JsonConverters.Converters));
             });
     }
 
     public void ForwardGeocoder()
     {
         print(forwardGeocode.GetUrl());
-        geocoder.Geocode(forwardGeocode, (GeocodeResponse res) =>
+        geocoder.Geocode(forwardGeocode, (ForwardGeocodeResponse res) =>
             {
-                SetInputField("FIXME: ForwardGeocoder");
+                SetInputField(JsonConvert.SerializeObject(res, JsonConverters.Converters));
             });
     }
 
     public void ReverseGeocoder()
     {
         print(reverseGeocode.GetUrl());
-        geocoder.Geocode(reverseGeocode, (GeocodeResponse res) =>
+        geocoder.Geocode(reverseGeocode, (ReverseGeocodeResponse res) =>
             {
-                SetInputField("FIXME: ReverseGeocoder");
+                SetInputField(JsonConvert.SerializeObject(res, JsonConverters.Converters));
             });
     }
 

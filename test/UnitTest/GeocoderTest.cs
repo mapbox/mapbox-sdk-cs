@@ -24,7 +24,7 @@ namespace Mapbox.UnitTest
         public void SerializesAndDeserializesReverse()
         {
             // First, deserialize the example response
-            GeoCodeResponseReverse reverseResp = this.geocoder.Serialize<GeoCodeResponseReverse>(this.reverseResponse);
+            ReverseGeocodeResponse reverseResp = this.geocoder.Deserialize<ReverseGeocodeResponse>(this.reverseResponse);
 
             // Then deserialize it back to a string.
             string reverseReserialized = JsonConvert.SerializeObject(reverseResp, JsonConverters.Converters);
@@ -37,7 +37,7 @@ namespace Mapbox.UnitTest
         public void SerializesAndDeserializesForward()
         {
             // First, deserialize the example response
-            GeoCodeResponseForward forwardResp = this.geocoder.Serialize<GeoCodeResponseForward>(this.forwardResponse);
+            ForwardGeocodeResponse forwardResp = this.geocoder.Deserialize<ForwardGeocodeResponse>(this.forwardResponse);
 
             // Then deserialize it back to a string.
             string forwardReserialized = JsonConvert.SerializeObject(forwardResp, JsonConverters.Converters);

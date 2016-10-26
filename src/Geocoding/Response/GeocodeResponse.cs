@@ -40,7 +40,7 @@ namespace Mapbox.Geocoding
     /// Reverse Geocode response.
     /// </summary>
     [Serializable]
-    public class GeoCodeResponseReverse : GeocodeResponse
+    public class ReverseGeocodeResponse : GeocodeResponse
     {
         /// <summary>
         /// Gets or sets the query.
@@ -54,7 +54,7 @@ namespace Mapbox.Geocoding
     /// Forward geocode response.
     /// </summary>
     [Serializable]
-    public class GeoCodeResponseForward : GeocodeResponse
+    public class ForwardGeocodeResponse : GeocodeResponse
     {
         /// <summary>
         /// Gets or sets the query.

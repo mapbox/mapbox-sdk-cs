@@ -24,7 +24,7 @@ namespace Mapbox.UnitTest
         public void SerializesAndDeserializesBasic()
         {
             // First, deserialize the example response
-            DirectionsResponse basicResp = this.directions.Serialize(this.basicResponse);
+            DirectionsResponse basicResp = this.directions.Deserialize(this.basicResponse);
 
             // Then deserialize it back to a string.
             string basicReserialized = JsonConvert.SerializeObject(basicResp);
@@ -39,7 +39,7 @@ namespace Mapbox.UnitTest
         public void SerializesAndDeserializesWithSteps()
         {
             // First, deserialize the example response.
-            DirectionsResponse withStepsResp = this.directions.Serialize(this.responseWithSteps);
+            DirectionsResponse withStepsResp = this.directions.Deserialize(this.responseWithSteps);
 
             // Then deserialize it back to a string.
             string withStepsReserialized = JsonConvert.SerializeObject(withStepsResp);
