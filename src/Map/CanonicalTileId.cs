@@ -22,7 +22,14 @@ namespace Mapbox.Map
         /// <summary> The Y coordinate in the tile grid. </summary>
         public readonly int Y;
 
-        internal CanonicalTileId(int z, int x, int y)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CanonicalTileId"/> struct,
+        ///     representing a tile coordinate in a slippy map.
+        /// </summary>
+        /// <param name="z"> The z coordinate or the zoom level. </param>
+        /// <param name="x"> The x coordinate. </param>
+        /// <param name="y"> The y coordinate. </param>
+        public CanonicalTileId(int z, int x, int y)
         {
             this.Z = z;
             this.X = x;
