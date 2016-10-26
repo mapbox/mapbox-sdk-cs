@@ -24,6 +24,21 @@ namespace Mapbox
             this.Latitude = latitude;
         }
 
+        /// <summary>
+        /// Converts to an array of doubles.
+        /// </summary>
+        /// <returns>An array of coordinates.</returns>
+        public double[] ToArray()
+        {
+            double[] array =
+            {
+                this.Latitude,
+                this.Longitude
+            };
+
+            return array;
+        }
+
         /// <summary> Converts LatLng to a URL snippet. </summary>
         /// <returns> Returns a string for use in a Mapbox query URL. </returns>
         public override string ToString()

@@ -157,6 +157,23 @@ namespace Mapbox
                        this.SouthWest.Longitude > this.NorthEast.Longitude;
         }
 
+        /// <summary>
+        /// Converts to an array of doubles.
+        /// </summary>
+        /// <returns>An array of coordinates.</returns>
+        public double[] ToArray()
+        {
+            double[] array =
+            {
+                this.SouthWest.Latitude,
+                this.SouthWest.Longitude,
+                this.NorthEast.Latitude,
+                this.NorthEast.Longitude
+            };
+
+            return array;
+        }
+
         /// <summary> Converts the Bbox to a URL snippet. </summary>
         /// <returns> Returns a string for use in a Mapbox query URL. </returns>
         public override string ToString()

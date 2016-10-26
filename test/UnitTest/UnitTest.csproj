@@ -39,19 +39,24 @@
       <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSourceTest.cs" />
     <Compile Include="ForwardGeocodeResourceTest.cs" />
     <Compile Include="ReverseGeocodeResourceTest.cs" />
     <Compile Include="DirectionResourceTest.cs" />
-    <Compile Include="BearingFilterTest.cs" />
+    <Compile Include="GeocoderTest.cs" />
     <Compile Include="GeoCoordinateTest.cs" />
     <Compile Include="GeoCoordinateBoundsTest.cs" />
     <Compile Include="TileCoverTest.cs" />
     <Compile Include="MapTest.cs" />
     <Compile Include="TileResourceTest.cs" />
     <Compile Include="CompressionTest.cs" />
+    <Compile Include="PolylineUtilsTest.cs" />
+    <Compile Include="DirectionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">

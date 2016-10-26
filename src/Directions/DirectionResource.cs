@@ -31,9 +31,6 @@ namespace Mapbox.Directions
         private bool? continueStraight;
 
         // Optional
-        private Geometries geometries;
-
-        // Optional
         private Overview overview;
 
         // Optional
@@ -161,22 +158,6 @@ namespace Mapbox.Directions
         }
 
         /// <summary>
-        ///     Gets or sets the geometry option. See <see cref="Geometries"/> for options.
-        /// </summary>
-        public Geometries Geometries
-        {
-            get
-            {
-                return this.geometries;
-            }
-          
-            set
-            {
-                this.geometries = value;
-            }
-        }
-
-        /// <summary>
         ///     Gets or sets the overview option. See <see cref="Overview"/> for all overview options.
         /// </summary>
         public Overview Overview
@@ -260,11 +241,6 @@ namespace Mapbox.Directions
             if (this.ContinueStraight != null)
             {
                 opts.Add("continue_straight", this.ContinueStraight.ToString().ToLower());
-            }
-
-            if (this.Geometries != null)
-            {
-                opts.Add("geometries", this.Geometries.ToString());
             }
 
             if (this.Overview != null)

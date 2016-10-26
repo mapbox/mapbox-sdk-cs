@@ -56,7 +56,7 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
     void SetInputField(string text)
     {
         var input = this.GetComponent<InputField>();
-        input.text = text;
+        input.text = JsonUtility.ToJson(text);
     }
 
     void AppendToInputField(string text)
@@ -71,16 +71,16 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
         directions.Query(direction, SetInputField);
     }
 
-    public void ForwardGeocoder()
+    public void Geocoder()
     {
         print(forwardGeocode.GetUrl());
-        geocoder.Forward(forwardGeocode, SetInputField);
+        geocoder.Geocode(forwardGeocode, SetInputField);
     }
 
     public void ReverseGeocoder()
     {
         print(reverseGeocode.GetUrl());
-        geocoder.Reverse(reverseGeocode, SetInputField);
+        geocoder.Geocode(reverseGeocode, SetInputField);
     }
 
     public void FetchTiles()
@@ -117,4 +117,5 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
     {
         AppendToInputField("Error.");
     }
+
 }

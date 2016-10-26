@@ -41,6 +41,9 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.2-beta1\lib\net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeoCoordinate.cs" />
@@ -51,9 +54,17 @@
     <Compile Include="IObserver.cs" />
     <Compile Include="IObservable.cs" />
     <Compile Include="Compression.cs" />
+    <Compile Include="PolylineUtils.cs" />
+    <Compile Include="JsonConverters\BboxToGeoCoordinateBoundsConverter.cs" />
+    <Compile Include="JsonConverters\LonLatToGeoCoordinateConverter.cs" />
+    <Compile Include="JsonConverters\PolylineToGeoCoordinateListConverter.cs" />
+    <Compile Include="JsonConverters\JsonConverters.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="JsonConverters\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />

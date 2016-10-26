@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="Directions.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
@@ -8,6 +8,7 @@ namespace Mapbox.Directions
 {
     using System;
     using System.Text;
+    using Newtonsoft.Json;
 
     /// <summary>
     ///     Wrapper around the <see href="https://www.mapbox.com/api-documentation/#directions">
@@ -16,7 +17,6 @@ namespace Mapbox.Directions
     /// </summary>
     public sealed class Directions
     {
-        private const string DirectionsAPI = Constants.BaseAPI + "directions/v5/";
         private readonly IFileSource fileSource;
 
         /// <summary> Initializes a new instance of the <see cref="Directions" /> class. </summary>
@@ -34,15 +34,28 @@ namespace Mapbox.Directions
         ///     request. This handle can be completely ignored if there is no intention of ever
         ///     canceling the request.
         /// </returns>
-        public IAsyncRequest Query(DirectionResource direction, Action<string> callback)
+        public IAsyncRequest Query(DirectionResource direction, Action<DirectionsResponse> callback)
         {
             return this.fileSource.Request(
                 direction.GetUrl(),
                 (Response response) =>
                 {
-                    // TODO: Parse the data.
-                    callback(Encoding.UTF8.GetString(response.Data));
+                    var str = Encoding.UTF8.GetString(response.Data);
+
+                    var data = Serialize(str);
+
+                    callback(data);
                 });
+        }
+
+        /// <summary>
+        /// Serialize the geocode response string into a <see cref="DirectionsResponse"/>.
+        /// </summary>
+        /// <param name="str">JSON String.</param>
+        /// <returns>A <see cref="DirectionsResponse"/>.</returns>
+        internal DirectionsResponse Serialize(string str)
+        {
+            return JsonConvert.DeserializeObject<DirectionsResponse>(str, JsonConverters.Converters);
         }
     }
 }

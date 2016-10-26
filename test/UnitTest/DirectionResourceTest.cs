@@ -78,27 +78,22 @@ namespace Mapbox.UnitTest
             this.dr.ContinueStraight = false;
             Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false", this.dr.GetUrl());
 
-            // With geometries
-            this.dr.Geometries = Directions.Geometries.Geojson;
-            Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&geometries=geojson", this.dr.GetUrl());
-
             // With overview
             this.dr.Overview = Directions.Overview.Full;
-            Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&geometries=geojson&overview=full", this.dr.GetUrl());
+            Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&overview=full", this.dr.GetUrl());
 
             // With steps
             this.dr.Radiuses = new double[] { 30, 30 };
-            Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&geometries=geojson&overview=full&radiuses=30%2C30", this.dr.GetUrl());
+            Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&overview=full&radiuses=30%2C30", this.dr.GetUrl());
 
             // With steps
             this.dr.Steps = false;
-            Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&geometries=geojson&overview=full&radiuses=30%2C30&steps=false", this.dr.GetUrl());
+            Assert.AreEqual("https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&overview=full&radiuses=30%2C30&steps=false", this.dr.GetUrl());
 
             // Set all to null
             this.dr.Alternatives = null;
             this.dr.Bearings = null;
             this.dr.ContinueStraight = null;
-            this.dr.Geometries = null;
             this.dr.Overview = null;
             this.dr.Radiuses = null;
             this.dr.Steps = null;
