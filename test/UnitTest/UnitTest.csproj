@@ -57,6 +57,7 @@
     <Compile Include="CompressionTest.cs" />
     <Compile Include="PolylineUtilsTest.cs" />
     <Compile Include="DirectionsTest.cs" />
+    <Compile Include="TileTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">
