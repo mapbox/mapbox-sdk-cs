@@ -6,6 +6,8 @@
 
 namespace Mapbox
 {
+    using System.Globalization;
+
     /// <summary> Represents a geographic coordinate. </summary>
     public struct GeoCoordinate
     {
@@ -43,7 +45,7 @@ namespace Mapbox
         /// <returns> Returns a string for use in a Mapbox query URL. </returns>
         public override string ToString()
         {
-            return string.Format("{0:F5},{1:F5}", this.Longitude, this.Latitude);
+            return string.Format(NumberFormatInfo.InvariantInfo, "{0:F5},{1:F5}", this.Longitude, this.Latitude);
         }
     }
 }
