@@ -1,4 +1,6 @@
 <linker>
+  <assembly fullname="Mapbox.Directions" preserve="all"/>
+  <assembly fullname="Mapbox.Geocoding" preserve="all"/>
   <assembly fullname="System">
     <type fullname="System.ComponentModel.TypeConverter" preserve="all"/>
     <type fullname="System.ComponentModel.ArrayConverter" preserve="all"/>
