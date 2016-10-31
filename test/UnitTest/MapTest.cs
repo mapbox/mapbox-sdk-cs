@@ -94,6 +94,20 @@ namespace Mapbox.UnitTest
         }
 
         [Test]
+        public void SetGeoCoordinateBoundsZoom()
+        {
+            var map1 = new Map<RasterTile>(this.fs);
+            var map2 = new Map<RasterTile>(this.fs);
+
+            map1.Zoom = 3;
+            map1.GeoCoordinateBounds = GeoCoordinateBounds.World();
+
+            map2.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 3);
+
+            Assert.AreEqual(map1.Tiles.Count, map2.Tiles.Count);
+        }
+
+        [Test]
         public void TileMax()
         {
             var map = new Map<RasterTile>(this.fs);

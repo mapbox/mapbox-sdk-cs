@@ -136,6 +136,19 @@ namespace Mapbox.Map
             }
         }
 
+        /// <summary>
+        ///     Sets the coordinates bounds and zoom at once. More efficient than
+        ///     doing it in two steps because it only causes one map update.
+        /// </summary>
+        /// <param name="bounds"> Coordinates bounds. </param>
+        /// <param name="zoom"> Zoom level. </param>
+        public void SetGeoCoordinateBoundsZoom(GeoCoordinateBounds bounds, int zoom)
+        {
+            this.latLngBounds = bounds;
+            this.zoom = zoom;
+            this.Update();
+        }
+
         /// <summary> Add an <see cref="T:IObserver" /> to the observer list. </summary>
         /// <param name="observer"> The object subscribing to events. </param>
         public void Subscribe(IObserver<T> observer)
