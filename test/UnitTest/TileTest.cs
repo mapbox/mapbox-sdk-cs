@@ -36,5 +36,25 @@ namespace Mapbox.UnitTest
 
             Assert.Greater(tile.Data.Length, 1000);
         }
+
+        [Test]
+        public void States()
+        {
+            var parameters = new Tile.Parameters();
+            parameters.Fs = this.fs;
+            parameters.Id = new CanonicalTileId(1, 1, 1);
+
+            var tile = new RawPngRasterTile();
+            Assert.AreEqual(Tile.State.New, tile.CurrentState);
+
+            tile.Initialize(parameters, () => { });
+            Assert.AreEqual(Tile.State.Loading, tile.CurrentState);
+
+            this.fs.WaitForAllRequests();
+            Assert.AreEqual(Tile.State.Loaded, tile.CurrentState);
+
+            tile.Cancel();
+            Assert.AreEqual(Tile.State.Canceled, tile.CurrentState);
+        }
     }
 }

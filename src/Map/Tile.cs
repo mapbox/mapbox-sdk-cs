@@ -17,10 +17,26 @@ namespace Mapbox.Map
     {
         private CanonicalTileId id;
         private string error;
-        private bool loaded = false;
+        private State state = State.New;
 
         private IAsyncRequest request;
         private Action callback;
+
+        /// <summary> Tile state. </summary>
+        public enum State
+        {
+            /// <summary> New tile, not yet initialized. </summary>
+            New,
+
+            /// <summary> Loading data. </summary>
+            Loading,
+
+            /// <summary> Data loaded and parsed. </summary>
+            Loaded,
+
+            /// <summary> Data loading cancelled. </summary>
+            Canceled
+        }
 
         /// <summary> Gets the canonical tile identifier. </summary>
         /// <value> The canonical tile identifier. </value>
@@ -43,15 +59,16 @@ namespace Mapbox.Map
         }
 
         /// <summary>
-        ///     Gets a value indicating whether the tile is loaded. A loaded
-        ///     tile doesn't necessarily contain data, as it could have error'ed.
+        ///     Gets the current state. When fully loaded, you must
+        ///     check if the data actually arrived and if the tile
+        ///     is accusing any error.
         /// </summary>
-        /// <value> True if loaded, false otherwise. </value>
-        public bool Loaded
+        /// <value> The tile state. </value>
+        public State CurrentState
         {
             get
             {
-                return this.loaded;
+                return this.state;
             }
         }
 
@@ -63,11 +80,9 @@ namespace Mapbox.Map
         /// <param name="callback"> The completion callback. </param>
         public void Initialize(Parameters param, Action callback)
         {
-            if (this.request != null)
-            {
-                this.request.Cancel();
-            }
+            this.Cancel();
 
+            this.state = State.Loading;
             this.id = param.Id;
             this.request = param.Fs.Request(this.MakeTileResource(param.Source).GetUrl(), this.HandleTileResponse);
             this.callback = callback;
@@ -93,6 +108,8 @@ namespace Mapbox.Map
                 this.request.Cancel();
                 this.request = null;
             }
+
+            this.state = State.Canceled;
         }
 
         // Get the tile resource (raster/vector/etc).
@@ -116,7 +133,7 @@ namespace Mapbox.Map
                 this.error = "ParseError";
             }
 
-            this.loaded = true;
+            this.state = State.Loaded;
             this.callback();
         }
 

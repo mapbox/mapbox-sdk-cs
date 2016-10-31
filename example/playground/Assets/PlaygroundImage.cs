@@ -55,7 +55,7 @@ public class PlaygroundImage : MonoBehaviour, Mapbox.IObserver<RasterTile>
 
     public void OnNext(RasterTile tile)
     {
-        if (tile.Error != null)
+        if (tile.CurrentState != Tile.State.Loaded || tile.Error != null)
         {
             return;
         }
@@ -65,13 +65,5 @@ public class PlaygroundImage : MonoBehaviour, Mapbox.IObserver<RasterTile>
 
         GetComponent<Image>().sprite =
             Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
-    }
-
-    public void OnCompleted()
-    {
-    }
-
-    public void OnError(string error)
-    {
     }
 }

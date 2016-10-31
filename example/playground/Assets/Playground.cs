@@ -103,30 +103,22 @@ public class Playground : MonoBehaviour, Mapbox.IObserver<VectorTile>
         map.Zoom = 3;
     }
 
-    public void OnCompleted()
-    {
-        AppendToInputField("Completed.");
-    }
-
     public void OnNext(VectorTile tile)
     {
-        var text = tile.ToString() + ": ";
-
-        if (tile.Error != null)
+        if (tile.CurrentState == Tile.State.Loaded)
         {
-            text += tile.Error;
+            var text = tile + ": ";
+
+            if (tile.Error != null)
+            {
+                text += tile.Error;
+            }
+            else
+            {
+                text += tile.GeoJson.Length + " bytes";
+            }
+
+            AppendToInputField(text);
         }
-        else
-        {
-            text += tile.GeoJson.Length + " bytes";
-        }
-
-        AppendToInputField(text);
     }
-
-    public void OnError(string error)
-    {
-        AppendToInputField("Error.");
-    }
-
 }

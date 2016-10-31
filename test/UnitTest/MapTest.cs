@@ -34,8 +34,6 @@ namespace Mapbox.UnitTest
 
             this.fs.WaitForAllRequests();
 
-            // TODO: Assert.True(mapObserver.Complete);
-            // TODO: Assert.IsNull(mapObserver.Error);
             Assert.AreEqual(64, mapObserver.Tiles.Count);
 
             map.Unsubscribe(mapObserver);

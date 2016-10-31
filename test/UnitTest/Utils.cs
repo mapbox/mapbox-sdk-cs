@@ -26,23 +26,12 @@ namespace Mapbox.UnitTest
                 }
             }
 
-            public bool Complete { get; set; }
-
-            public string Error { get; set; }
-
-            public void OnCompleted()
-            {
-                Complete = true;
-            }
-
             public void OnNext(VectorTile tile)
             {
-                tiles.Add(tile);
-            }
-
-            public void OnError(string error)
-            {
-                Error = error;
+                if (tile.CurrentState == Tile.State.Loaded)
+                {
+                    tiles.Add(tile);
+                }
             }
         }
 
@@ -58,27 +47,13 @@ namespace Mapbox.UnitTest
                 }
             }
 
-            public bool Complete { get; set; }
-
-            public string Error { get; set; }
-
-            public void OnCompleted()
-            {
-                Complete = true;
-            }
-
             public void OnNext(RasterTile tile)
             {
-                if (tile.Error == null)
+                if (tile.CurrentState == Tile.State.Loaded && tile.Error == null)
                 {
                     var image = Image.FromStream(new MemoryStream(tile.Data));
                     tiles.Add(image);
                 }
-            }
-
-            public void OnError(string error)
-            {
-                Error = error;
             }
         }
 

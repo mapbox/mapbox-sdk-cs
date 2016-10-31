@@ -14,13 +14,6 @@ namespace Mapbox
     /// </typeparam>
     public interface IObserver<T>
     {
-        /// <summary> The <see cref="T:Observable" /> has completed the task. </summary>
-        void OnCompleted();
-
-        /// <summary> The <see cref="T:Observable" /> has error'ed. </summary>
-        /// <param name="error"> The error message. </param>
-        void OnError(string error);
-
         /// <summary> The <see cref="T:Observable" /> has updated the data. </summary>
         /// <param name="next"> The data that has changed. </param>
         void OnNext(T next);

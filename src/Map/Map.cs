@@ -39,7 +39,7 @@ namespace Mapbox.Map
         public Map(IFileSource fs)
         {
             this.fs = fs;
-            this.GeoCoordinateBounds = new GeoCoordinateBounds();
+            this.latLngBounds = new GeoCoordinateBounds();
             this.zoom = 0;
         }
 
@@ -163,18 +163,6 @@ namespace Mapbox.Map
             this.observers.Remove(observer);
         }
 
-        private void NotifyError(string error)
-        {
-            // Copying the list because you may unsubscribe when
-            // notifying the observers.
-            var copy = new List<IObserver<T>>(this.observers);
-
-            foreach (IObserver<T> observer in copy)
-            {
-                observer.OnError(error);
-            }
-        }
-
         private void NotifyNext(T next)
         {
             var copy = new List<IObserver<T>>(this.observers);
@@ -182,16 +170,6 @@ namespace Mapbox.Map
             foreach (IObserver<T> observer in copy)
             {
                 observer.OnNext(next);
-            }
-        }
-
-        private void NotifyCompleted()
-        {
-            var copy = new List<IObserver<T>>(this.observers);
-
-            foreach (IObserver<T> observer in copy)
-            {
-                observer.OnCompleted();
             }
         }
 
@@ -216,6 +194,8 @@ namespace Mapbox.Map
                     else
                     {
                         tile.Cancel();
+                        this.NotifyNext(tile);
+
                         return true;
                     }
                 });
@@ -232,6 +212,7 @@ namespace Mapbox.Map
                 tile.Initialize(param, () => { this.NotifyNext(tile); });
 
                 this.tiles.Add(tile);
+                this.NotifyNext(tile);
             }
         }
     }
