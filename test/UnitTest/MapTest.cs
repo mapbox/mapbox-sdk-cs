@@ -92,5 +92,18 @@ namespace Mapbox.UnitTest
 
             map.Unsubscribe(mapObserver);
         }
+
+        [Test]
+        public void TileMax()
+        {
+            var map = new Map<RasterTile>(this.fs);
+
+            map.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 2);
+            Assert.Less(map.Tiles.Count, Map<RasterTile>.TileMax); // 16
+
+            // Should stay the same, ignore requests.
+            map.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 5);
+            Assert.AreEqual(16, map.Tiles.Count);
+        }
     }
 }

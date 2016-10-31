@@ -9,8 +9,16 @@ namespace Mapbox.Map
     using System;
     using System.Collections.Generic;
 
-    internal static class TileCover
+    /// <summary>
+    ///     Helper funtions to get a tile cover, i.e. a set of tiles needed for
+    ///     covering a bounding box.
+    /// </summary>
+    public static class TileCover
     {
+        /// <summary> Get a tile cover for the specified bounds and zoom. </summary>
+        /// <param name="bounds"> Geographic bounding box.</param>
+        /// <param name="zoom"> Zoom level. </param>
+        /// <returns> The tile cover set. </returns>
         public static HashSet<CanonicalTileId> Get(GeoCoordinateBounds bounds, int zoom)
         {
             var tiles = new HashSet<CanonicalTileId>();
@@ -41,7 +49,11 @@ namespace Mapbox.Map
             return tiles;
         }
 
-        private static UnwrappedTileId CoordinateToTileId(GeoCoordinate coord, int zoom)
+        /// <summary> Converts a coordinate to a tile identifier. </summary>
+        /// <param name="coord"> Geographic coordinate. </param>
+        /// <param name="zoom"> Zoom level. </param>
+        /// <returns>The to tile identifier.</returns>
+        public static UnwrappedTileId CoordinateToTileId(GeoCoordinate coord, int zoom)
         {
             var lat = coord.Latitude;
             var lng = coord.Longitude;

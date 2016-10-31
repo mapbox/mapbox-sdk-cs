@@ -19,6 +19,11 @@ namespace Mapbox.Map
     /// </typeparam>
     public sealed class Map<T> : IObservable<T> where T : Tile, new()
     {
+        /// <summary>
+        ///     Arbitrary limit of tiles this class will handle simultaneously.
+        /// </summary>
+        public const int TileMax = 256;
+
         private readonly IFileSource fs;
         private GeoCoordinateBounds latLngBounds;
         private double zoom;
@@ -180,6 +185,11 @@ namespace Mapbox.Map
         private void Update()
         {
             var cover = TileCover.Get(this.latLngBounds, (int)Math.Ceiling(this.zoom));
+
+            if (cover.Count > TileMax)
+            {
+                return;
+            }
 
             // Do not request tiles that we are already requesting
             // but at the same time exclude the ones we don't need
