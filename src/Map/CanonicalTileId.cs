@@ -50,6 +50,21 @@ namespace Mapbox.Map
         }
 
         /// <summary>
+        ///     Get the cordinate at the top left of corner of the tile.
+        /// </summary>
+        /// <returns> The coordinate. </returns>
+        public GeoCoordinate ToGeoCoordinate()
+        {
+            double n = Math.PI - ((2.0 * Math.PI * this.Y) / Math.Pow(2.0, this.Z));
+
+            double lat = 180.0 / Math.PI * Math.Atan(Math.Sinh(n));
+            double lng = (this.X / Math.Pow(2.0, this.Z) * 360.0) - 180.0;
+
+            // FIXME: Super hack because of rounding issues.
+            return new GeoCoordinate(lat - 0.0001, lng + 0.0001);
+        }
+
+        /// <summary>
         ///     Returns a <see cref="T:System.String"/> that represents the current
         ///     <see cref="T:Mapbox.Map.CanonicalTileId"/>.
         /// </summary>
