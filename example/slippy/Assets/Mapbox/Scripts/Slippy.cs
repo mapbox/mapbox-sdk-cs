@@ -185,4 +185,15 @@ public class Slippy : MonoBehaviour, IObserver<RasterTile>, IObserver<RawPngRast
             tiles[id].SetElevation(tile.Data);
         }
     }
+
+    public void SetCenter(GeoCoordinate center)
+    {
+        var bounds = raster.GeoCoordinateBounds;
+        bounds.Center = center;
+
+        North = bounds.North;
+        South = bounds.South;
+        East = bounds.East;
+        West = bounds.West;
+    }
 }
