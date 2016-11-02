@@ -7,7 +7,7 @@ using Mapbox.Map;
 using Mapbox.Unity;
 
 [ExecuteInEditMode]
-public class Slippy : MonoBehaviour, IObserver<RasterTile>
+public class Slippy : MonoBehaviour, IObserver<RasterTile>, IObserver<RawPngRasterTile>
 {
     // Token created only for these examples, will get rotated. Do not use in production.
     public const string DebugToken = "pk.eyJ1IjoidG1wc2FudG9zIiwiYSI6ImNpdW56YmxrYTAwMTUydGw4bjdvbDB0djkifQ.sSt9IrAODfFnkzMsPHRU1A";
@@ -24,7 +24,10 @@ public class Slippy : MonoBehaviour, IObserver<RasterTile>
     public float Edge = 1;
 
     private FileSource fs;
+
     private Map<RasterTile> raster;
+    private Map<RawPngRasterTile> rawpng;
+
     private Dictionary<string, SlippyTile> tiles = new Dictionary<string, SlippyTile>();
 
     private Vector3 lastPosition;
@@ -81,7 +84,7 @@ public class Slippy : MonoBehaviour, IObserver<RasterTile>
     void Update()
     {
         UpdateFileSource();
-        UpdateRasterMap();
+        UpdateMap();
         UpdateTiles();
     }
 
@@ -91,12 +94,15 @@ public class Slippy : MonoBehaviour, IObserver<RasterTile>
         fs.AccessToken = Token;
     }
 
-    void UpdateRasterMap()
+    void UpdateMap()
     {
         if (raster == null)
         {
             raster = new Map<RasterTile>(fs);
             raster.Subscribe(this);
+
+            rawpng = new Map<RawPngRasterTile>(fs);
+            rawpng.Subscribe(this);
         }
 
         raster.SetGeoCoordinateBoundsZoom(new GeoCoordinateBounds(
@@ -111,6 +117,8 @@ public class Slippy : MonoBehaviour, IObserver<RasterTile>
         seAnchor = TileCover.CoordinateToTileId(
             new GeoCoordinate(raster.GeoCoordinateBounds.South, raster.GeoCoordinateBounds.East),
             Zoom).Canonical;
+
+        rawpng.SetGeoCoordinateBoundsZoom(raster.GeoCoordinateBounds, raster.Zoom);
     }
 
     void UpdateTiles()
@@ -154,7 +162,7 @@ public class Slippy : MonoBehaviour, IObserver<RasterTile>
             case Tile.State.Loaded:
                 if (contains && tile.Error == null)
                 {
-                    tiles[id].Render(tile);
+                    tiles[id].SetRaster(tile.Data);
                 }
                 break;
             case Tile.State.Canceled:
@@ -164,6 +172,17 @@ public class Slippy : MonoBehaviour, IObserver<RasterTile>
                     tiles.Remove(id);
                 }
                 break;
+        }
+    }
+
+    public void OnNext(RawPngRasterTile tile)
+    {
+        var id = tile.Id.ToString();
+        var contains = tiles.ContainsKey(id);
+
+        if (tile.CurrentState == Tile.State.Loaded && tile.Error == null && contains)
+        {
+            tiles[id].SetElevation(tile.Data);
         }
     }
 }
