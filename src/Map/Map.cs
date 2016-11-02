@@ -26,7 +26,7 @@ namespace Mapbox.Map
 
         private readonly IFileSource fs;
         private GeoCoordinateBounds latLngBounds;
-        private double zoom;
+        private int zoom;
         private string source;
 
         private HashSet<T> tiles = new HashSet<T>();
@@ -122,7 +122,7 @@ namespace Mapbox.Map
 
         /// <summary>Gets or sets the map zoom level.</summary>
         /// <value>The new zoom level.</value>
-        public double Zoom
+        public int Zoom
         {
             get
             {
@@ -131,7 +131,7 @@ namespace Mapbox.Map
 
             set
             {
-                this.zoom = value;
+                this.zoom = Math.Max(0, Math.Min(20, value));
                 this.Update();
             }
         }
@@ -175,7 +175,7 @@ namespace Mapbox.Map
 
         private void Update()
         {
-            var cover = TileCover.Get(this.latLngBounds, (int)Math.Ceiling(this.zoom));
+            var cover = TileCover.Get(this.latLngBounds, this.zoom);
 
             if (cover.Count > TileMax)
             {

@@ -117,5 +117,17 @@ namespace Mapbox.UnitTest
             map.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 5);
             Assert.AreEqual(16, map.Tiles.Count);
         }
+
+        [Test]
+        public void Zoom()
+        {
+            var map = new Map<RasterTile>(this.fs);
+
+            map.Zoom = 50;
+            Assert.AreEqual(20, map.Zoom);
+
+            map.Zoom = -50;
+            Assert.AreEqual(0, map.Zoom);
+        }
     }
 }
