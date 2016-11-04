@@ -39,7 +39,7 @@ Make it easy for a developer to request and apply a map texture of a fixed size 
 Documentation: https://www.mapbox.com/api-documentation/#static
 
 ### Datasets
-_Priority level 2 & [Not yet released](https://github.com/mapbox/api-core/issues/5491)_
+_Priority level 2_
 
 Provide methods for both requesting data from a dataset and for posting changes to a dataset based on game objects.
 
@@ -94,6 +94,7 @@ _Priority level 2_
 
 Once we have a core library for working with Mapbox resources and tools, we should build customizable drop-in components on top of the core library. The details of which components we build still needs to be defined. Here are some ideas:
 
+- Drop-in traditional slippy map (done).
 - Marker component to work with geocoding API. Configure the marker to use 2d or spherical space, set a scale on it, and pass it a location and it places itself in the right position.
 - Route line component to work with directions API. Configure the line's scale, whether it's 2d/spherical space, it's style, then pass it starting and ending point and it'll draw a line.
 - Mini-map component to work with static map API. Pass Mapbox style URL, size, and marker properties to generate a 2D mini map with markers.
