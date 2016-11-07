@@ -43,7 +43,8 @@ namespace Mapbox
         /// <returns>A <see cref="GeoCoordinate"/>.</returns>
         public GeoCoordinate Create(Type objectType, JArray val)
         {
-            return new GeoCoordinate((double)val[0], (double)val[1]);
+            // Assumes long,lat order (like in geojson)
+            return new GeoCoordinate(longitude: (double)val[0], latitude: (double)val[1]);
         }
 
         /// <summary>
@@ -56,7 +57,12 @@ namespace Mapbox
         {
             var val = (GeoCoordinate)value;
 
-            serializer.Serialize(writer, val.ToArray());
+            Array valAsArray = val.ToArray();
+
+            // By default, GeoCoordinate outputs an array with [lat, lon] order, but we want the reverse.
+            Array.Reverse(valAsArray);
+                 
+            serializer.Serialize(writer, valAsArray);
         }
 
         /// <summary>

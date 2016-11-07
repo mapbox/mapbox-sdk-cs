@@ -73,6 +73,9 @@
     <Compile Include="VectorTileTest.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="CanonicalTileIdTest.cs" />
+    <Compile Include="LonLatToGeoCoordinateConverterTest.cs" />
+    <Compile Include="PolylineToGeoCoordinateListConverterTest.cs" />
+    <Compile Include="BboxToGeoCoordinateBoundsConverterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Directions\Directions.csproj">

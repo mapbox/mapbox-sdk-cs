@@ -22,8 +22,8 @@ namespace Mapbox
         /// <param name="longitude"> Longitude, in decimal degrees. </param>
         public GeoCoordinate(double latitude, double longitude)
         {
-            this.Longitude = longitude;
             this.Latitude = latitude;
+            this.Longitude = longitude;
         }
 
         /// <summary>
