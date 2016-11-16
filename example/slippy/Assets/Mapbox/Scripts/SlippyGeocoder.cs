@@ -27,10 +27,7 @@ public class SlippyGeocoder : MonoBehaviour
             {
                 if (res.Features.Count > 0)
                 {
-                    // FIXME: Geocoder coordinates are inverted.
-                    slippy.SetCenter(new GeoCoordinate(
-                        res.Features[0].Center.Longitude,
-                        res.Features[0].Center.Latitude));
+                    slippy.SetCenter(res.Features[0].Center);
                 }
             });
     }
