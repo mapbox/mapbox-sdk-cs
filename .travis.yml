@@ -20,5 +20,5 @@ install:
   - nuget restore MapboxSDKUnity.sln
 
 script:
-  - xbuild /p:Configuration=TravisCI /p:StyleCopTreatErrorsAsWarnings=false MapboxSDKUnity.sln
-  - mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe bin/TravisCI/test/Mapbox.UnitTest.dll
+  - xbuild /p:Configuration=Release /p:CIBuild=true  /p:StyleCopTreatErrorsAsWarnings=false MapboxSDKUnity.sln
+  - mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe bin/Release/test/Mapbox.UnitTest.dll

@@ -30,11 +30,6 @@
   <PropertyGroup>
     <StyleCopOverrideSettingsFile>..\..\data\Settings.StyleCop</StyleCopOverrideSettingsFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TravisCI|AnyCPU' ">
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\TravisCI</OutputPath>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine-Linux" Condition="Exists('\opt\Unity\Editor\Data\Managed\UnityEngine.dll')">
@@ -69,6 +64,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="Build" Condition="'$(CIBuild)'=='true' "></Target>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="'$(CIBuild)'=='' "/>
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
 </Project>
