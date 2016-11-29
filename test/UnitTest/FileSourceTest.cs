@@ -79,7 +79,8 @@ namespace Mapbox.UnitTest
                 "https://dnserror.shouldnotwork",
                 (Response res) =>
                 {
-                    Assert.AreEqual(res.Error, "Error: NameResolutionFailure");
+                    // Do no assume any error message. Mono != .NET.
+                    Assert.NotNull(res.Error);
                 });
 
             this.fs.WaitForAllRequests();
