@@ -4,12 +4,18 @@ using Mapbox.Geocoding;
 using System;
 using Mapbox;
 
+/// <summary>
+/// Peforms a forward geocoder request (search by name) whenever the InputField on *this*
+/// gameObject is finished with an edit.
+/// </summary>
 [RequireComponent(typeof(InputField))]
 public class ForwardGeocodeUserInput : MonoBehaviour
 {
 	InputField _inputField;
 
 	ForwardGeocodeResource _resource;
+
+	Geocoder _geocoder;
 
 	GeoCoordinate _coordinate;
 	public GeoCoordinate Coordinate
@@ -40,16 +46,31 @@ public class ForwardGeocodeUserInput : MonoBehaviour
 		_resource = new ForwardGeocodeResource("");
 	}
 
+	void Start()
+	{
+		_geocoder = MapboxConvenience.Geocoder;
+	}
+
+	/// <summary>
+	/// An edit was made to the InputField.
+	/// Unity will send the string from _inputField.
+	/// Make geocoder query.
+	/// </summary>
+	/// <param name="searchString">Search string.</param>
 	void HandleUserInput(string searchString)
 	{
 		_hasResponse = false;
 		if (!string.IsNullOrEmpty(searchString))
 		{
 			_resource.Query = searchString;
-			MapboxConvenience.Geocoder.Geocode(_resource, HandleGeocoderResponse);
+			_geocoder.Geocode(_resource, HandleGeocoderResponse);
 		}
 	}
 
+	/// <summary>
+	/// Handles the geocoder response by updating coordinates and notifying observers.
+	/// </summary>
+	/// <param name="res">Res.</param>
 	void HandleGeocoderResponse(ForwardGeocodeResponse res)
 	{
 		_hasResponse = true;

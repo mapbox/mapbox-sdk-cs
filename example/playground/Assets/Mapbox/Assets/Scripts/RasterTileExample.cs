@@ -39,11 +39,20 @@ public class RasterTileExample : MonoBehaviour, IObserver<RasterTile>
 		_map.Subscribe(this);
 	}
 
+	/// <summary>
+	/// New search location has become available, begin a new _map query.
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="e">E.</param>
 	void SearchLocation_OnGeocoderResponse(object sender, EventArgs e)
 	{
 		Redraw();
 	}
 
+	/// <summary>
+	/// Zoom was modified by the slider, begin a new _map query.
+	/// </summary>
+	/// <param name="value">Value.</param>
 	void AdjustZoom(float value)
 	{
 		Redraw();
@@ -55,12 +64,20 @@ public class RasterTileExample : MonoBehaviour, IObserver<RasterTile>
 		_map.Zoom = (int)_zoomSlider.value;
 	}
 
+	/// <summary>
+	/// Terrain toggle was modified, begin a new _map query.
+	/// </summary>
+	/// <param name="value">If set to <c>true</c> value.</param>
 	void ToggleTerrain(bool value)
 	{
 		// Setting to null == default source (satellite).
 		_map.Source = _map.Source == null ? "mapbox.terrain-rgb" : null;
 	}
 
+	/// <summary>
+	/// Update the texture with new data.
+	/// </summary>
+	/// <param name="tile">Tile.</param>
 	public void OnNext(RasterTile tile)
 	{
 		if (tile.CurrentState != Tile.State.Loaded || tile.Error != null)

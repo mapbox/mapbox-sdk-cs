@@ -2,6 +2,7 @@
 using Mapbox.Unity;
 using Mapbox.Directions;
 using Mapbox.Geocoding;
+using System;
 
 public class MapboxConvenience : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class MapboxConvenience : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Lazy geocoder.
+	/// </summary>
 	static Geocoder _geocoder;
 	public static Geocoder Geocoder
 	{
@@ -29,6 +33,9 @@ public class MapboxConvenience : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Lazy Directions.
+	/// </summary>
 	static Directions _directions;
 	public static Directions Directions
 	{
@@ -44,8 +51,20 @@ public class MapboxConvenience : MonoBehaviour
 
 	void Awake()
 	{
-		 //TextWriter.Register();
-		_fileSource = new FileSource(this);
+		// Forward SDK logs to the Unity Editor.
+		//TextWriter.Register();
+
+		if (string.IsNullOrEmpty(_token))
+		{
+			throw new InvalidTokenException("Please get a token from mapbox.com");		}
+		_fileSource = new FileSource(this);
 		_fileSource.AccessToken = _token;
+	}
+
+	class InvalidTokenException : Exception
+	{
+		public InvalidTokenException(string message) : base(message)
+		{
+		}
 	}
 }
