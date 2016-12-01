@@ -8,7 +8,7 @@ namespace Mapbox.Geocoding
 {
     using System;
     using System.Collections.Generic;
-    using Newtonsoft.Json;
+    using Mapbox.Json;
 
     /// <summary> A GeoJSON FeatureCollection of points returned by geocoding API.</summary>
     [Serializable]

@@ -8,7 +8,7 @@ namespace Mapbox.Geocoding
 {
     using System;
     using System.Text;
-    using Newtonsoft.Json;
+    using Mapbox.Json;
 
     /// <summary>
     ///     Wrapper around the <see href="https://www.mapbox.com/api-documentation/#geocoding">

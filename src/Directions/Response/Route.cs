@@ -7,7 +7,7 @@
 namespace Mapbox.Directions
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
+    using Mapbox.Json;
 
     /// <summary>
     /// A Route from a Directions API call.

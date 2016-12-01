@@ -7,7 +7,7 @@
 namespace Mapbox.UnitTest
 {
     using Geocoding;
-    using Newtonsoft.Json;
+    using Mapbox.Json;
     using NUnit.Framework;
 
     /// <summary>

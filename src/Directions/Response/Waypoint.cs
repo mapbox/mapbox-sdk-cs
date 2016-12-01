@@ -6,7 +6,7 @@
 
 namespace Mapbox.Directions
 {
-    using Newtonsoft.Json;
+    using Mapbox.Json;
 
     /// <summary>
     /// A Waypoint from a Directions API call.

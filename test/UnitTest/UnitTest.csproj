@@ -34,8 +34,8 @@
       <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\3rdparty\Json.Net.Unity3D\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Mapbox.Json">
+      <HintPath>..\..\3rdparty\Json.Net.Unity3D\Mapbox.Json.dll</HintPath>
     </Reference>
     <Reference Include="Mapbox.VectorTile.Geometry">
       <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.Geometry.dll</HintPath>

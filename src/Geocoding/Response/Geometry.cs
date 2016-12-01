@@ -7,7 +7,7 @@
 namespace Mapbox.Geocoding
 {
     using System;
-    using Newtonsoft.Json;
+    using Mapbox.Json;
 
     /// <summary> Point geometry representing location of geocode result. </summary>
     [Serializable]

@@ -6,7 +6,7 @@
 
 namespace Mapbox
 {
-    using Newtonsoft.Json;
+    using Mapbox.Json;
 
     /// <summary>
     /// Custom json converters.

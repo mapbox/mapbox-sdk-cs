@@ -3,7 +3,7 @@ using Mapbox.Directions;
 using System;
 using Mapbox;
 using UnityEngine.UI;
-using Newtonsoft.Json;
+using Mapbox.Json;
 
 /// <summary>
 /// Fetch directions JSON once start and end locations are provided.

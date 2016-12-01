@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Mapbox;
 using System;
-using Newtonsoft.Json;
+using Mapbox.Json;
 
 public class VectorTileExample : MonoBehaviour, IObserver<VectorTile>
 {

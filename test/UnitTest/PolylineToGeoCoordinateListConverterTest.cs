@@ -9,7 +9,7 @@ namespace Mapbox.UnitTest
     using System;
     using System.Collections.Generic;
     using Mapbox;
-    using Newtonsoft.Json;
+    using Mapbox.Json;
     using NUnit.Framework;
 
     [TestFixture]

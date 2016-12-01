@@ -7,7 +7,7 @@
 namespace Mapbox.UnitTest
 {
     using Directions;
-    using Newtonsoft.Json;
+    using Mapbox.Json;
     using NUnit.Framework;
 
     /// <summary>
