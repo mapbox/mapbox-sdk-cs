@@ -8,7 +8,6 @@ namespace Mapbox.Geocoding
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
 
     /// <summary> A forward geocode request. </summary>
     public sealed class ForwardGeocodeResource : GeocodeResource<string>

@@ -11,7 +11,6 @@ namespace Mapbox.Platform
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Web;
 
     /// <summary> Abstract class representing a Mapbox resource URL. </summary>
     public abstract class Resource
