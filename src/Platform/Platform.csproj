@@ -7,8 +7,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Mapbox.Platform</RootNamespace>
     <AssemblyName>Mapbox.Platform</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ReleaseVersion>0.0.1</ReleaseVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

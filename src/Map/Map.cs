@@ -17,7 +17,7 @@ namespace Mapbox.Map
     ///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
     ///     <see cref="T:Mapbox.Map.Raster"/>.
     /// </typeparam>
-    public sealed class Map<T> : IObservable<T> where T : Tile, new()
+    public sealed class Map<T> : Mapbox.IObservable<T> where T : Tile, new()
     {
         /// <summary>
         ///     Arbitrary limit of tiles this class will handle simultaneously.
@@ -30,7 +30,7 @@ namespace Mapbox.Map
         private string source;
 
         private HashSet<T> tiles = new HashSet<T>();
-        private List<IObserver<T>> observers = new List<IObserver<T>>();
+        private List<Mapbox.IObserver<T>> observers = new List<Mapbox.IObserver<T>>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:Mapbox.Map.Map`1"/> class.
@@ -151,21 +151,21 @@ namespace Mapbox.Map
 
         /// <summary> Add an <see cref="T:IObserver" /> to the observer list. </summary>
         /// <param name="observer"> The object subscribing to events. </param>
-        public void Subscribe(IObserver<T> observer)
+        public void Subscribe(Mapbox.IObserver<T> observer)
         {
             this.observers.Add(observer);
         }
 
         /// <summary> Remove an <see cref="T:IObserver" /> to the observer list. </summary>
         /// <param name="observer"> The object unsubscribing to events. </param>
-        public void Unsubscribe(IObserver<T> observer)
+        public void Unsubscribe(Mapbox.IObserver<T> observer)
         {
             this.observers.Remove(observer);
         }
 
         private void NotifyNext(T next)
         {
-            var copy = new List<IObserver<T>>(this.observers);
+            var copy = new List<Mapbox.IObserver<T>>(this.observers);
 
             foreach (IObserver<T> observer in copy)
             {

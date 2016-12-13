@@ -1,6 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "src\Utils\Utils.csproj", "{48BE9D66-3A19-4248-BBDD-4DB4A52B3FE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform", "src\Platform\Platform.csproj", "{FE49745C-01F6-4A3F-BF08-828113D3E19F}"
@@ -16,6 +17,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "test\UnitTest\UnitTest.csproj", "{F04D4384-62B7-4F73-ACD9-C9A5112FC53F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map", "src\Map\Map.csproj", "{6AECAE3C-A1F3-4B94-976B-D27AA4610879}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documentation", "src\Documentation\Documentation.csproj", "{B8B3DDF2-BDF3-4091-989D-D1637B59705A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +58,13 @@ Global
 		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AECAE3C-A1F3-4B94-976B-D27AA4610879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B3DDF2-BDF3-4091-989D-D1637B59705A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B3DDF2-BDF3-4091-989D-D1637B59705A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B3DDF2-BDF3-4091-989D-D1637B59705A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B3DDF2-BDF3-4091-989D-D1637B59705A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

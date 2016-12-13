@@ -1,0 +1,31 @@
+image: Visual Studio 2015
+
+init:
+  - git config --global core.autocrlf input
+
+clone_depth: 5
+
+install:
+  - git submodule update --init --recursive
+
+platform: Any CPU
+configuration:
+  - Debug
+#  - Release
+
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: T+cp7CkmlQK4VauLP5ClmdEwXtLLkIBH01u6+eZu5hgugV2Mfz2nFfSfJpoyZXc1
+  MAPBOX_ACCESS_TOKEN:
+    secure: MU9O2VY3TSx/dU9iWTRIV4D8wtgixo8IfdTO7c3XUhyHdyVS3EiTmWkyfdxyOtJwNVwLhhEk7FHmHCvG4Cz1sQ==
+
+before_build:
+  - nuget restore
+
+build_script:
+   - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+   - msbuild MapboxSDKUnity.sln /p:Configuration=%configuration% /p:CIBuild=true
+
+artifacts:
+  - path: src\Documentation\_site
+    name: site

@@ -1,13 +1,22 @@
 # Autosave files
 *~
 
+# Documentation
+api
+_site
+src/Documentation/log.txt
+
 # build
+.vs/
 [Oo]bj/
 [Bb]in/
 packages/
 TestResults/
 StyleCop.Cache
 TestResult.xml
+
+#cake & nuget
+tools/Addins/
 
 # globs
 Makefile.in
@@ -29,6 +38,12 @@ autom4te.cache/
 tarballs/
 test-results/
 Thumbs.db
+
+# only requirement in tools is packages.config, ignore the rest
+tools/Cake/
+tools/nuget.exe
+tools/NUnit.ConsoleRunner/*
+tools/packages.config.md5sum
 
 # Mac bundle stuff
 *.dmg
