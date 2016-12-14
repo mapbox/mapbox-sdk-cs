@@ -3,19 +3,23 @@
 Tools for using Mapbox APIs with C# / Unity. If you'd like to contribute to the project, [read CONTRIBUTING.md](https://github.com/mapbox/mapbox-sdk-unity/blob/master/CONTRIBUTING.md).
 Tools for using Mapbox with Unity.
 
-## Cake build system
+## Build
 
-We use cake for running tests, building the SDK and documentation. The following files are used by cake:
+You need to have `Unity` installed for a successful build.
 
-- `tools/packages.config`: This is the package configuration that tells the bootstrapper script what NuGet packages to install in the tools folder.
+With an IDE:
+* Open `MapboxSDKUnity.sln` with Visual Studio or Xamarin Studio
+* `Build -> Rebuild Solution`
+* DLLs will be in `bin`
 
-- `build.ps1` / `build.sh`: Bootstrapper powershell/bash scripts that ensure you have Cake and required dependencies installed. The bootstrapper script is also responsible for invoking Cake.
+On the command line:
+* `nuget restore MapboxSDKUnity.sln`
+* Windows: `msbuild MapboxSDKUnity.sln`
+* Linux/OSX: `xbuild MapboxSDKUnity.sln`
+* DLLs will be in `bin`
 
-- `build.cake`: The actual cake scripts. If you want to add a new command, do it here.
+## Tests
 
-### Cake commands
+To run the tests you need to have the `MAPBOX_ACCESS_TOKEN` environment variable set.
 
-- __Mac OS and Linux__: `./build.sh`
-- __Windows__: `powershell .\build.ps1`
-
-Use the argument `-Target` followed by the name of the task you want to run if you don't want to run all tasks. For example, on a mac, `./build.sh -Target "Build-Docs"` will generate docs.
+Log into your Mapbox account at https://www.mapbox.com/studio to obtain an access token.
