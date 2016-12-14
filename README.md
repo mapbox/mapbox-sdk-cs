@@ -5,6 +5,8 @@ Tools for using Mapbox with Unity.
 
 ## Build
 
+Master build status: [![Build status](https://ci.appveyor.com/api/projects/status/mh7ad8p1qonkbnwr/branch/master?svg=true)](https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core/branch/master)
+
 You need to have `Unity` installed for a successful build.
 
 With an IDE:
