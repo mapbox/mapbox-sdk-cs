@@ -26,12 +26,12 @@
 		<file src="bin\Debug\Mapbox.Unity.dll" target="lib\net35\"></file>
 		<file src="bin\Debug\Mapbox.Utils.dll" target="lib\net35\"></file>
 -->
-		<file src="src\Directions\**\*.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Directions\"></file>
-		<file src="src\Geocoding\**\*.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Geocoding\"></file>
-		<file src="src\Map\**\*.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Map\"></file>
-		<file src="src\Platform\**\*.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Platform\"></file>
-		<file src="src\Unity\**\*.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Unity\"></file>
-		<file src="src\Utils\**\*.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Utils\"></file>
+		<file src="src\Directions\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Directions\"></file>
+		<file src="src\Geocoding\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Geocoding\"></file>
+		<file src="src\Map\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Map\"></file>
+		<file src="src\Platform\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Platform\"></file>
+		<file src="src\Unity\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Unity\"></file>
+		<file src="src\Utils\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Utils\"></file>
 <!--
 		<file src="????\link.xml" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>
 		<file src="bin\Debug\Mapbox.Json.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>
