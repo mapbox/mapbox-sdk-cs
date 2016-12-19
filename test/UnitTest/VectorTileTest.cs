@@ -47,6 +47,12 @@ namespace Mapbox.UnitTest
             foreach (var tile in mapObserver.Tiles)
             {
                 Assert.Greater(tile.GeoJson.Length, 1000);
+                Assert.Greater(tile.LayerNames().Count, 0, "Tile contains at least one layer");
+                Mapbox.VectorTile.VectorTileLayer layer = tile.GetLayer("water");
+                Assert.NotNull(layer, "Tile contains 'water' layer. Layers: {0}", string.Join(",", tile.LayerNames().ToArray()));
+                Assert.Greater(layer.FeatureCount(), 0, "Water layer has features");
+                Mapbox.VectorTile.VectorTileFeature feature = layer.GetFeature(0);
+                Assert.Greater(feature.Geometry.Count, 0, "Feature has geometry");
             }
 
             map.Unsubscribe(mapObserver);

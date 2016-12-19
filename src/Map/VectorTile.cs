@@ -8,6 +8,8 @@ namespace Mapbox.Map
 {
     using Mapbox.Utils;
     using Mapbox.VectorTile;
+    using Mapbox.VectorTile.ExtensionMethods;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     ///    A decoded vector tile, as specified by the
@@ -25,19 +27,42 @@ namespace Mapbox.Map
         /// <value> The GeoJson data. </value>
         public Mapbox.VectorTile.VectorTile Data
         {
-            get
-            {
+            get {
                 return this.data;
             }
         }
 
-        /// <summary> Gets the vector in a GeoJson format. </summary>
+        /// <summary>
+        /// Gets all availble layer names.
+        /// </summary>
+        /// <returns>Collection of availble layers</returns>
+        public ReadOnlyCollection<string> LayerNames()
+        {
+            return this.data.LayerNames();
+        }
+
+
+        /// <summary>
+        /// Decodes the requested layer.
+        /// </summary>
+        /// <param name="layerName">Name of the layer to decode.</param>
+        /// <returns>Decoded VectorTileLayer or 'null' if an invalid layer name was specified.</returns>
+        public VectorTileLayer GetLayer(string layerName)
+        {
+            return this.data.GetLayer(layerName);
+        }
+
+        /// <summary>
+        /// <para>Gets the vector in a GeoJson format.</para>
+        /// <para>
+        /// This method should be avoided as it fully decodes the whole tile and might pose performance and memory bottle necks.
+        /// </para>
+        /// </summary>
         /// <value> The GeoJson data. </value>
         public string GeoJson
         {
-            get
-            {
-                return this.data.ToGeoJson();
+            get {
+                return this.data.ToGeoJson((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y);
             }
         }
 
@@ -52,7 +77,7 @@ namespace Mapbox.Map
             {
                 // TODO: Move this to a threaded worker.
                 var decompressed = Compression.Decompress(data);
-                this.data = VectorTileReader.Decode((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y, decompressed);
+                this.data = new Mapbox.VectorTile.VectorTile(decompressed);
 
                 return true;
             }

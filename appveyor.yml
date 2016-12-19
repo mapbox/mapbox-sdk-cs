@@ -7,6 +7,8 @@ clone_depth: 5
 
 install:
   - git submodule update --init --recursive
+  - powershell Invoke-WebRequest "https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/Unity-Managed.7z" -OutFile um.7z
+  - 7z -y x um.7z -o"C:\Program Files\Unity\Editor\Data\" | %windir%\system32\FIND "ing archive"
 
 platform: Any CPU
 configuration:
@@ -24,7 +26,12 @@ before_build:
 
 build_script:
    - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-   - msbuild MapboxSDKUnity.sln /p:Configuration=%configuration% /p:CIBuild=true
+#   - msbuild MapboxSDKUnityCore.sln /p:Configuration=%configuration% /p:CIBuild=true
+   - msbuild MapboxSDKUnityCore.sln /p:Configuration=%configuration%
+   - nuget pack MapboxSDKUnityCore.nuspec
+
+after_build:
+  - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
 artifacts:
   - path: src\Documentation\_site

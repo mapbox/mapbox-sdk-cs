@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -29,6 +29,22 @@
     <StyleCopOverrideSettingsFile>..\..\data\Settings.StyleCop</StyleCopOverrideSettingsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mapbox.VectorTile.ExtensionMethods, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha4\lib\net35\Mapbox.VectorTile.ExtensionMethods.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mapbox.VectorTile.Geometry, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha4\lib\net35\Mapbox.VectorTile.Geometry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mapbox.VectorTile.PbfReader, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha4\lib\net35\Mapbox.VectorTile.PbfReader.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mapbox.VectorTile.VectorTileReader, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha4\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
@@ -36,18 +52,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="Mapbox.Json">
       <HintPath>..\..\3rdparty\Json.Net.Unity3D\Mapbox.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Mapbox.VectorTile.Geometry">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.Geometry.dll</HintPath>
-    </Reference>
-    <Reference Include="Mapbox.VectorTile.PbfReader">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.PbfReader.dll</HintPath>
-    </Reference>
-    <Reference Include="Mapbox.VectorTile.Util">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.Util.dll</HintPath>
-    </Reference>
-    <Reference Include="Mapbox.VectorTile.VectorTileReader">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.1-alpha3\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
