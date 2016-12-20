@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="TileResource.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
@@ -10,7 +10,6 @@ namespace Mapbox.Map
 
     internal sealed class TileResource : IResource
     {
-        private const string Api = "https://api.mapbox.com/v4/";
         private readonly string query;
 
         internal TileResource(string query)
@@ -18,24 +17,29 @@ namespace Mapbox.Map
             this.query = query;
         }
 
-        public static TileResource MakeRaster(CanonicalTileId id, string source)
+        public static TileResource MakeRaster(CanonicalTileId id, string styleUrl)
         {
-            return new TileResource(string.Format("{0}/{1}.png", source ?? "mapbox.satellite", id));
+            return new TileResource(string.Format("{0}/{1}", MapUtils.NormalizeStaticStyleURL(styleUrl ?? "mapbox://styles/mapbox/satellite-v9"), id));
         }
 
-        public static TileResource MakeRawPngRaster(CanonicalTileId id, string source)
+        public static TileResource MakeClassicRaster(CanonicalTileId id, string sourceId)
         {
-            return new TileResource(string.Format("{0}/{1}.pngraw", source ?? "mapbox.terrain-rgb", id));
+            return new TileResource(string.Format("{0}/{1}.png", MapUtils.MapIdToUrl(sourceId ?? "mapbox.satellite"), id));
+        }
+
+        public static TileResource MakeRawPngRaster(CanonicalTileId id, string sourceId)
+        {
+            return new TileResource(string.Format("{0}/{1}.pngraw", MapUtils.MapIdToUrl(sourceId ?? "mapbox.terrain-rgb"), id));
         }
 
         public static TileResource MakeVector(CanonicalTileId id, string source)
         {
-            return new TileResource(string.Format("{0}/{1}.vector.pbf", source ?? "mapbox.mapbox-streets-v7", id));
+            return new TileResource(string.Format("{0}/{1}.vector.pbf", MapUtils.MapIdToUrl(source ?? "mapbox.mapbox-streets-v7"), id));
         }
 
         public string GetUrl()
         {
-            return Api + this.query;
+            return this.query;
         }
     }
 }

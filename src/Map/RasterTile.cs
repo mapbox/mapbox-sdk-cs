@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="RasterTile.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
@@ -7,7 +7,7 @@
 namespace Mapbox.Map
 {
     /// <summary>
-    ///    A raster tile, a encoded image representing a geographic
+    ///    A raster tile from the Mapbox Style API, a encoded image representing a geographic
     ///    bounding box. Usually JPEG or PNG encoded.
     /// </summary>
     public class RasterTile : Tile

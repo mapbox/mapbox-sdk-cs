@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="Utils.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
@@ -48,6 +48,28 @@ namespace Mapbox.UnitTest
             }
 
             public void OnNext(RasterTile tile)
+            {
+                if (tile.CurrentState == Tile.State.Loaded && tile.Error == null)
+                {
+                    var image = Image.FromStream(new MemoryStream(tile.Data));
+                    tiles.Add(image);
+                }
+            }
+        }
+
+        internal class ClassicRasterMapObserver : Mapbox.IObserver<ClassicRasterTile>
+        {
+            private List<Image> tiles = new List<Image>();
+
+            public List<Image> Tiles
+            {
+                get
+                {
+                    return tiles;
+                }
+            }
+
+            public void OnNext(ClassicRasterTile tile)
             {
                 if (tile.CurrentState == Tile.State.Loaded && tile.Error == null)
                 {

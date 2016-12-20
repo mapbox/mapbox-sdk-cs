@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="MapTest.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
@@ -40,7 +40,7 @@ namespace Mapbox.UnitTest
         }
 
         [Test]
-        public void Helsinki()
+        public void RasterHelsinki()
         {
             var map = new Map<RasterTile>(this.fs);
 
@@ -55,7 +55,7 @@ namespace Mapbox.UnitTest
             // TODO: Assert.True(mapObserver.Complete);
             // TODO: Assert.IsNull(mapObserver.Error);
             Assert.AreEqual(1, mapObserver.Tiles.Count);
-            Assert.AreEqual(new Size(256, 256), mapObserver.Tiles[0].Size);
+            Assert.AreEqual(new Size(512, 512), mapObserver.Tiles[0].Size);
 
             map.Unsubscribe(mapObserver);
         }
@@ -63,9 +63,9 @@ namespace Mapbox.UnitTest
         [Test]
         public void ChangeSource()
         {
-            var map = new Map<RasterTile>(this.fs);
+            var map = new Map<ClassicRasterTile>(this.fs);
 
-            var mapObserver = new Utils.RasterMapObserver();
+            var mapObserver = new Utils.ClassicRasterMapObserver();
             map.Subscribe(mapObserver);
 
             map.Center = new GeoCoordinate(60.163200, 24.937700);

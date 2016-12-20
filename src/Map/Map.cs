@@ -48,7 +48,11 @@ namespace Mapbox.Map
         ///     source for the tile type. I.e. "mapbox.satellite" for raster tiles
         ///     and "mapbox.mapbox-streets-v7" for vector tiles.
         /// </summary>
-        /// <value> The tile source. </value>
+        /// <value> 
+        ///     The tile source. 
+        ///     RasterTile source is a Mapbox style url eg. "mapbox://styles/mapbox/streets-v9"
+        ///     ClassicRasterTile source  is a mapid to a Mapbox tileset eg. "mapbox.mapbox-streets-v9"
+        /// </value>
         public string Source
         {
             get
