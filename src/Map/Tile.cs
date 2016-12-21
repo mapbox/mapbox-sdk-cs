@@ -101,7 +101,11 @@ namespace Mapbox.Map
             return this.Id.ToString();
         }
 
-        internal void Cancel()
+        /// <summary>
+        ///     Cancels the request for the <see cref="T:Mapbox.Map.Tile"/> object.
+        ///     It will stop a network request and set the tile's state to Canceled.
+        /// </summary>
+        public void Cancel()
         {
             if (this.request != null)
             {
