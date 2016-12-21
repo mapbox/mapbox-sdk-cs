@@ -67,9 +67,9 @@ namespace Mapbox.Map
             return this.data.GetLayer(layerName);
         }
 
-        internal override TileResource MakeTileResource(string source)
+        internal override TileResource MakeTileResource(string mapId)
         {
-            return TileResource.MakeVector(Id, source);
+            return TileResource.MakeVector(Id, mapId);
         }
 
         internal override bool ParseTileData(byte[] data)

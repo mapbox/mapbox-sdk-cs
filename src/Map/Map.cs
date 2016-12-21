@@ -27,7 +27,7 @@ namespace Mapbox.Map
         private readonly IFileSource fs;
         private GeoCoordinateBounds latLngBounds;
         private int zoom;
-        private string source;
+        private string mapId;
 
         private HashSet<T> tiles = new HashSet<T>();
         private List<Mapbox.IObserver<T>> observers = new List<Mapbox.IObserver<T>>();
@@ -44,30 +44,30 @@ namespace Mapbox.Map
         }
 
         /// <summary>
-        ///     Gets or sets the tile source. If not set, it will use the default
-        ///     source for the tile type. I.e. "mapbox.satellite" for raster tiles
+        ///     Gets or sets the tileset map ID. If not set, it will use the default
+        ///     map ID for the tile type. I.e. "mapbox.satellite" for raster tiles
         ///     and "mapbox.mapbox-streets-v7" for vector tiles.
         /// </summary>
         /// <value> 
-        ///     The tile source. 
-        ///     RasterTile source is a Mapbox style url eg. "mapbox://styles/mapbox/streets-v9"
-        ///     ClassicRasterTile source  is a mapid to a Mapbox tileset eg. "mapbox.mapbox-streets-v9".
+        ///     The tileset map ID, usually in the format "user.mapid". Exceptionally,
+        ///     <see cref="T:Mapbox.Map.RasterTile"/> will take the full style URL
+        ///     from where the tile is composited from, like "mapbox://styles/mapbox/streets-v9".
         /// </value>
-        public string Source
+        public string MapId
         {
             get
             {
-                return this.source;
+                return this.mapId;
             }
 
             set
             {
-                if (this.source == value)
+                if (this.mapId == value)
                 {
                     return;
                 }
 
-                this.source = value;
+                this.mapId = value;
 
                 foreach (Tile tile in this.tiles)
                 {
@@ -210,7 +210,7 @@ namespace Mapbox.Map
 
                 Tile.Parameters param;
                 param.Id = id;
-                param.Source = this.Source;
+                param.MapId = this.mapId;
                 param.Fs = this.fs;
 
                 tile.Initialize(param, () => { this.NotifyNext(tile); });

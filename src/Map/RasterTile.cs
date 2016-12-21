@@ -24,9 +24,9 @@ namespace Mapbox.Map
             }
         }
 
-        internal override TileResource MakeTileResource(string source)
+        internal override TileResource MakeTileResource(string styleUrl)
         {
-            return TileResource.MakeRaster(Id, source);
+            return TileResource.MakeRaster(Id, styleUrl);
         }
 
         internal override bool ParseTileData(byte[] data)

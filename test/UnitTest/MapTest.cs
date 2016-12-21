@@ -61,7 +61,7 @@ namespace Mapbox.UnitTest
         }
 
         [Test]
-        public void ChangeSource()
+        public void ChangeMapId()
         {
             var map = new Map<ClassicRasterTile>(this.fs);
 
@@ -70,22 +70,22 @@ namespace Mapbox.UnitTest
 
             map.Center = new GeoCoordinate(60.163200, 24.937700);
             map.Zoom = 13;
-            map.Source = "invalid";
+            map.MapId = "invalid";
 
             this.fs.WaitForAllRequests();
             Assert.AreEqual(0, mapObserver.Tiles.Count);
 
-            map.Source = "mapbox.terrain-rgb";
+            map.MapId = "mapbox.terrain-rgb";
 
             this.fs.WaitForAllRequests();
             Assert.AreEqual(1, mapObserver.Tiles.Count);
 
-            map.Source = null; // Use default source.
+            map.MapId = null; // Use default map ID.
 
             this.fs.WaitForAllRequests();
             Assert.AreEqual(2, mapObserver.Tiles.Count);
 
-            // Should have fetched tiles from different sources.
+            // Should have fetched tiles from different map IDs.
             Assert.AreNotEqual(mapObserver.Tiles[0], mapObserver.Tiles[1]);
 
             map.Unsubscribe(mapObserver);

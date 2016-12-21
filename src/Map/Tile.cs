@@ -84,7 +84,7 @@ namespace Mapbox.Map
 
             this.state = State.Loading;
             this.id = param.Id;
-            this.request = param.Fs.Request(this.MakeTileResource(param.Source).GetUrl(), this.HandleTileResponse);
+            this.request = param.Fs.Request(this.MakeTileResource(param.MapId).GetUrl(), this.HandleTileResponse);
             this.callback = callback;
         }
 
@@ -117,7 +117,7 @@ namespace Mapbox.Map
         }
 
         // Get the tile resource (raster/vector/etc).
-        internal abstract TileResource MakeTileResource(string source);
+        internal abstract TileResource MakeTileResource(string mapid);
 
         // Decode the tile.
         internal abstract bool ParseTileData(byte[] data);
@@ -149,8 +149,12 @@ namespace Mapbox.Map
             /// <summary> The tile id. </summary>
             public CanonicalTileId Id;
 
-            /// <summary> The tile source, will use the default if not set. </summary>
-            public string Source;
+            /// <summary>
+            ///     The tileset map ID, usually in the format "user.mapid". Exceptionally,
+            ///     <see cref="T:Mapbox.Map.RasterTile"/> will take the full style URL
+            ///     from where the tile is composited from, like mapbox://styles/mapbox/streets-v9.
+            /// </summary>
+            public string MapId;
 
             /// <summary> The data source abstraction. </summary>
             public IFileSource Fs;
