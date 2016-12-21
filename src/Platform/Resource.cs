@@ -33,7 +33,7 @@ namespace Mapbox.Platform
                                     let k = Uri.EscapeDataString(p.Key.Trim())
                                     let v = Uri.EscapeDataString(p.Value)
                                     orderby k
-                                    select string.IsNullOrEmpty(v) ? k : String.Format("{0}={1}", k, v);
+                                    select string.IsNullOrEmpty(v) ? k : string.Format("{0}={1}", k, v);
                 if (encodedValues.Count() == 0)
                 {
                     return string.Empty;

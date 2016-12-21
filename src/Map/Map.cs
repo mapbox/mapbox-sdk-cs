@@ -51,7 +51,7 @@ namespace Mapbox.Map
         /// <value> 
         ///     The tile source. 
         ///     RasterTile source is a Mapbox style url eg. "mapbox://styles/mapbox/streets-v9"
-        ///     ClassicRasterTile source  is a mapid to a Mapbox tileset eg. "mapbox.mapbox-streets-v9"
+        ///     ClassicRasterTile source  is a mapid to a Mapbox tileset eg. "mapbox.mapbox-streets-v9".
         /// </value>
         public string Source
         {
