@@ -19,7 +19,7 @@ configuration:
 
 environment:
   COVERALLS_REPO_TOKEN:
-    secure: T+cp7CkmlQK4VauLP5ClmdEwXtLLkIBH01u6+eZu5hgugV2Mfz2nFfSfJpoyZXc1
+    secure: RAun1F5SuEEP5V/UgXoJ3IKwNoyXMB6DBbk5Ky7/eRAOAc8oJX+qwqynFW9FZZV0
   MAPBOX_ACCESS_TOKEN:
     secure: MU9O2VY3TSx/dU9iWTRIV4D8wtgixo8IfdTO7c3XUhyHdyVS3EiTmWkyfdxyOtJwNVwLhhEk7FHmHCvG4Cz1sQ==
   NUGET_API_KEY:
@@ -31,11 +31,58 @@ before_build:
   - nuget restore
 
 build_script:
-   - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-   - build-appveyor.bat
+  - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+  - build-appveyor.bat
 
 after_build:
   - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+
+after_test:
+  - nuget install NUnit.Runners -OutputDirectory tools
+  - nuget install OpenCover -OutputDirectory tools
+  - nuget install coveralls.net -Pre -OutputDirectory tools
+  - ps: >-
+      $nunitrunner = (Resolve-Path "tools/NUnit.ConsoleRunner.*/tools/nunit3-console.exe").ToString();
+      $opencov = (Resolve-Path "tools/OpenCover.*/tools/OpenCover.Console.exe").ToString();
+      $coveralls = (Resolve-Path "tools/coveralls.net.*/tools/csmacnz.coveralls.exe").ToString();
+      & $opencov `
+      -register:user `
+      -target:"$nunitrunner" `
+      -targetargs:"bin\${env:configuration}\test\Mapbox.UnitTest.dll" `
+      -filter:"+[*]* -[*.Tests]*" `
+      -output:opencoverCoverage.xml;
+      & $coveralls --opencover -i opencoverCoverage.xml `
+      --repoToken $env:COVERALLS_REPO_TOKEN `
+      --useRelativePaths `
+      --commitId $env:APPVEYOR_REPO_COMMIT `
+      --commitBranch $env:APPVEYOR_REPO_BRANCH `
+      --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR `
+      --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL `
+      --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE `
+      --jobId $env:APPVEYOR_BUILD_NUMBER `
+      --serviceName appveyor;
+  - cmd: SET PATH=c:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\FxCop;%PATH%
+  - cmd: FxCopCmd.exe ^
+      /out:fxcop.out.xml ^
+      /file:bin\%configuration%\Mapbox.Directions.dll ^
+      /file:bin\%configuration%\Mapbox.Geocoding.dll ^
+      /file:bin\%configuration%\Mapbox.Map.dll ^
+      /file:bin\%configuration%\Mapbox.Platform.dll ^
+      /file:bin\%configuration%\Mapbox.Utils.dll
+  ##http://help.appveyor.com/discussions/kb/9-support-for-stylecop-report#comment_34865295
+  ##http://help.appveyor.com/discussions/kb/5-code-analysis-fxcop-support
+  ##levels: Informational, Warning, Error, CriticalWarning, CriticalError
+  - ps: >-
+      $codeAnalysisErrors = [xml](Get-Content fxcop.out.xml);
+      foreach ($codeAnalysisError in $codeAnalysisErrors.SelectNodes("//Message")) {
+         $issueNode = $codeAnalysisError.SelectSingleNode("Issue");
+         $errorLevel = $($issueNode.Level);
+         if(!$errorLevel){$errorLevel='Warning'};
+         $errorLevel = $errorLevel.Replace("Critical","").Replace("Informational", "Information");
+         Write-Host "$($codeAnalysisError.CheckId): $($codeAnalysisError.TypeName) Line Number: $($issueNode.Line) FileName: $($issueNode.Path)\$($codeAnalysisError.Issue.File) ErrorMessage: $($issueNode.InnerXml)";
+         Add-AppveyorCompilationMessage "$($codeAnalysisError.CheckId): $($codeAnalysisError.TypeName)" -Category $errorLevel -FileName "$($issueNode.Path)\$($codeAnalysisError.Issue.File)" -Line $($issueNode.Line) -Details $($issueNode.InnerXml);
+      }
+      Push-AppveyorArtifact fxcop.out.xml;
 
 artifacts:
   - path: src\Documentation\_site

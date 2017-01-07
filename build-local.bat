@@ -20,7 +20,8 @@ GOTO NEXT-ARG
 :ARGS-DONE
 :::::::::::::: OVERRIDE PARAMETERS
 
-
+WHERE nuget.exe>nul
+IF %ERRORLEVEL% NEQ 0 ECHO nuget.exe not found && GOTO ERROR
 
 SET PATH=C:\Program Files\7-Zip;%PATH%
 

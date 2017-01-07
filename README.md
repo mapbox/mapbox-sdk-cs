@@ -3,9 +3,11 @@
 Tools for using Mapbox APIs with C# / Unity. If you'd like to contribute to the project, [read CONTRIBUTING.md](https://github.com/mapbox/mapbox-sdk-unity-core/blob/master/CONTRIBUTING.md).
 Tools for using Mapbox with Unity.
 
-## Build
 
-Master build status: [![Build status](https://ci.appveyor.com/api/projects/status/mh7ad8p1qonkbnwr/branch/master?svg=true)](https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core/branch/master)
+`master` branch build status: [![Build status](https://ci.appveyor.com/api/projects/status/mh7ad8p1qonkbnwr/branch/master?svg=true)](https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core/branch/master)
+`master` branch code coverage: [![Coverage Status](https://coveralls.io/repos/github/mapbox/mapbox-sdk-unity-core/badge.svg?branch=master&t=jR0cza)](https://coveralls.io/github/mapbox/mapbox-sdk-unity-core?branch=master)
+
+## Build
 
 You need to have `Unity` installed for a successful build.
 
