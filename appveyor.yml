@@ -3,10 +3,12 @@ image: Visual Studio 2015
 init:
   - git config --global core.autocrlf input
 
-clone_depth: 5
+# don't clone - get repo as zip via Github API
+# needed for pushing docs
+shallow_clone: true
+
 
 install:
-  - git submodule update --init --recursive
   - powershell Invoke-WebRequest "https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/Unity-Managed.7z" -OutFile um.7z
   - 7z -y x um.7z -o"C:\Program Files\Unity\Editor\Data\" | %windir%\system32\FIND "ing archive"
 
@@ -20,15 +22,17 @@ environment:
     secure: T+cp7CkmlQK4VauLP5ClmdEwXtLLkIBH01u6+eZu5hgugV2Mfz2nFfSfJpoyZXc1
   MAPBOX_ACCESS_TOKEN:
     secure: MU9O2VY3TSx/dU9iWTRIV4D8wtgixo8IfdTO7c3XUhyHdyVS3EiTmWkyfdxyOtJwNVwLhhEk7FHmHCvG4Cz1sQ==
+  NUGET_API_KEY:
+    secure: 70LFhjT6ZP09bkCakaKIpUmKlCxgTBT9CctnUhoza92P3SsBFg0HUfodcJWLt+h0
+  GITHUB_TOKEN:
+    secure: lJJOC3O25ATwK7jNt2TeYC9LexbMpef6ZSJDS8J4OFYABWt53IDe8BPcBNuELiyJ
 
 before_build:
   - nuget restore
 
 build_script:
    - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-#   - msbuild MapboxSDKUnityCore.sln /p:Configuration=%configuration% /p:CIBuild=true
-   - msbuild MapboxSDKUnityCore.sln /p:Configuration=%configuration%
-   - nuget pack MapboxSDKUnityCore.nuspec
+   - build-appveyor.bat
 
 after_build:
   - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }

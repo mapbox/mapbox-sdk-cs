@@ -3,7 +3,7 @@
 	<metadata>
 		<id>MapboxSDKforUnityCore</id>
 		<title>Mapbox SDK for Unity - Core</title>
-		<version>1.0.0-alpha02</version>
+		<version>$version$</version>
 		<authors>Mapbox</authors>
 		<owners>Mapbox</owners>
 		<licenseUrl>https://github.com/mapbox/mapbox-sdk-unity-core</licenseUrl>
@@ -18,31 +18,31 @@
 	</metadata>
 	<files>
 <!--
-		<file src="bin\Debug\Mapbox.Directions.dll" target="lib\net35\"></file>
-		<file src="bin\Debug\Mapbox.Geocoding.dll" target="lib\net35\"></file>
-		<file src="bin\Debug\Mapbox.Json.dll" target="lib\net35\"></file>
-		<file src="bin\Debug\Mapbox.Map.dll" target="lib\net35\"></file>
-		<file src="bin\Debug\Mapbox.Platform.dll" target="lib\net35\"></file>
-		<file src="bin\Debug\Mapbox.Unity.dll" target="lib\net35\"></file>
-		<file src="bin\Debug\Mapbox.Utils.dll" target="lib\net35\"></file>
+		<file src="bin\$configuration$\Mapbox.Directions.dll" target="lib\net35\"></file>
+		<file src="bin\$configuration$\Mapbox.Geocoding.dll" target="lib\net35\"></file>
+		<file src="bin\$configuration$\Mapbox.Json.dll" target="lib\net35\"></file>
+		<file src="bin\$configuration$\Mapbox.Map.dll" target="lib\net35\"></file>
+		<file src="bin\$configuration$\Mapbox.Platform.dll" target="lib\net35\"></file>
+		<file src="bin\$configuration$\Mapbox.Unity.dll" target="lib\net35\"></file>
+		<file src="bin\$configuration$\Mapbox.Utils.dll" target="lib\net35\"></file>
 -->
-		<file src="src\Directions\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Directions\"></file>
-		<file src="src\Geocoding\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Geocoding\"></file>
-		<file src="src\Map\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Map\"></file>
-		<file src="src\Platform\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Platform\"></file>
-		<file src="src\Unity\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Unity\"></file>
-		<file src="src\Utils\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Assets\Core\Utils\"></file>
+		<file src="src\Directions\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Directions\"></file>
+		<file src="src\Geocoding\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Geocoding\"></file>
+		<file src="src\Map\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Map\"></file>
+		<file src="src\Platform\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Platform\"></file>
+		<file src="src\Unity\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Unity\"></file>
+		<file src="src\Utils\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Utils\"></file>
 <!--
 		<file src="????\link.xml" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>
-		<file src="bin\Debug\Mapbox.Json.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>
+		<file src="bin\$configuration$\Mapbox.Json.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>
 -->
-		<file src="bin\Debug\Mapbox.VectorTile.ExtensionMethods.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\Debug\Mapbox.VectorTile.Geometry.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\Debug\Mapbox.VectorTile.PbfReader.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\Debug\Mapbox.VectorTile.VectorTileReader.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\Debug\ICSharpCode.SharpZipLib.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\Third Party\"></file>
+		<file src="bin\$configuration$\Mapbox.VectorTile.ExtensionMethods.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
+		<file src="bin\$configuration$\Mapbox.VectorTile.Geometry.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
+		<file src="bin\$configuration$\Mapbox.VectorTile.PbfReader.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
+		<file src="bin\$configuration$\Mapbox.VectorTile.VectorTileReader.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
+		<file src="bin\$configuration$\ICSharpCode.SharpZipLib.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\ThirdParty\"></file>
 <!--
-		<file src="bin\Debug\Triangulation.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\Third Party\"></file>
+		<file src="bin\$configuration$\Triangulation.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\ThirdParty\"></file>
 -->
 	</files>
 </package>

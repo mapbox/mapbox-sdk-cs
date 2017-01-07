@@ -47,6 +47,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HTTPRequest.cs" />
     <Compile Include="FileSource.cs" />
@@ -65,7 +68,8 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Target Name="Build" Condition="'$(CIBuild)'=='true' "></Target>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="'$(CIBuild)'=='' "/>
+  <Target Name="Build" Condition="'$(CIBuild)'=='true' ">
+  </Target>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="'$(CIBuild)'=='' " />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
 </Project>

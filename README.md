@@ -25,3 +25,40 @@ On the command line:
 To run the tests you need to have the `MAPBOX_ACCESS_TOKEN` environment variable set.
 
 Log into your Mapbox account at https://www.mapbox.com/studio to obtain an access token.
+
+## Automation and Publishing
+
+**Before publishing verify that there no build or test errors locally and on AppVeyor and Travis!**
+
+### Publishing to nuget.org
+
+* Increment the versions in `versions.txt`
+  * `dlls`: will patch the `AssemblyVersion` attribute in `src\SharedAssemblyInfo.cs`, e.g.: `dlls:1.0.0.1`. Convention is `<major version>.<minor version>.<build number>.<revision>`.
+  * `nupkg`: defines the version of the nuget package, e.g.: `nupkg:1.0.0-alpha04`.
+  This may be different from `dlls` as Nuget allows for custom postfixes to identify pre-releases, see https://docs.nuget.org/ndocs/create-packages/prerelease-packages#semantic-versioning
+* Commit with a message containing `[publish nuget]` (can be anywhere within the commit message)
+* Tag the commit with the `nupkg` version
+* Push.
+  * AppVeyor build will publish to nuget.org
+  * Verify the build itself and publishing finished successfully: https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core
+
+### Publishing Docs
+
+* Commit with a message containing `[publish docs]`
+  * can be anywhere within the commit message
+  * may be combined with `[publish nuget]`
+* Push
+  * AppVeyor build will publish to `gh-pages`
+  * Verify the build itself and publishing finished successfully:
+    * https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core
+    * https://mapbox.github.io/mapbox-sdk-unity-core/
+
+### Publishing locally (currently Windows only)
+
+**This should not be done unless there is an emergency (e.g. AppVeyor is down)**
+
+* `SET MAPBOX_ACCESS_TOKEN=<MAPBOX-ACCESS-TOKEN>`
+* `SET NUGET_API_KEY=<NUGET-API-KEY-WITH-PERMISSION-TO-PUSH-NUPKG>`
+* `SET GITHUB_TOKEN=<GITHUB-TOKEN-WITH-PERMISSION-TO-PUSH-TO-GHPAGES>`
+* Increment the versions in `versions.txt`
+* `build-local.bat "APPVEYOR_REPO_COMMIT_MESSAGE=[publish nuget] [publish docs]"`
