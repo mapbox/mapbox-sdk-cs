@@ -71,6 +71,26 @@ namespace Mapbox.Map
                 return this.state;
             }
         }
+        
+        /// <summary> Gets the lat/lon center of the tile. </summary>
+        /// <value> The tile center point. </value>
+        public GeoCoordinate Center
+        {
+            get
+            {
+                return this.Bounds.Center;
+            }
+        }
+        
+        /// <summary> Gets the lat/lon bounding box of the tile. </summary>
+        /// <value> The tile bounding box. </value>
+        public GeoCoordinateBounds Bounds
+        {
+            get
+            {
+                return Conversions.TileIdToBounds(this.id.X, this.id.Y, this.id.Z);
+            }
+        }
 
         /// <summary>
         ///     Initializes the <see cref="T:Mapbox.Map.Tile"/> object. It will
