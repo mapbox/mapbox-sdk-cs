@@ -105,7 +105,7 @@ namespace Mapbox.UnitTest
             {
                 if (tile.Error == null)
                 {
-                    Assert.Greater(tile.GeoJson.Length, 100);
+                    Assert.Greater(tile.GeoJson.Length, 41);
                 }
                 else
                 {

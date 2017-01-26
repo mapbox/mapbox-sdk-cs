@@ -44,7 +44,7 @@ namespace Mapbox.Map
         {
             get
             {
-                return this.data.ToGeoJson((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y);
+                return this.data.ToGeoJson((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y, 0);
             }
         }
 
