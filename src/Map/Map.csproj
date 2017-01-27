@@ -40,19 +40,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mapbox.VectorTile.ExtensionMethods, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha7\lib\net35\Mapbox.VectorTile.ExtensionMethods.dll</HintPath>
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha8\lib\net35\Mapbox.VectorTile.ExtensionMethods.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Mapbox.VectorTile.Geometry, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha7\lib\net35\Mapbox.VectorTile.Geometry.dll</HintPath>
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha8\lib\net35\Mapbox.VectorTile.Geometry.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Mapbox.VectorTile.PbfReader, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha7\lib\net35\Mapbox.VectorTile.PbfReader.dll</HintPath>
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha8\lib\net35\Mapbox.VectorTile.PbfReader.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Mapbox.VectorTile.VectorTileReader, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha7\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
+      <HintPath>..\..\packages\Mapbox.VectorTile.1.0.2-alpha8\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
