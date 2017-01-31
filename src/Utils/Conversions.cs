@@ -46,6 +46,20 @@ namespace Mapbox
         }
 
         /// <summary>
+        /// Converts Spherical Mercator EPSG:900913 in xy meters to WGS84 lat/lon.
+        /// Inverse of LatLonToMeters.
+        /// </summary>
+        /// <param name="m"> A <see cref="T:UnityEngine.Vector2"/> of coordinates in meters.  </param>
+        /// <returns> The <see cref="T:Mapbox.Utils.GeoCoordinate"/> in lat/lon. </returns>
+        public static GeoCoordinate MetersToLatLon(Vector2 m)
+        {
+            var vx = (m.x / OriginShift) * 180;
+            var vy = (m.y / OriginShift) * 180;
+            vy = 180 / Math.PI * (2 * Math.Atan(Math.Exp(vy * Math.PI / 180)) - Math.PI / 2);
+            return new GeoCoordinate(vy, vx);
+        }
+
+        /// <summary>
         /// Gets the xy tile ID from Spherical Mercator EPSG:900913 xy coords.
         /// </summary>
         /// <param name="m"> <see cref="T:UnityEngine.Vector2"/> XY coords in meters. </param>
