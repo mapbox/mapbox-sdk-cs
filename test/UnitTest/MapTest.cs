@@ -4,130 +4,224 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.UnitTest
-{
-    using System.Drawing;
-    using Mapbox.Map;
-    using NUnit.Framework;
+namespace Mapbox.UnitTest {
+	using System.Drawing;
+	using Mapbox.Map;
+	using NUnit.Framework;
+	using System.Threading;
 
-    [TestFixture]
-    internal class MapTest
-    {
-        private Mono.FileSource fs;
+	[TestFixture]
+	internal class MapTest {
 
-        [SetUp]
-        public void SetUp()
-        {
-            this.fs = new Mono.FileSource();
-        }
 
-        [Test]
-        public void World()
-        {
-            var map = new Map<VectorTile>(this.fs);
+		private Mono.FileSource fs;
+		private bool _TileLoadingFinished;
+		private System.Collections.Generic.List<Tile> _Tiles;
+		private object _LockTiles = new object();
+		private System.Collections.Generic.List<Tile> _FailedTiles;
+		private object _LockFailedTiles = new object();
 
-            map.GeoCoordinateBounds = GeoCoordinateBounds.World();
-            map.Zoom = 3;
 
-            var mapObserver = new Utils.VectorMapObserver();
-            map.Subscribe(mapObserver);
+		private void Map_QueueEmpty(object sender, System.EventArgs e) {
+			_TileLoadingFinished = true;
+		}
+		private void MapVector_TileReceived(object sender, MapTileReceivedEventArgs<VectorTile> e) {
+			//System.Diagnostics.Debug.WriteLine("Map_TileReceived: {0}", e.Tile.Id);
+			if(!string.IsNullOrWhiteSpace(e.Tile.Error)) {
+				lock(_LockFailedTiles) { _FailedTiles.Add(e.Tile); }
+			} else {
+				lock(_LockTiles) { _Tiles.Add(e.Tile); }
+			}
+		}
+		private void MapRaster_TileReceived(object sender, MapTileReceivedEventArgs<RasterTile> e) {
+			//System.Diagnostics.Debug.WriteLine("Map_TileReceived: {0}", e.Tile.Id);
+			if(!string.IsNullOrWhiteSpace(e.Tile.Error)) {
+				lock(_LockFailedTiles) { _FailedTiles.Add(e.Tile); }
+			} else {
+				lock(_LockTiles) { _Tiles.Add(e.Tile); }
+			}
+		}
+		private void MapClassicRaster_TileReceived(object sender, MapTileReceivedEventArgs<ClassicRasterTile> e) {
+			//System.Diagnostics.Debug.WriteLine("Map_TileReceived: {0}", e.Tile.Id);
+			if(!string.IsNullOrWhiteSpace(e.Tile.Error)) {
+				_FailedTiles.Add(e.Tile);
+			} else {
+				_Tiles.Add(e.Tile);
+			}
+		}
 
-            this.fs.WaitForAllRequests();
 
-            Assert.AreEqual(64, mapObserver.Tiles.Count);
+		[SetUp]
+		public void SetUp() {
+			this.fs = new Mono.FileSource();
+		}
 
-            map.Unsubscribe(mapObserver);
-        }
 
-        [Test]
-        public void RasterHelsinki()
-        {
-            var map = new Map<RasterTile>(this.fs);
+		[Test, Timeout(16000)]
+		public void World() {
 
-            map.Center = new GeoCoordinate(60.163200, 24.937700);
-            map.Zoom = 13;
+			var map = new Map<VectorTile>(
+				this.fs
+				, 64
+				, 65
+				, 4
+			);
 
-            var mapObserver = new Utils.RasterMapObserver();
-            map.Subscribe(mapObserver);
+			//Pause tile fetching when multiple parameters are changed
+			map.DisableTileDownloading();
+			map.GeoCoordinateBounds = GeoCoordinateBounds.World();
+			map.Zoom = 3;
 
-            this.fs.WaitForAllRequests();
+			map.TileReceived += MapVector_TileReceived;
+			map.QueueEmpty += Map_QueueEmpty;
 
-            // TODO: Assert.True(mapObserver.Complete);
-            // TODO: Assert.IsNull(mapObserver.Error);
-            Assert.AreEqual(1, mapObserver.Tiles.Count);
-            Assert.AreEqual(new Size(512, 512), mapObserver.Tiles[0].Size);
+			_Tiles = new System.Collections.Generic.List<Tile>();
+			_FailedTiles = new System.Collections.Generic.List<Tile>();
+			_TileLoadingFinished = false;
 
-            map.Unsubscribe(mapObserver);
-        }
+			map.EnableTileDownloading();
+			map.DownloadTiles();
 
-        [Test]
-        public void ChangeMapId()
-        {
-            var map = new Map<ClassicRasterTile>(this.fs);
+			//wait for all requests
+			while(!_TileLoadingFinished) {
+				System.Threading.Thread.Sleep(5);
+			}
 
-            var mapObserver = new Utils.ClassicRasterMapObserver();
-            map.Subscribe(mapObserver);
+			Assert.AreEqual(61, _Tiles.Count);
+			//TODO: 3 tiles from Antartic seem to be missing
+			//missing tiles: 3/5/7, 3/6/7, 3/7/7
+			Assert.AreEqual(3, _FailedTiles.Count);
 
-            map.Center = new GeoCoordinate(60.163200, 24.937700);
-            map.Zoom = 13;
-            map.MapId = "invalid";
+			map.TileReceived -= MapVector_TileReceived;
+			map.QueueEmpty -= Map_QueueEmpty;
+			map.Dispose();
+			map = null;
+		}
 
-            this.fs.WaitForAllRequests();
-            Assert.AreEqual(0, mapObserver.Tiles.Count);
 
-            map.MapId = "mapbox.terrain-rgb";
+		[Test, Timeout(8000)]
+		public void RasterHelsinki() {
 
-            this.fs.WaitForAllRequests();
-            Assert.AreEqual(1, mapObserver.Tiles.Count);
+			var map = new Map<RasterTile>(
+				this.fs
+				, 64
+				, 65
+				, 4
+			);
 
-            map.MapId = null; // Use default map ID.
+			map.DisableTileDownloading();
+			map.Center = new GeoCoordinate(60.163200, 24.937700);
+			map.Zoom = 13;
 
-            this.fs.WaitForAllRequests();
-            Assert.AreEqual(2, mapObserver.Tiles.Count);
+			map.TileReceived += MapRaster_TileReceived;
+			map.QueueEmpty += Map_QueueEmpty;
 
-            // Should have fetched tiles from different map IDs.
-            Assert.AreNotEqual(mapObserver.Tiles[0], mapObserver.Tiles[1]);
+			_Tiles = new System.Collections.Generic.List<Tile>();
+			_FailedTiles = new System.Collections.Generic.List<Tile>();
+			_TileLoadingFinished = false;
 
-            map.Unsubscribe(mapObserver);
-        }
+			map.EnableTileDownloading();
+			map.DownloadTiles();
 
-        [Test]
-        public void SetGeoCoordinateBoundsZoom()
-        {
-            var map1 = new Map<RasterTile>(this.fs);
-            var map2 = new Map<RasterTile>(this.fs);
+			//wait for all requests
+			while(!_TileLoadingFinished) {
+				System.Threading.Thread.Sleep(5);
+			}
 
-            map1.Zoom = 3;
-            map1.GeoCoordinateBounds = GeoCoordinateBounds.World();
+			Assert.AreEqual(1, _Tiles.Count);
+			var image = Image.FromStream(new System.IO.MemoryStream(((RasterTile)_Tiles[0]).Data));
+			Assert.AreEqual(new Size(512, 512), image.Size);
 
-            map2.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 3);
+			map.TileReceived -= MapRaster_TileReceived;
+			map.QueueEmpty -= Map_QueueEmpty;
+			map.Dispose();
+			map = null;
+		}
 
-            Assert.AreEqual(map1.Tiles.Count, map2.Tiles.Count);
-        }
 
-        [Test]
-        public void TileMax()
-        {
-            var map = new Map<RasterTile>(this.fs);
+		[Test, Timeout(8000)]
+		public void ChangeMapId() {
 
-            map.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 2);
-            Assert.Less(map.Tiles.Count, Map<RasterTile>.TileMax); // 16
+			var map = new Map<ClassicRasterTile>(
+				this.fs
+				, 64
+				, 65
+				, 4
+			);
 
-            // Should stay the same, ignore requests.
-            map.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 5);
-            Assert.AreEqual(16, map.Tiles.Count);
-        }
+			map.DisableTileDownloading();
 
-        [Test]
-        public void Zoom()
-        {
-            var map = new Map<RasterTile>(this.fs);
+			map.TileReceived += MapClassicRaster_TileReceived;
+			map.QueueEmpty += Map_QueueEmpty;
 
-            map.Zoom = 50;
-            Assert.AreEqual(20, map.Zoom);
+			map.Center = new GeoCoordinate(60.163200, 24.937700);
+			map.Zoom = 13;
+			map.MapId = "invalid";
 
-            map.Zoom = -50;
-            Assert.AreEqual(0, map.Zoom);
-        }
-    }
+			_FailedTiles = new System.Collections.Generic.List<Tile>();
+			_Tiles = new System.Collections.Generic.List<Tile>();
+
+			map.EnableTileDownloading();
+			map.DownloadTiles();
+
+			//wait for all requests
+			while(!_TileLoadingFinished) {
+				System.Threading.Thread.Sleep(5);
+			}
+			Assert.AreEqual(1, _FailedTiles.Count);
+			Assert.AreEqual(0, _Tiles.Count);
+
+			_TileLoadingFinished = false;
+			_FailedTiles = new System.Collections.Generic.List<Tile>();
+			_Tiles = new System.Collections.Generic.List<Tile>();
+
+			map.MapId = "mapbox.terrain-rgb";
+
+			//wait for all requests
+			while(!_TileLoadingFinished) {
+				System.Threading.Thread.Sleep(5);
+			}
+
+			Assert.AreEqual(0, _FailedTiles.Count);
+			Assert.AreEqual(1, _Tiles.Count);
+
+			_TileLoadingFinished = false;
+			_FailedTiles = new System.Collections.Generic.List<Tile>();
+			_Tiles = new System.Collections.Generic.List<Tile>();
+
+			map.MapId = null; // Use default map ID.
+
+			//wait for all requests
+			while(!_TileLoadingFinished) {
+				System.Threading.Thread.Sleep(5);
+			}
+
+			Assert.AreEqual(0, _FailedTiles.Count);
+			Assert.AreEqual(1, _Tiles.Count);
+
+			map.TileReceived -= MapClassicRaster_TileReceived;
+			map.QueueEmpty -= Map_QueueEmpty;
+			map.Dispose();
+			map = null;
+		}
+
+
+		[Test, Timeout(8000)]
+		public void Zoom() {
+			var map = new Map<RasterTile>(
+				this.fs
+				, 64
+				, 65
+				, 4
+			);
+
+			map.Zoom = 50;
+			Assert.AreEqual(20, map.Zoom);
+
+			map.Zoom = -50;
+			Assert.AreEqual(0, map.Zoom);
+		}
+
+
+	}
 }

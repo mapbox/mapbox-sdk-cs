@@ -4,40 +4,39 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Unity
-{
-    using System;
-    using System.Collections;
-    using UnityEngine;
-    using UnityEngine.Networking;
+namespace Mapbox.Unity {
+	using System;
+	using System.Collections;
+	using UnityEngine;
+	using UnityEngine.Networking;
 
-    internal sealed class HTTPRequest : IAsyncRequest
-    {
-        private readonly UnityWebRequest request;
-        private readonly Action<Response> callback;
+	internal sealed class HTTPRequest : IAsyncRequest {
+		private UnityWebRequest request;
+		private readonly Action<Response> callback;
 
-        public HTTPRequest(MonoBehaviour behaviour, string url, Action<Response> callback)
-        {
-            this.request = UnityWebRequest.Get(url);
-            this.callback = callback;
+		public HTTPRequest(MonoBehaviour behaviour, string url, Action<Response> callback) {
+			this.request = UnityWebRequest.Get(url);
+			this.callback = callback;
 
-            behaviour.StartCoroutine(this.DoRequest());
-        }
+			behaviour.StartCoroutine(this.DoRequest());
+		}
 
-        public void Cancel()
-        {
-            this.request.Abort();
-        }
+		public void Cancel() {
+			this.request.Abort();
+		}
 
-        private IEnumerator DoRequest()
-        {
-            yield return this.request.Send();
+		private IEnumerator DoRequest() {
+			yield return this.request.Send();
 
-            var response = new Response();
-            response.Error = this.request.error;
-            response.Data = this.request.downloadHandler.data;
+			var response = new Response();
+			response.Headers = this.request.GetResponseHeaders();
+			response.Error = this.request.error;
+			response.Data = this.request.downloadHandler.data;
 
-            this.callback(response);
-        }
-    }
+			request.Dispose();
+			request = null;
+
+			this.callback(response);
+		}
+	}
 }

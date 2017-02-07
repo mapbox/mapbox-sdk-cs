@@ -41,6 +41,8 @@
 		<file src="bin\$configuration$\Mapbox.VectorTile.PbfReader.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
 		<file src="bin\$configuration$\Mapbox.VectorTile.VectorTileReader.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
 		<file src="bin\$configuration$\ICSharpCode.SharpZipLib.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\ThirdParty\"></file>
+		<file src="bin\$configuration$\SmartThreadPool.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\ThirdParty\"></file>
+		<file src="bin\$configuration$\System.Threading.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\ThirdParty\"></file>
 <!--
 		<file src="bin\$configuration$\Triangulation.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\ThirdParty\"></file>
 -->
