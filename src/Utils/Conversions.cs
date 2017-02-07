@@ -167,7 +167,7 @@ namespace Mapbox
         /// <returns> Meters per pixel. </returns>
         public static float GetTileScaleInMeters(float latitude, int zoom)
         {
-            return 40075000 * Mathf.Cos(Mathf.Deg2Rad * latitude) / Mathf.Pow(2f, zoom + 8) * 256;
+            return 156543.034f * Mathf.Cos(Mathf.Deg2Rad * latitude) / Mathf.Pow(2f, zoom + 8);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Mapbox
         /// <returns> Adjusted height in meters. </returns>
         public static float GetRelativeHeightFromColor(Color color, float relativeScale)
         {
-            return GetAbsoluteHeightFromColor(color) / relativeScale;
+            return GetAbsoluteHeightFromColor(color) * relativeScale;
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Mapbox
         /// <returns> Height in meters. </returns>
         public static float GetAbsoluteHeightFromColor(Color color)
         {
-            return (float)(-10000 + ((color.r * 256 * 256 * 256 + color.g * 256 * 256 + color.b * 256) * 0.1));
+            return (float)(-10000 + ((color.r * 255 * 256 * 256 + color.g * 255 * 256 + color.b * 255) * 0.1));
         }
 
         private static double Resolution(int zoom)
