@@ -131,7 +131,9 @@ namespace Mapbox.UnitTest {
 			map.Zoom = 13;
 
 			//wait for all requests
-			while(!_TileLoadingFinished) {
+			//TODO: invesitgate: with only one tile being requested on ligh latency networks
+			//sometime QueueEmtpy is fired before TileReceived
+			while(!_TileLoadingFinished && !(_Tiles.Count > 0 || _FailedTiles.Count > 0)) {
 				System.Threading.Thread.Sleep(5);
 			}
 

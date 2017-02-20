@@ -2,7 +2,7 @@
 
 If you want to contribute code:
 
-1. Ensure that existing [pull requests](https://github.com/mapbox/mapbox-sdk-unity-core/pulls) and [issues](https://github.com/mapbox/mapbox-sdk-unity-core/issues) don’t already cover your contribution or question.
+1. Ensure that existing [pull requests](https://github.com/mapbox/mapbox-sdk-cs/pulls) and [issues](https://github.com/mapbox/mapbox-sdk-cs/issues) don’t already cover your contribution or question.
 
 2. Pull requests are gladly accepted. We require code reviews before merging PRs. When your tests pass, tag a project contributor (for example, @tmpsantos or @BergWerkGIS) and request a review.
 
@@ -22,11 +22,11 @@ Coming soon.
 
 # Running tests
 
-Tests are located in [test/UnitTest](https://github.com/mapbox/mapbox-sdk-unity-core/tree/master/test/UnitTest). On Linux or a mac run them with Mono, `mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe bin/Debug/test/Mapbox.UnitTest.dll` or from within your IDE of choice. Tests require a valid MAPBOX_ACCESS_TOKEN env variable in order to pass. Get a MAPBOX_ACCESS_TOKEN by logging into [Mapbox Studio](https://www.mapbox.com/studio/).
+Tests are located in [test/UnitTest](https://github.com/mapbox/mapbox-sdk-cs/tree/master/test/UnitTest). On Linux or a mac run them with Mono, `mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe bin/Debug/test/Mapbox.UnitTest.dll` or from within your IDE of choice. Tests require a valid MAPBOX_ACCESS_TOKEN env variable in order to pass. Get a MAPBOX_ACCESS_TOKEN by logging into [Mapbox Studio](https://www.mapbox.com/studio/).
 
 # Generating documentation
 
-Documentation for the the Mapbox Unity SDK is automatically generated from XML headers in code. *Instructions for generating documentation are coming soon*.
+Documentation for the the Mapbox SDK C# is automatically generated from XML headers in code. *Instructions for generating documentation are coming soon*.
 
 # Code of conduct
 

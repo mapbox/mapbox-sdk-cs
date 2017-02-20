@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Map {
+
 	using System;
 
 	/// <summary>
@@ -13,10 +14,10 @@ namespace Mapbox.Map {
 	///    here </see>.
 	/// </summary>
 	public abstract class Tile {
+
 		private CanonicalTileId id;
 		private string error;
 		private State state = State.New;
-
 		private IAsyncRequest request;
 		private Action callback;
 
@@ -24,13 +25,10 @@ namespace Mapbox.Map {
 		public enum State {
 			/// <summary> New tile, not yet initialized. </summary>
 			New,
-
 			/// <summary> Loading data. </summary>
 			Loading,
-
 			/// <summary> Data loaded and parsed. </summary>
 			Loaded,
-
 			/// <summary> Data loading cancelled. </summary>
 			Canceled
 		}

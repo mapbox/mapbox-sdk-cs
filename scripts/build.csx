@@ -7,6 +7,18 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
+string access_token = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN");
+if(string.IsNullOrWhiteSpace(access_token)){
+    Console.Error.WriteLine("%MAPBOX_ACCESS_TOKEN% not set - cannot run tests");
+    Environment.Exit(1);
+}
+
+//ATTENTION: latest version of `srciptcs` seems to change the current directory
+string rootDir = Environment.GetEnvironmentVariable("ROOTDIR");
+Console.WriteLine("rootDir [build.csx]: {0}", rootDir);
+Console.WriteLine("cwd [build.csx]: {0}", Directory.GetCurrentDirectory());
+Directory.SetCurrentDirectory(rootDir);
+Console.WriteLine("cwd [build.csx]: {0}", Directory.GetCurrentDirectory());
 string commitMessage = Environment.GetEnvironmentVariable("APPVEYOR_REPO_COMMIT_MESSAGE");
 Console.WriteLine("commit message: \"{0}\"", commitMessage);
 
@@ -41,6 +53,7 @@ if (publishDocs)
 string versionDLL;
 string versionNupkg;
 
+
 using (TextReader tr = new StreamReader("versions.txt"))
 {
     versionDLL = tr.ReadLine().Split(":".ToCharArray())[1].Trim();
@@ -53,8 +66,6 @@ Console.WriteLine("Versions:");
 Console.WriteLine("  - DLLs  : {0}", versionDLL);
 Console.WriteLine("  - nupkg : {0}", versionNupkg);
 
-
-string rootDir = Environment.GetEnvironmentVariable("ROOTDIR");
 
 //////// PATCH SharedAssemblyInfo.cs
 string sharedAssemblyInfo = Path.Combine(
@@ -83,7 +94,7 @@ using (TextWriter tw = new StreamWriter(sharedAssemblyInfo, false, Encoding.UTF8
 
 
 string buildCmd = string.Format(
-    "msbuild MapboxSDKUnityCore.sln /p:Configuration={0}",
+    "msbuild MapboxSdkCs.sln /p:Configuration={0}",
     configuration
 );
 Console.WriteLine("building [{0}]", buildCmd);
@@ -112,7 +123,7 @@ if (!publishNuget)
 else
 {
     Console.WriteLine("publishing to nuget.org");
-    string nugetCmd = string.Format("nuget push MapboxSDKforUnityCore.{0}.nupkg {1} -Source https://www.nuget.org/api/v2/package", versionNupkg, nugetApiKey);
+    string nugetCmd = string.Format("nuget push MapboxSdkCs.{0}.nupkg {1} -Source https://www.nuget.org/api/v2/package", versionNupkg, nugetApiKey);
     if (!RunCommand(nugetCmd))
     {
         Console.Error.WriteLine("publishing to nuget.org failed");
@@ -137,7 +148,7 @@ else
         }
         else
         {
-            originalCommit = "https://github.com/mapbox/mapbox-sdk-unity-core/commit/" + originalCommit;
+            originalCommit = "https://github.com/mapbox/mapbox-sdk-cs/commit/" + originalCommit;
         }
 
         string commitAuthor = Environment.GetEnvironmentVariable("APPVEYOR_REPO_COMMIT_AUTHOR");
@@ -154,7 +165,7 @@ else
             "git init .",
             "git add .",
             string.Format("git commit -m \"pushed via [{0}] by [{1}]\"", originalCommit,commitAuthor),
-            string.Format("git remote add origin https://{0}@github.com/mapbox/mapbox-sdk-unity.git", githubToken),
+            string.Format("git remote add origin https://{0}@github.com/mapbox/mapbox-sdk-cs.git", githubToken),
             "git checkout -b gh-pages",
             "git push -f origin gh-pages"
         });

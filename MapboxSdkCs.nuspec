@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <package >
 	<metadata>
-		<id>MapboxSDKforUnityCore</id>
-		<title>Mapbox SDK for Unity - Core</title>
+		<id>MapboxSdkCs</id>
+		<title>A C# client to Mapbox services</title>
 		<version>$version$</version>
 		<authors>Mapbox</authors>
 		<owners>Mapbox</owners>
-		<licenseUrl>https://github.com/mapbox/mapbox-sdk-unity-core</licenseUrl>
-		<projectUrl>https://github.com/mapbox/mapbox-sdk-unity-core</projectUrl>
+		<licenseUrl>https://github.com/mapbox/mapbox-sdk-cs</licenseUrl>
+		<projectUrl>https://github.com/mapbox/mapbox-sdk-cs</projectUrl>
 		<!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Core modules for accessing Mapbox services</description>
 		<summary>Core modules for accessing Mapbox services</summary>
 		<releaseNotes>Inital packaging</releaseNotes>
-		<copyright>Copyright 2016</copyright>
-		<tags>Mapbox SDK Unity Vectortiles</tags>
+		<copyright>Copyright 2017</copyright>
+		<tags>Mapbox SDK CSharp Geocoding Directions Vectortiles</tags>
 	</metadata>
 	<files>
 <!--
@@ -23,14 +23,12 @@
 		<file src="bin\$configuration$\Mapbox.Json.dll" target="lib\net35\"></file>
 		<file src="bin\$configuration$\Mapbox.Map.dll" target="lib\net35\"></file>
 		<file src="bin\$configuration$\Mapbox.Platform.dll" target="lib\net35\"></file>
-		<file src="bin\$configuration$\Mapbox.Unity.dll" target="lib\net35\"></file>
 		<file src="bin\$configuration$\Mapbox.Utils.dll" target="lib\net35\"></file>
 -->
 		<file src="src\Directions\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Directions\"></file>
 		<file src="src\Geocoding\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Geocoding\"></file>
 		<file src="src\Map\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Map\"></file>
 		<file src="src\Platform\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Platform\"></file>
-		<file src="src\Unity\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Unity\"></file>
 		<file src="src\Utils\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Utils\"></file>
 <!--
 		<file src="????\link.xml" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>

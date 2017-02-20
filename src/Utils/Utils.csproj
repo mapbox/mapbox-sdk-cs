@@ -40,18 +40,6 @@
     <Reference Include="Mapbox.Json">
       <HintPath>..\..\3rdparty\Json.Net.Unity3D\Mapbox.Json.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine-Linux" Condition="Exists('\opt\Unity\Editor\Data\Managed\UnityEngine.dll')">
-      <HintPath>\opt\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine-macOS" Condition="Exists('\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll')">
-      <HintPath>\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine-Win" Condition="Exists('\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll')">
-      <HintPath>\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -70,7 +58,6 @@
     <Compile Include="JsonConverters\LonLatToGeoCoordinateConverter.cs" />
     <Compile Include="JsonConverters\PolylineToGeoCoordinateListConverter.cs" />
     <Compile Include="JsonConverters\JsonConverters.cs" />
-    <Compile Include="Conversions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

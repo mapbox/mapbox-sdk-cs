@@ -8,10 +8,6 @@ init:
 shallow_clone: true
 
 
-install:
-  - powershell Invoke-WebRequest "https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/Unity-Managed.7z" -OutFile um.7z
-  - 7z -y x um.7z -o"C:\Program Files\Unity\Editor\Data\" | %windir%\system32\FIND "ing archive"
-
 platform: Any CPU
 configuration:
   - Debug
@@ -68,8 +64,7 @@ after_test:
       /file:bin\%configuration%\Mapbox.Geocoding.dll ^
       /file:bin\%configuration%\Mapbox.Map.dll ^
       /file:bin\%configuration%\Mapbox.Platform.dll ^
-      /file:bin\%configuration%\Mapbox.Utils.dll ^
-      /reference:"C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll"
+      /file:bin\%configuration%\Mapbox.Utils.dll
   ##http://help.appveyor.com/discussions/kb/9-support-for-stylecop-report#comment_34865295
   ##http://help.appveyor.com/discussions/kb/5-code-analysis-fxcop-support
   ##levels: Informational, Warning, Error, CriticalWarning, CriticalError

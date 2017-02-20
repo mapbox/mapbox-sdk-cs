@@ -11,14 +11,14 @@ language:
   - csharp
 
 solution:
-  - MapboxSDKUnity.sln
+  - MapboxSdkCs.sln
 
 mono:
   - 4.6.1
 
 install:
-  - nuget restore MapboxSDKUnityCore.sln
+  - nuget restore MapboxSdkCs.sln
 
 script:
-  - xbuild /p:Configuration=Release /p:CIBuild=true  /p:StyleCopTreatErrorsAsWarnings=false MapboxSDKUnityCore.sln
+  - xbuild /p:Configuration=Release /p:CIBuild=true  /p:StyleCopTreatErrorsAsWarnings=true MapboxSdkCs.sln
   - mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe bin/Release/test/Mapbox.UnitTest.dll

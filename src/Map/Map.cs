@@ -276,16 +276,9 @@ namespace Mapbox.Map {
 			var waitHandles = new List<WaitHandle>();
 			var tilesNotImmediatelyAvailable = new List<CanonicalTileId>();
 
-			//_TileFetcher.Clear();
-
 			HashSet<CanonicalTileId> tileCover = GetTileCover();
-			//UnityEngine.Debug.LogFormat("Map.DownloadTiles() about to download [{0}] tiles", tileCover.Count);
 
 			foreach(var id in tileCover) {
-				//if ("0/0/0" == id.ToString())
-				//{
-				//    continue;
-				//}
 
 				AutoResetEvent are = _TileFetcher.AsyncMode ? null : new AutoResetEvent(false);
 				T tile = new T() { Id = id };
@@ -294,6 +287,7 @@ namespace Mapbox.Map {
 					, id
 					, are
 				);
+
 				if(null != tileData) {
 					addTile(tileData, id, false, string.Empty);
 				}

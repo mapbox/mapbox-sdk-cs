@@ -33,6 +33,7 @@ namespace Mapbox.UnitTest {
 				"https://api.mapbox.com/v4/mapbox.mapbox-streets-v7/0/0/0.vector.pbf",
 				(Response res) => {
 					buffer = res.Data;
+					Assert.NotNull(buffer, "tile data not null");
 					Assert.Greater(buffer.Length, 30);
 
 					buffer[10] = 0;
@@ -52,6 +53,7 @@ namespace Mapbox.UnitTest {
 		public void Decompress() {
 			var fs = new Mono.FileSource();
 			var buffer = new byte[] { };
+			bool finished = false;
 
 			// Vector tiles are compressed.
 			fs.Request(
@@ -59,7 +61,10 @@ namespace Mapbox.UnitTest {
 				(Response res) => {
 					buffer = res.Data;
 					Assert.Less(buffer.Length, Compression.Decompress(buffer).Length);
+					finished = true;
 				});
+
+			while(!finished) { System.Threading.Thread.Sleep(5); }
 		}
 	}
 }

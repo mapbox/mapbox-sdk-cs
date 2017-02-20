@@ -1,25 +1,22 @@
-# mapbox-sdk-unity-core
+# mapbox-sdk-cs
 
-Tools for using Mapbox APIs with C# / Unity. If you'd like to contribute to the project, [read CONTRIBUTING.md](https://github.com/mapbox/mapbox-sdk-unity-core/blob/master/CONTRIBUTING.md).
-Tools for using Mapbox with Unity.
+SDK for using Mapbox APIs with C#. If you'd like to contribute to the project, [read CONTRIBUTING.md](https://github.com/mapbox/mapbox-sdk-cs/blob/master/CONTRIBUTING.md).
 
 
-`master` branch build status: [![Build status](https://ci.appveyor.com/api/projects/status/mh7ad8p1qonkbnwr/branch/master?svg=true)](https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core/branch/master)
-`master` branch code coverage: [![Coverage Status](https://coveralls.io/repos/github/mapbox/mapbox-sdk-unity-core/badge.svg?branch=master&t=jR0cza)](https://coveralls.io/github/mapbox/mapbox-sdk-unity-core?branch=master)
+`master` branch build status: [![Build status](https://ci.appveyor.com/api/projects/status/mh7ad8p1qonkbnwr/branch/master?svg=true)](https://ci.appveyor.com/project/Mapbox/mapbox-sdk-cs/branch/master)
+`master` branch code coverage: [![Coverage Status](https://coveralls.io/repos/github/mapbox/mapbox-sdk-cs/badge.svg?branch=master&t=jR0cza)](https://coveralls.io/github/mapbox/mapbox-sdk-cs?branch=master)
 
 ## Build
 
-You need to have `Unity` installed for a successful build.
-
 With an IDE:
-* Open `MapboxSDKUnity.sln` with Visual Studio or Xamarin Studio
+* Open `MapboxSdkCs.sln` with Visual Studio or Xamarin Studio
 * `Build -> Rebuild Solution`
 * DLLs will be in `bin`
 
 On the command line:
-* `nuget restore MapboxSDKUnity.sln`
-* Windows: `msbuild MapboxSDKUnity.sln`
-* Linux/OSX: `xbuild MapboxSDKUnity.sln`
+* `nuget restore MapboxSdkCs.sln`
+* Windows: `msbuild MapboxSdkCs.sln`
+* Linux/OSX: `xbuild MapboxSdkCs.sln`
 * DLLs will be in `bin`
 
 ## Tests
@@ -42,7 +39,7 @@ Log into your Mapbox account at https://www.mapbox.com/studio to obtain an acces
 * Tag the commit with the `nupkg` version
 * Push.
   * AppVeyor build will publish to nuget.org
-  * Verify the build itself and publishing finished successfully: https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core
+  * Verify the build itself and publishing finished successfully: https://ci.appveyor.com/project/Mapbox/mapbox-sdk-cs
 
 ### Publishing Docs
 
@@ -52,8 +49,8 @@ Log into your Mapbox account at https://www.mapbox.com/studio to obtain an acces
 * Push
   * AppVeyor build will publish to `gh-pages`
   * Verify the build itself and publishing finished successfully:
-    * https://ci.appveyor.com/project/Mapbox/mapbox-sdk-unity-core
-    * https://mapbox.github.io/mapbox-sdk-unity-core/
+    * https://ci.appveyor.com/project/Mapbox/mapbox-sdk-cs
+    * https://mapbox.github.io/mapbox-sdk-cs/
 
 ### Publishing locally (currently Windows only)
 
