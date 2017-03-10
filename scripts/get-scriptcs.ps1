@@ -32,8 +32,13 @@ Write-Host "URL:" $dl_url
 #$dl_file = [System.IO.Path]::Combine($PSScriptRoot, 'scriptcs.zip')
 $cwd = Convert-Path -Path '.'
 Write-Host "cwd:"  $cwd
-$dl_file = [System.IO.Path]::Combine($cwd, 'packages', 'scriptcs.zip')
-$wc.DownloadFile($dl_url, $dl_file)
+$pkg_dir = [System.IO.Path]::Combine($cwd, 'packages');
+If(!(test-path $pkg_dir)){
+    New-Item -ItemType Directory -Force -Path $pkg_dir
+}
+$dl_file = [System.IO.Path]::Combine($cwd, 'packages', 'scriptcs.zip');
+Write-Host "dowloading '$dl_url' to '$dl_file'";
+$wc.DownloadFile($dl_url, $dl_file);
 
 $cmd = "7z -y e `"packages\scriptcs.zip`" tools\* -oscriptcs | $env:windir\system32\FIND `"ing archive`""
 iex $cmd

@@ -4,7 +4,7 @@ SET EL=0
 ECHO ~~~~~~~~~~~~~~~~~~~ %~f0 ~~~~~~~~~~~~~~~~~~~
 
 REM env vars that get set in appveyor.yml on remote builds
-SET configuration=Debug
+SET configuration=DebugNet
 SET APPVEYOR_REPO_COMMIT_MESSAGE=local build
 
 
@@ -35,7 +35,8 @@ ECHO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 :DOBUILD
 IF EXIST src\Documentation\_site RD /Q /S src\Documentation\_site
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
-nuget restore
+SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+nuget restore MapboxSdkCs.sln
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR
 CALL build-appveyor.bat
 IF %ERRORLEVEL% NEQ 0 GOTO ERROR

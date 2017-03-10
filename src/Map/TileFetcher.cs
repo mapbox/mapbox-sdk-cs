@@ -140,8 +140,10 @@ namespace Mapbox.Map {
 			byte[] result = null;
 			string errorMessage = string.Empty;
 
-			if(!Thread.CurrentThread.IsAlive)
-				return result;
+#if !WINDOWS_UWP
+			if(!Thread.CurrentThread.IsAlive) { return result; }
+#endif
+
 			bool fetched = false;
 			//Try get the tile
 			try {
@@ -182,7 +184,9 @@ namespace Mapbox.Map {
 				});
 			}
 			catch(Exception ex) {
+#if !WINDOWS_UWP
 				PreserveStackTrace(ex);
+#endif
 				string msg = string.Format("+++++ TileFetcher.GetTileOnThread(), exception: [{0}]", ex);
 				errorMessage = msg;
 #if UNITY_EDITOR
@@ -195,9 +199,14 @@ namespace Mapbox.Map {
 
 			//HACK: wait till request has finish
 			while(!fetched) {
+#if !WINDOWS_UWP
 				Thread.Sleep(5);
+#else
+				System.Threading.Tasks.Task.Delay(5).Wait();
+#endif
 			}
 
+#if !WINDOWS_UWP
 			//Try at least once again
 			if(result == null) {
 				try {
@@ -213,6 +222,7 @@ namespace Mapbox.Map {
 					}
 				}
 			}
+#endif
 
 			//Remove the tile info request
 			int one;
@@ -251,6 +261,7 @@ namespace Mapbox.Map {
 
 
 		//TODO: for debuggin during development. remove here, or move to utils
+#if !WINDOWS_UWP
 		private static void PreserveStackTrace(Exception e) {
 			var ctx = new StreamingContext(StreamingContextStates.CrossAppDomain);
 			var mgr = new ObjectManager(null, ctx);
@@ -261,6 +272,7 @@ namespace Mapbox.Map {
 			mgr.DoFixups(); // ObjectManager calls SetObjectData
 
 		}
+#endif
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the tile fetcher should work in async mode or not.

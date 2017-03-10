@@ -1,6 +1,7 @@
 # Autosave files
 *~
 scriptcs/
+nuget.exe
 
 # Documentation
 api

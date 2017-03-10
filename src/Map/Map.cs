@@ -20,7 +20,7 @@ namespace Mapbox.Map {
 	///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
 	///     <see cref="T:Mapbox.Map.Raster"/>.
 	/// </typeparam>
-	//TODO: if 'Map' changes from 'sealed' uncomment finalizer and change signature of 'Dispose(bool disposeManagedResources)'
+	// TODO: if 'Map' changes from 'sealed' uncomment finalizer and change signature of 'Dispose(bool disposeManagedResources)'
 	public sealed class Map<T> : IDisposable where T : Tile, new() {
 
 
@@ -68,7 +68,7 @@ namespace Mapbox.Map {
 		private string _MapId;
 
 		private HashSet<T> _Tiles = new HashSet<T>();
-		//Lock for _Tiles during concurrent download
+		// Lock for _Tiles during concurrent download
 		private object _TilesLock = new object();
 
 		/// <summary>
@@ -91,7 +91,7 @@ namespace Mapbox.Map {
 				throw new ArgumentNullException("fileSource");
 			}
 
-			//HACK: sync downloading does not work at the moment.
+			// HACK: sync downloading does not work at the moment.
 			if(numberOfThreads < 2) {
 				numberOfThreads = 2;
 			}
@@ -111,12 +111,12 @@ namespace Mapbox.Map {
 		}
 
 
-		//TODO: uncomment if 'Map' class changes from 'sealed'
-		//protected override void Dispose(bool disposeManagedResources)
-		//~Map()
-		//{
+		// TODO: uncomment if 'Map' class changes from 'sealed'
+		// protected override void Dispose(bool disposeManagedResources)
+		// ~Map()
+		// {
 		//    Dispose(false);
-		//}
+		// }
 
 		public void Dispose() {
 			Dispose(true);

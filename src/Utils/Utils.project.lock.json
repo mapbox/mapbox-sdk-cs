@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v3.5": {},
+    ".NETFramework,Version=v3.5/win": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "": [],
+    ".NETFramework,Version=v3.5": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {},
+  "packageFolders": {
+    "C:\\Users\\bergw\\.nuget\\packages\\": {}
+  }
+}

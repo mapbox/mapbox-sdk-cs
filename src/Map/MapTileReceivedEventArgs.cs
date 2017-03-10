@@ -4,20 +4,20 @@ using System;
 
 namespace Mapbox.Map
 {
-    /// <summary>
-    /// Event arguments for the <see cref="TileFetcher.TileReceived"/> event
-    /// </summary>
-    public class MapTileReceivedEventArgs<T> : EventArgs
-    {
+	/// <summary>
+	/// Event arguments for the <see cref="TileFetcher.TileReceived"/> event
+	/// </summary>
+	public class MapTileReceivedEventArgs<T> : EventArgs
+	{
 
-        public MapTileReceivedEventArgs(T tile)
-        {
-            Tile = tile;
-        }
-        /// <summary>
-        /// Gets the actual tile data as a byte Array
-        /// </summary>
-        public T Tile { get; private set; }
+		public MapTileReceivedEventArgs(T tile)
+		{
+			Tile = tile;
+		}
+		/// <summary>
+		/// Gets the actual tile data as a byte Array
+		/// </summary>
+		public T Tile { get; private set; }
 
-    }
+	}
 }

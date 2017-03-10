@@ -6,52 +6,50 @@
 
 namespace Mapbox.Geocoding
 {
-    using System.Collections.Generic;
+	using Mapbox;
+	using System.Collections.Generic;
 
-    /// <summary> A reverse geocode request. </summary>
-    public sealed class ReverseGeocodeResource : GeocodeResource<GeoCoordinate>
-    {
-        // Required
-        private GeoCoordinate query;
+	/// <summary> A reverse geocode request. </summary>
+	public sealed class ReverseGeocodeResource : GeocodeResource<GeoCoordinate>
+	{
+		// Required
+		private GeoCoordinate query;
 
-        /// <summary> Initializes a new instance of the <see cref="ReverseGeocodeResource" /> class.</summary>
-        /// <param name="query"> Location to reverse geocode. </param>
-        public ReverseGeocodeResource(GeoCoordinate query)
-        {
-            this.Query = query;
-        }
+		/// <summary> Initializes a new instance of the <see cref="ReverseGeocodeResource" /> class.</summary>
+		/// <param name="query"> Location to reverse geocode. </param>
+		public ReverseGeocodeResource(GeoCoordinate query)
+		{
+			this.Query = query;
+		}
 
-        /// <summary> Gets or sets the location. </summary>
-        public override GeoCoordinate Query
-        {
-            get
-            {
-                return this.query;
-            }
-         
-            set
-            {
-                this.query = value;
-            }
-        }
+		/// <summary> Gets or sets the location. </summary>
+		public override GeoCoordinate Query {
+			get {
+				return this.query;
+			}
 
-        /// <summary> Builds a complete reverse geocode URL string. </summary>
-        /// <returns> A complete, valid reverse geocode URL string. </returns>
-        public override string GetUrl()
-        {
-            Dictionary<string, string> opts = new Dictionary<string, string>();
+			set {
+				this.query = value;
+			}
+		}
 
-            if (this.Types != null)
-            {
-                opts.Add("types", GetUrlQueryFromArray(this.Types));
-            }
+		/// <summary> Builds a complete reverse geocode URL string. </summary>
+		/// <returns> A complete, valid reverse geocode URL string. </returns>
+		public override string GetUrl()
+		{
+			Dictionary<string, string> opts = new Dictionary<string, string>();
 
-            return Constants.BaseAPI +
-                            this.ApiEndpoint +
-                            this.Mode +
-                            this.Query.ToString() +
-                            ".json" +
-                            EncodeQueryString(opts);
-        }
-    }
+			if (this.Types != null)
+			{
+				opts.Add("types", GetUrlQueryFromArray(this.Types));
+			}
+
+			return Constants.BaseAPI +
+							this.ApiEndpoint +
+							this.Mode +
+							this.Query.ToString() +
+							".json" +
+							EncodeQueryString(opts);
+		}
+	}
 }

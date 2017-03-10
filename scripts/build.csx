@@ -107,11 +107,12 @@ if (!RunCommand(buildCmd, true))
 
 string nugetCmd = string.Format("nuget pack -properties version={0};configuration={1}", versionNupkg, configuration);
 Console.WriteLine("creating nupkg: [{0}]", nugetCmd);
-if (!RunCommand(nugetCmd, true))
-{
-    Console.Error.WriteLine("creation of nupkg failed");
-    Environment.Exit(1);
-}
+Console.WriteLine("Skipping nuget pack! TODO: Build 'DebugNet' and 'DebugUWP' on one configuration!");
+// if (!RunCommand(nugetCmd, true))
+// {
+//     Console.Error.WriteLine("creation of nupkg failed");
+//     Environment.Exit(1);
+// }
 
 
 
@@ -165,7 +166,8 @@ else
             "git init .",
             "git add .",
             string.Format("git commit -m \"pushed via [{0}] by [{1}]\"", originalCommit,commitAuthor),
-            string.Format("git remote add origin https://{0}@github.com/mapbox/mapbox-sdk-cs.git", githubToken),
+            string.Format("git remote add origin https://{0}@github.com/mapbox/mapbox-sdk-unity.git", githubToken),
+            string.Format("git remote set-url --add --push origin https://{0}@github.com/mapbox/mapbox-sdk-cs.git", githubToken),
             "git checkout -b gh-pages",
             "git push -f origin gh-pages"
         });

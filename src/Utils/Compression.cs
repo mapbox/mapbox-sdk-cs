@@ -6,65 +6,67 @@
 
 namespace Mapbox.Utils
 {
-    using System.IO;
-    using ICSharpCode.SharpZipLib.GZip;
 
-    /// <summary> Collection of constants used across the project. </summary>
-    public static class Compression
-    {
-        /// <summary>
-        ///     Decompress the specified buffer previously compressed using GZip.
-        /// </summary>
-        /// <param name="buffer">
-        ///     The GZip'ed buffer.
-        /// </param>
-        /// <returns>
-        ///     Returns the uncompressed buffer or the buffer in case decompression
-        ///     is not possible.
-        /// </returns>
-        public static byte[] Decompress(byte[] buffer)
-        {
-            // Test for magic bits.
-            if (buffer.Length < 2 || buffer[0] != 0x1f || buffer[1] != 0x8b)
-            {
-                return buffer;
-            }
+	using System.IO;
+	using Mapbox.IO.Compression;
 
-            using (GZipInputStream stream = new GZipInputStream(new MemoryStream(buffer)))
-            {
-                const int Size = 4096; // Pagesize.
-                byte[] buf = new byte[Size];
 
-                using (MemoryStream memory = new MemoryStream())
-                {
-                    int count = 0;
+	/// <summary> Collection of constants used across the project. </summary>
+	public static class Compression
+	{
+		/// <summary>
+		///     Decompress the specified buffer previously compressed using GZip.
+		/// </summary>
+		/// <param name="buffer">
+		///     The GZip'ed buffer.
+		/// </param>
+		/// <returns>
+		///     Returns the uncompressed buffer or the buffer in case decompression
+		///     is not possible.
+		/// </returns>
+		public static byte[] Decompress(byte[] buffer)
+		{
+			// Test for magic bits.
+			if (buffer.Length < 2 || buffer[0] != 0x1f || buffer[1] != 0x8b)
+			{
+				return buffer;
+			}
 
-                    do
-                    {
-                        try
-                        {
-                            count = stream.Read(buf, 0, Size);
-                        }
-                        catch
-                        {
-                            // For now we return the uncompressed buffer
-                            // on error. Assumes the magic check passed
-                            // by luck.
-                            return buffer;
-                        }
+			using (GZipStream stream = new GZipStream(new MemoryStream(buffer), CompressionMode.Decompress))
+			{
+				const int Size = 4096; // Pagesize.
+				byte[] buf = new byte[Size];
 
-                        if (count > 0)
-                        {
-                            memory.Write(buf, 0, count);
-                        }
-                    }
-                    while (count > 0);
+				using (MemoryStream memory = new MemoryStream())
+				{
+					int count = 0;
 
-                    buffer = memory.ToArray();
-                }
-            }
+					do
+					{
+						try
+						{
+							count = stream.Read(buf, 0, Size);
+						}
+						catch
+						{
+							// For now we return the uncompressed buffer
+							// on error. Assumes the magic check passed
+							// by luck.
+							return buffer;
+						}
 
-            return buffer;
-        }
-    }
+						if (count > 0)
+						{
+							memory.Write(buf, 0, count);
+						}
+					}
+					while (count > 0);
+
+					buffer = memory.ToArray();
+				}
+			}
+
+			return buffer;
+		}
+	}
 }

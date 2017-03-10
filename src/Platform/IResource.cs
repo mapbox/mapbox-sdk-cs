@@ -6,16 +6,16 @@
 
 namespace Mapbox.Platform
 {
-    using System;
+	using System;
 
-    /// <summary> 
-    /// Interface representing a Mapbox resource URL. Used to build request strings
-    /// and return full URLs to a Mapbox Web Service API resource. 
-    /// </summary>
-    public interface IResource
-    {
-        /// <summary>Builds a complete, valid URL string.</summary>
-        /// <returns>URL string.</returns>
-        string GetUrl();
-    }
+	/// <summary> 
+	/// Interface representing a Mapbox resource URL. Used to build request strings
+	/// and return full URLs to a Mapbox Web Service API resource. 
+	/// </summary>
+	public interface IResource
+	{
+		/// <summary>Builds a complete, valid URL string.</summary>
+		/// <returns>URL string.</returns>
+		string GetUrl();
+	}
 }

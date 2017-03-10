@@ -5,25 +5,18 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{89F8BAB2-2E7A-425E-B715-2CC4519D561F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Mapbox</RootNamespace>
+    <RootNamespace>Mapbox.Geocoding</RootNamespace>
     <AssemblyName>Mapbox.Geocoding</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ReleaseVersion>0.0.1</ReleaseVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugNet|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug</OutputPath>
+    <OutputPath>..\..\bin\Debug\net35\</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -31,11 +24,21 @@
   <PropertyGroup>
     <StyleCopOverrideSettingsFile>..\..\data\Settings.StyleCop</StyleCopOverrideSettingsFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugUWP|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\bin\Debug\net35\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Mapbox.Json">
-      <HintPath>..\..\3rdparty\Json.Net.Unity3D\Mapbox.Json.dll</HintPath>
+    <Reference Include="Mapbox.Json, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\3rdparty\Json.Net.Unity3D\Net35\Mapbox.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -51,17 +54,18 @@
     <Compile Include="Response\Geometry.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Platform\Platform.csproj">
+      <Project>{fe49745c-01f6-4a3f-bf08-828113d3e19f}</Project>
+      <Name>Platform</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{48BE9D66-3A19-4248-BBDD-4DB4A52B3FE5}</Project>
       <Name>Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platform\Platform.csproj">
-      <Project>{FE49745C-01F6-4A3F-BF08-828113D3E19F}</Project>
-      <Name>Platform</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Geocoding.project.json" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

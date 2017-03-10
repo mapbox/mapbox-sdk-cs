@@ -8,10 +8,10 @@ init:
 shallow_clone: true
 
 
-platform: Any CPU
+#platform: Any CPU
 configuration:
-  - Debug
-#  - Release
+  - DebugNet
+  - DebugUWP
 
 environment:
   COVERALLS_REPO_TOKEN:
@@ -24,20 +24,23 @@ environment:
     secure: lJJOC3O25ATwK7jNt2TeYC9LexbMpef6ZSJDS8J4OFYABWt53IDe8BPcBNuELiyJ
 
 before_build:
-  - nuget restore
+  - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 
 build_script:
-  - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+  - FOR /F "tokens=1 delims=<CR> usebackq" %%N in (`nuget ^| %windir%\system32\find /i "NuGet Version"`) DO ECHO %%N
+#  - IF "%configuration%"=="DebugNet" nuget restore MapboxSdkCs.sln
+  - nuget restore MapboxSdkCs.sln
   - build-appveyor.bat
 
 after_build:
   - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
 after_test:
-  - nuget install NUnit.Runners -OutputDirectory tools
-  - nuget install OpenCover -OutputDirectory tools
-  - nuget install coveralls.net -Pre -OutputDirectory tools
+  - IF "%configuration%"=="DebugNet" nuget install NUnit.Runners -OutputDirectory tools
+  - IF "%configuration%"=="DebugNet" nuget install OpenCover -OutputDirectory tools
+  - IF "%configuration%"=="DebugNet" nuget install coveralls.net -Pre -OutputDirectory tools
   - ps: >-
+      If($Env:configuration -eq 'DebugNet'){
       $nunitrunner = (Resolve-Path "tools/NUnit.ConsoleRunner.*/tools/nunit3-console.exe").ToString();
       $opencov = (Resolve-Path "tools/OpenCover.*/tools/OpenCover.Console.exe").ToString();
       $coveralls = (Resolve-Path "tools/coveralls.net.*/tools/csmacnz.coveralls.exe").ToString();
@@ -57,18 +60,20 @@ after_test:
       --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE `
       --jobId $env:APPVEYOR_BUILD_NUMBER `
       --serviceName appveyor;
-  - cmd: SET PATH=c:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\FxCop;%PATH%
-  - cmd: FxCopCmd.exe ^
+      }
+  - cmd: IF "%configuration%"=="DebugNet" SET PATH=c:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\FxCop;%PATH%
+  - cmd: IF "%configuration%"=="DebugNet" FxCopCmd.exe ^
       /out:fxcop.out.xml ^
-      /file:bin\%configuration%\Mapbox.Directions.dll ^
-      /file:bin\%configuration%\Mapbox.Geocoding.dll ^
-      /file:bin\%configuration%\Mapbox.Map.dll ^
-      /file:bin\%configuration%\Mapbox.Platform.dll ^
-      /file:bin\%configuration%\Mapbox.Utils.dll
+      /file:bin\Debug\net35\Mapbox.Directions.dll ^
+      /file:bin\Debug\net35\Mapbox.Geocoding.dll ^
+      /file:bin\Debug\net35\Mapbox.Map.dll ^
+      /file:bin\Debug\net35\Mapbox.Platform.dll ^
+      /file:bin\Debug\net35\Mapbox.Utils.dll
   ##http://help.appveyor.com/discussions/kb/9-support-for-stylecop-report#comment_34865295
   ##http://help.appveyor.com/discussions/kb/5-code-analysis-fxcop-support
   ##levels: Informational, Warning, Error, CriticalWarning, CriticalError
   - ps: >-
+      If($Env:configuration -eq 'DebugNet'){
       $codeAnalysisErrors = [xml](Get-Content fxcop.out.xml);
       foreach ($codeAnalysisError in $codeAnalysisErrors.SelectNodes("//Message")) {
          $issueNode = $codeAnalysisError.SelectSingleNode("Issue");
@@ -79,6 +84,7 @@ after_test:
          Add-AppveyorCompilationMessage "$($codeAnalysisError.CheckId): $($codeAnalysisError.TypeName)" -Category $errorLevel -FileName "$($issueNode.Path)\$($codeAnalysisError.Issue.File)" -Line $($issueNode.Line) -Details $($issueNode.InnerXml);
       }
       Push-AppveyorArtifact fxcop.out.xml;
+      }
 
 artifacts:
   - path: src\Documentation\_site

@@ -6,25 +6,25 @@
 
 namespace Mapbox.UnitTest
 {
-    using Mapbox.Map;
-    using NUnit.Framework;
+	using Mapbox.Map;
+	using NUnit.Framework;
 
-    [TestFixture]
-    internal class CanonicalTileIdTest
-    {
-        [Test]
-        public void ToGeoCoordinate()
-        {
-            var set = TileCover.Get(GeoCoordinateBounds.World(), 5);
+	[TestFixture]
+	internal class CanonicalTileIdTest
+	{
+		[Test]
+		public void ToGeoCoordinate()
+		{
+			var set = TileCover.Get(GeoCoordinateBounds.World(), 5);
 
-            foreach (var tile in set)
-            {
-                var reverse = TileCover.CoordinateToTileId(tile.ToGeoCoordinate(), 5);
+			foreach (var tile in set)
+			{
+				var reverse = TileCover.CoordinateToTileId(tile.ToGeoCoordinate(), 5);
 
-                Assert.AreEqual(tile.Z, reverse.Z);
-                Assert.AreEqual(tile.X, reverse.X);
-                Assert.AreEqual(tile.Y, reverse.Y);
-            }
-        }
-    }
+				Assert.AreEqual(tile.Z, reverse.Z);
+				Assert.AreEqual(tile.X, reverse.X);
+				Assert.AreEqual(tile.Y, reverse.Y);
+			}
+		}
+	}
 }
