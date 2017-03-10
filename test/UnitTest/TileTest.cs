@@ -4,22 +4,25 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.UnitTest {
+namespace Mapbox.UnitTest
+{
 	using Mapbox.Map;
 	using NUnit.Framework;
 
 	[TestFixture]
-	internal class TileTest {
+	internal class TileTest
+	{
 		private Mono.FileSource fs;
 
 		[SetUp]
-		public void SetUp() {
+		public void SetUp()
+		{
 			this.fs = new Mono.FileSource();
 		}
 
 		[Test]
-		[Ignore("Currently obsolete - we don't have that logic at the moment")]
-		public void TileLoading() {
+		public void TileLoading()
+		{
 			byte[] data;
 
 			var parameters = new Tile.Parameters();
@@ -29,13 +32,14 @@ namespace Mapbox.UnitTest {
 			var tile = new RawPngRasterTile();
 			tile.Initialize(parameters, () => { data = tile.Data; });
 
+			this.fs.WaitForAllRequests();
 
 			Assert.Greater(tile.Data.Length, 1000);
 		}
 
 		[Test]
-		[Ignore("Currently obsolete - we don't have that logic at the moment")]
-		public void States() {
+		public void States()
+		{
 			var parameters = new Tile.Parameters();
 			parameters.Fs = this.fs;
 			parameters.Id = new CanonicalTileId(1, 1, 1);
@@ -46,6 +50,7 @@ namespace Mapbox.UnitTest {
 			tile.Initialize(parameters, () => { });
 			Assert.AreEqual(Tile.State.Loading, tile.CurrentState);
 
+			this.fs.WaitForAllRequests();
 			Assert.AreEqual(Tile.State.Loaded, tile.CurrentState);
 
 			tile.Cancel();

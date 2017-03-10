@@ -4,22 +4,35 @@ SDK for using Mapbox APIs with C#. If you'd like to contribute to the project, [
 
 
 `master` branch build status: [![Build status](https://ci.appveyor.com/api/projects/status/mh7ad8p1qonkbnwr/branch/master?svg=true)](https://ci.appveyor.com/project/Mapbox/mapbox-sdk-cs/branch/master)
+
 `master` branch code coverage: [![Coverage Status](https://coveralls.io/repos/github/mapbox/mapbox-sdk-cs/badge.svg?branch=master&t=jR0cza)](https://coveralls.io/github/mapbox/mapbox-sdk-cs?branch=master)
 
 ## Build
 
 With an IDE:
 * Open `MapboxSdkCs.sln` with Visual Studio or Xamarin Studio
+* Select configuration to build:
+  * `DebugNet` for targeting .NetFramework >=3.5
+  * `DebugUWP` for targeting UWP
 * `Build -> Rebuild Solution`
-* DLLs will be in `bin`
+* DLLs will be in
+  * `bin\Debug\net35\`
+  * or `bin\Debug\uap10`
 
 On the command line:
-* `nuget restore MapboxSdkCs.sln`
-* Windows: `msbuild MapboxSdkCs.sln`
-* Linux/OSX: `xbuild MapboxSdkCs.sln`
-* DLLs will be in `bin`
+* Windows
+  * `nuget restore MapboxSdkCs.sln`
+  * `msbuild MapboxSdkCs.sln /p:Configuration=<DebugNet|DebugUWP>`
+* Linux/OSX
+  * `mono nuget.exe restore MapboxSdkCs.sln`
+  * `xbuild MapboxSdkCs.sln /p:Configuration=<DebugNet|DebugUWP>`
+* DLLs will be in
+  * `bin\Debug\net35\`
+  * or `bin\Debug\uap10`
 
 ## Tests
+
+Currently tests are only available with configuration `DebugNet`.
 
 To run the tests you need to have the `MAPBOX_ACCESS_TOKEN` environment variable set.
 

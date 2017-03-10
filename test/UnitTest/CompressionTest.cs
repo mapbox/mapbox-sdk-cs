@@ -4,67 +4,71 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.UnitTest {
+namespace Mapbox.UnitTest
+{
 	using System.Text;
 	using Mapbox.Utils;
 	using NUnit.Framework;
 
 	[TestFixture]
-	internal class CompressionTest {
+	internal class CompressionTest
+	{
 		[Test]
-		public void Empty() {
+		public void Empty()
+		{
 			var buffer = new byte[] { };
 			Assert.AreEqual(buffer, Compression.Decompress(buffer));
 		}
 
 		[Test]
-		public void NotCompressed() {
+		public void NotCompressed()
+		{
 			var buffer = Encoding.ASCII.GetBytes("foobar");
 			Assert.AreEqual(buffer, Compression.Decompress(buffer));
 		}
 
 		[Test]
-		public void Corrupt() {
+		public void Corrupt()
+		{
 			var fs = new Mono.FileSource();
 			var buffer = new byte[] { };
-			bool finished = false;
+
 			// Vector tiles are compressed.
 			fs.Request(
 				"https://api.mapbox.com/v4/mapbox.mapbox-streets-v7/0/0/0.vector.pbf",
-				(Response res) => {
-					buffer = res.Data;
-					Assert.NotNull(buffer, "tile data not null");
-					Assert.Greater(buffer.Length, 30);
+				(Response res) =>
+					{
+						buffer = res.Data;
+					});
 
-					buffer[10] = 0;
-					buffer[20] = 0;
-					buffer[30] = 0;
+			fs.WaitForAllRequests();
 
-					Assert.AreEqual(buffer, Compression.Decompress(buffer));
-					finished = true;
-				});
+			Assert.Greater(buffer.Length, 30);
 
-			while(!finished) {
-				System.Threading.Thread.Sleep(5);
-			}
+			buffer[10] = 0;
+			buffer[20] = 0;
+			buffer[30] = 0;
+
+			Assert.AreEqual(buffer, Compression.Decompress(buffer));
 		}
 
 		[Test]
-		public void Decompress() {
+		public void Decompress()
+		{
 			var fs = new Mono.FileSource();
 			var buffer = new byte[] { };
-			bool finished = false;
 
 			// Vector tiles are compressed.
 			fs.Request(
 				"https://api.mapbox.com/v4/mapbox.mapbox-streets-v7/0/0/0.vector.pbf",
-				(Response res) => {
-					buffer = res.Data;
-					Assert.Less(buffer.Length, Compression.Decompress(buffer).Length);
-					finished = true;
-				});
+				(Response res) =>
+					{
+						buffer = res.Data;
+					});
 
-			while(!finished) { System.Threading.Thread.Sleep(5); }
+			fs.WaitForAllRequests();
+
+			Assert.Less(buffer.Length, Compression.Decompress(buffer).Length);
 		}
 	}
 }

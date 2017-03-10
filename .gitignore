@@ -2,6 +2,7 @@
 *~
 scriptcs/
 nuget.exe
+*project.lock.json
 
 # Documentation
 api

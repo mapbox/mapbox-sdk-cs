@@ -70,20 +70,13 @@
     </Compile>
     <Compile Include="CanonicalTileId.cs" />
     <Compile Include="ClassicRasterTile.cs" />
-    <Compile Include="IMemoryCache.cs" />
-    <Compile Include="ITileCache.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="MapTileReceivedEventArgs.cs" />
     <Compile Include="MapUtils.cs" />
-    <Compile Include="MemoryCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RasterTile.cs" />
     <Compile Include="RawPngRasterTile.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TileCover.cs" />
-    <Compile Include="TileFetcher.cs" />
-    <Compile Include="TileFetcherTileReceivedEventArgs.cs" />
-    <Compile Include="TileReceivedEventArgs.cs" />
     <Compile Include="TileResource.cs" />
     <Compile Include="UnwrappedTileId.cs" />
     <Compile Include="VectorTile.cs" />
