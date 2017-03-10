@@ -50,14 +50,8 @@
       <HintPath>..\..\packages\Mapbox.VectorTile.1.0.3-alpha1\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SmartThreadPool">
-      <HintPath>..\..\3rdparty\SmartThreadPool\SmartThreadPool.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Threading">
-      <HintPath>..\..\3rdparty\SmartThreadPool\System.Threading.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">

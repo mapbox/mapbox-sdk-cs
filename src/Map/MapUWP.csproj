@@ -92,11 +92,6 @@
       <Name>UtilsUWP</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="SmartThreadPool">
-      <HintPath>..\..\3rdparty\SmartThreadPool\SmartThreadPool.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
