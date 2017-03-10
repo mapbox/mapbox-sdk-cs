@@ -12,37 +12,56 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Core modules for accessing Mapbox services</description>
 		<summary>Core modules for accessing Mapbox services</summary>
-		<releaseNotes>Inital packaging</releaseNotes>
+		<releaseNotes>Net and UWP projects</releaseNotes>
 		<copyright>Copyright 2017</copyright>
 		<tags>Mapbox SDK CSharp Geocoding Directions Vectortiles</tags>
 	</metadata>
 	<files>
-<!--
-		<file src="bin\$configuration$\Mapbox.Directions.dll" target="lib\net35\"></file>
-		<file src="bin\$configuration$\Mapbox.Geocoding.dll" target="lib\net35\"></file>
-		<file src="bin\$configuration$\Mapbox.Json.dll" target="lib\net35\"></file>
-		<file src="bin\$configuration$\Mapbox.Map.dll" target="lib\net35\"></file>
-		<file src="bin\$configuration$\Mapbox.Platform.dll" target="lib\net35\"></file>
-		<file src="bin\$configuration$\Mapbox.Utils.dll" target="lib\net35\"></file>
--->
+
+<!--source-->
 		<file src="src\Directions\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Directions\"></file>
 		<file src="src\Geocoding\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Geocoding\"></file>
 		<file src="src\Map\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Map\"></file>
 		<file src="src\Platform\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Platform\"></file>
 		<file src="src\Utils\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Utils\"></file>
-<!--
-		<file src="????\link.xml" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>
-		<file src="bin\$configuration$\Mapbox.Json.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\"></file>
+
+<!--Net35-->
+		<file src="3rdparty\Json.Net.Unity3D\Net35\Mapbox.Json.dll" target="lib\net35\"></file>
+		<file src="3rdparty\Mapbox.IO.Compression\net35\Mapbox.IO.Compression.dll" target="lib\net35\"></file>
+
+		<file src="bin\Debug\net35\Mapbox.VectorTile.ExtensionMethods.dll" target="lib\net35\"></file>
+		<file src="bin\Debug\net35\Mapbox.VectorTile.Geometry.dll" target="lib\net35\"></file>
+		<file src="bin\Debug\net35\Mapbox.VectorTile.PbfReader.dll" target="lib\net35\"></file>
+		<file src="bin\Debug\net35\Mapbox.VectorTile.VectorTileReader.dll" target="lib\net35\"></file>
+
+		<file src="bin\Debug\net35\Mapbox.Directions.dll" target="lib\net35\"></file>
+		<file src="bin\Debug\net35\Mapbox.Geocoding.dll" target="lib\net35\"></file>
+		<file src="bin\Debug\net35\Mapbox.Map.dll" target="lib\net35\"></file>
+		<file src="bin\Debug\net35\Mapbox.Platform.dll" target="lib\net35\"></file>
+		<file src="bin\Debug\net35\Mapbox.Utils.dll" target="lib\net35\"></file>
+
+
+<!--UWP-->
+		<file src="3rdparty\Json.Net.Unity3D\Portable\Mapbox.Json.dll" target="lib\uap10\"></file>
+		<file src="3rdparty\Mapbox.IO.Compression\uap10\Mapbox.IO.Compression.dll" target="lib\uap10\"></file>
+		<file src="3rdparty\Mapbox.IO.Compression\uap10\Mapbox.IO.Compression.pri" target="lib\uap10\"></file>
+
+<!-- TODO: investigate why DLLs are not copied to output folder!!
+		<file src="bin\Debug\uap10\Mapbox.VectorTile.ExtensionMethods.dll" target="lib\uap10\"></file>
+		<file src="bin\Debug\uap10\Mapbox.VectorTile.Geometry.dll" target="lib\uap10\"></file>
+		<file src="bin\Debug\uap10\Mapbox.VectorTile.PbfReader.dll" target="lib\uap10\"></file>
+		<file src="bin\Debug\uap10\Mapbox.VectorTile.VectorTileReader.dll" target="lib\uap10\"></file>
 -->
-		<file src="bin\$configuration$\Mapbox.VectorTile.ExtensionMethods.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\$configuration$\Mapbox.VectorTile.Geometry.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\$configuration$\Mapbox.VectorTile.PbfReader.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\$configuration$\Mapbox.VectorTile.VectorTileReader.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\MapboxVectorTile\"></file>
-		<file src="bin\$configuration$\ICSharpCode.SharpZipLib.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\ThirdParty\"></file>
-		<file src="bin\$configuration$\SmartThreadPool.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\ThirdParty\"></file>
-		<file src="bin\$configuration$\System.Threading.dll" target="content\sdkproject\Assets\Mapbox\Core\Plugins\ThirdParty\"></file>
-<!--
-		<file src="bin\$configuration$\Triangulation.dll" target="content\sdkproject\Assets\Mapbox\Assets\Plugins\ThirdParty\"></file>
--->
+		<file src="packages\Mapbox.VectorTile.1.0.3-alpha1\lib\uap10\Mapbox.VectorTile.ExtensionMethods.dll" target="lib\uap10\"></file>
+		<file src="packages\Mapbox.VectorTile.1.0.3-alpha1\lib\uap10\Mapbox.VectorTile.Geometry.dll" target="lib\uap10\"></file>
+		<file src="packages\Mapbox.VectorTile.1.0.3-alpha1\lib\uap10\Mapbox.VectorTile.PbfReader.dll" target="lib\uap10\"></file>
+		<file src="packages\Mapbox.VectorTile.1.0.3-alpha1\lib\uap10\Mapbox.VectorTile.VectorTileReader.dll" target="lib\uap10\"></file>
+
+		<file src="bin\Debug\uap10\Mapbox.Directions.dll" target="lib\uap10\"></file>
+		<file src="bin\Debug\uap10\Mapbox.Geocoding.dll" target="lib\uap10\"></file>
+		<file src="bin\Debug\uap10\Mapbox.Map.dll" target="lib\uap10\"></file>
+		<file src="bin\Debug\uap10\Mapbox.Platform.dll" target="lib\uap10\"></file>
+		<file src="bin\Debug\uap10\Mapbox.Utils.dll" target="lib\uap10\"></file>
+
 	</files>
 </package>

@@ -105,7 +105,7 @@ if (!RunCommand(buildCmd, true))
 }
 
 
-string nugetCmd = string.Format("nuget pack -properties version={0};configuration={1}", versionNupkg, configuration);
+string nugetCmd = string.Format("nuget pack -properties version={0}", versionNupkg);
 Console.WriteLine("creating nupkg: [{0}]", nugetCmd);
 Console.WriteLine("Skipping nuget pack! TODO: Build 'DebugNet' and 'DebugUWP' on one configuration!");
 // if (!RunCommand(nugetCmd, true))
