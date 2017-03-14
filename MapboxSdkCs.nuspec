@@ -12,18 +12,18 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Core modules for accessing Mapbox services</description>
 		<summary>Core modules for accessing Mapbox services</summary>
-		<releaseNotes>Net and UWP projects</releaseNotes>
+		<releaseNotes>Don't pack intermediate build files (TemporaryGeneratedFile_*.cs)</releaseNotes>
 		<copyright>Copyright 2017</copyright>
 		<tags>Mapbox SDK CSharp Geocoding Directions Vectortiles</tags>
 	</metadata>
 	<files>
 
 <!--source-->
-		<file src="src\Directions\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Directions\"></file>
-		<file src="src\Geocoding\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Geocoding\"></file>
-		<file src="src\Map\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Map\"></file>
-		<file src="src\Platform\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Platform\"></file>
-		<file src="src\Utils\**\*.cs" exclude="**\Properties\AssemblyInfo.cs" target="content\sdkproject\Assets\Mapbox\Core\Utils\"></file>
+		<file src="src\Directions\**\*.cs" exclude="**\Properties\AssemblyInfo.cs;**\obj\**\*.cs" target="content\sdkproject\Assets\Mapbox\Core\Directions\"></file>
+		<file src="src\Geocoding\**\*.cs" exclude="**\Properties\AssemblyInfo.cs;**\obj\**\*.cs" target="content\sdkproject\Assets\Mapbox\Core\Geocoding\"></file>
+		<file src="src\Map\**\*.cs" exclude="**\Properties\AssemblyInfo.cs;**\obj\**\*.cs" target="content\sdkproject\Assets\Mapbox\Core\Map\"></file>
+		<file src="src\Platform\**\*.cs" exclude="**\Properties\AssemblyInfo.cs;**\obj\**\*.cs" target="content\sdkproject\Assets\Mapbox\Core\Platform\"></file>
+		<file src="src\Utils\**\*.cs" exclude="**\Properties\AssemblyInfo.cs;**\obj\**\*.cs" target="content\sdkproject\Assets\Mapbox\Core\Utils\"></file>
 
 <!--Net35-->
 		<file src="3rdparty\Json.Net.Unity3D\Net35\Mapbox.Json.dll" target="lib\net35\"></file>
