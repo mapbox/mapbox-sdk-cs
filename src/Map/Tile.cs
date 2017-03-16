@@ -104,7 +104,7 @@ namespace Mapbox.Map {
 		///     It will stop a network request and set the tile's state to Canceled.
 		/// </summary>
 		public void Cancel() {
-			if(this.request != null) {
+			if (this.request != null) {
 				this.request.Cancel();
 				this.request = null;
 			}
@@ -125,9 +125,9 @@ namespace Mapbox.Map {
 		// on the desktop, Android, etc) we can use worker threads and when building for
 		// the browser, we keep it single-threaded.
 		private void HandleTileResponse(Response response) {
-			if(response.Error != null) {
+			if (!string.IsNullOrEmpty(response.Error)) {
 				this.error = response.Error;
-			} else if(this.ParseTileData(response.Data) == false) {
+			} else if (this.ParseTileData(response.Data) == false) {
 				this.error = "ParseError";
 			}
 
