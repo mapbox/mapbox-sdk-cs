@@ -1,4 +1,4 @@
-#r System
+#r "System"
 #load "build-util.csx"
 
 using System.Diagnostics;
@@ -22,8 +22,14 @@ Console.WriteLine("cwd [build.csx]: {0}", Directory.GetCurrentDirectory());
 string commitMessage = Environment.GetEnvironmentVariable("APPVEYOR_REPO_COMMIT_MESSAGE");
 Console.WriteLine("commit message: \"{0}\"", commitMessage);
 
+string configuration = Environment.GetEnvironmentVariable("configuration");
+Console.WriteLine($"configuration: \"{configuration}\"");
+
 bool publishNuget = commitMessage.IndexOf("[publish nuget]", StringComparison.InvariantCultureIgnoreCase) >= 0;
 bool publishDocs = commitMessage.IndexOf("[publish docs]", StringComparison.InvariantCultureIgnoreCase) >= 0;
+
+//publish docs only on 'DebugNet' configuration
+publishDocs = publishDocs && configuration == "DebugNet";
 
 if (publishNuget) { Console.WriteLine("going to publish to nuget.org"); }
 if (publishDocs) { Console.WriteLine("going to publish docs"); }
@@ -60,7 +66,6 @@ using (TextReader tr = new StreamReader("versions.txt"))
     versionNupkg = tr.ReadLine().Split(":".ToCharArray())[1].Trim();
 }
 
-string configuration = Environment.GetEnvironmentVariable("configuration");
 Console.WriteLine("configuration: {0}", configuration);
 Console.WriteLine("Versions:");
 Console.WriteLine("  - DLLs  : {0}", versionDLL);
@@ -168,6 +173,7 @@ else
             string.Format("git commit -m \"pushed via [{0}] by [{1}]\"", originalCommit,commitAuthor),
             string.Format("git remote add origin https://{0}@github.com/mapbox/mapbox-sdk-unity.git", githubToken),
             string.Format("git remote set-url --add --push origin https://{0}@github.com/mapbox/mapbox-sdk-cs.git", githubToken),
+            string.Format("git remote set-url --add --push origin https://{0}@github.com/mapbox/mapbox-sdk-unity.git", githubToken),
             "git checkout -b gh-pages",
             "git push -f origin gh-pages"
         });
