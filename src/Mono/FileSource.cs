@@ -4,8 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Mono
-{
+namespace Mapbox.Mono {
 	using System;
 	using System.Collections.Generic;
 	using System.Threading;
@@ -19,10 +18,10 @@ namespace Mapbox.Mono
 	///     This implementation requires .NET 4.5 and later. The access token is expected to
 	///     be exported to the environment as MAPBOX_ACCESS_TOKEN.
 	/// </remarks>
-	public sealed class FileSource : IFileSource
-	{
-		private readonly List<HTTPRequest> requests = new List<HTTPRequest>();
-		private readonly string accessToken = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN");
+	public sealed class FileSource : IFileSource {
+
+		private readonly List<HTTPRequest> _requests = new List<HTTPRequest>();
+		private readonly string _accessToken = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN");
 
 		/// <summary> Performs a request asynchronously. </summary>
 		/// <param name="url"> The HTTP/HTTPS url. </param>
@@ -32,15 +31,13 @@ namespace Mapbox.Mono
 		///     request. This handle can be completely ignored if there is no intention of ever
 		///     canceling the request.
 		/// </returns>
-		public IAsyncRequest Request(string url, Action<Response> callback)
-		{
-			if (this.accessToken != null)
-			{
-				url += "?access_token=" + this.accessToken;
+		public IAsyncRequest Request(string url, Action<Response> callback) {
+			if (_accessToken != null) {
+				url += "?access_token=" + _accessToken;
 			}
 
 			var request = new HTTPRequest(url, callback);
-			this.requests.Add(request);
+			_requests.Add(request);
 
 			return request;
 		}
@@ -48,21 +45,16 @@ namespace Mapbox.Mono
 		/// <summary>
 		///     Block until all the requests are processed.
 		/// </summary>
-		public void WaitForAllRequests()
-		{
-			while (true)
-			{
+		public void WaitForAllRequests() {
+			while (true) {
 				// Reverse for safely removing while iterating.
-				for (int i = this.requests.Count - 1; i >= 0; i--)
-				{
-					if (this.requests[i].Wait())
-					{
-						this.requests.RemoveAt(i);
+				for (int i = _requests.Count - 1; i >= 0; i--) {
+					if (_requests[i].Wait()) {
+						_requests.RemoveAt(i);
 					}
 				}
 
-				if (this.requests.Count == 0)
-				{
+				if (_requests.Count == 0) {
 					break;
 				}
 
