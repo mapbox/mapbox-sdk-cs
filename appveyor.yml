@@ -25,6 +25,7 @@ environment:
 
 before_build:
   - SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+  - SET DOCFX_SOURCE_BRANCH_NAME=%APPVEYOR_REPO_BRANCH%
 
 build_script:
   - FOR /F "tokens=1 delims=<CR> usebackq" %%N in (`nuget ^| %windir%\system32\find /i "NuGet Version"`) DO ECHO %%N
