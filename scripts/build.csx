@@ -171,9 +171,7 @@ else
             "git init .",
             "git add .",
             string.Format("git commit -m \"pushed via [{0}] by [{1}]\"", originalCommit,commitAuthor),
-            string.Format("git remote add origin https://{0}@github.com/mapbox/mapbox-sdk-unity.git", githubToken),
-            string.Format("git remote set-url --add --push origin https://{0}@github.com/mapbox/mapbox-sdk-cs.git", githubToken),
-            string.Format("git remote set-url --add --push origin https://{0}@github.com/mapbox/mapbox-sdk-unity.git", githubToken),
+            string.Format("git remote add origin https://{0}@github.com/mapbox/mapbox-sdk-cs.git", githubToken),
             "git checkout -b gh-pages",
             "git push -f origin gh-pages"
         });
