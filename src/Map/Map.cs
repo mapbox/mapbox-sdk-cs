@@ -157,7 +157,7 @@ namespace Mapbox.Map
 		{
 			var copy = new List<Mapbox.IObserver<T>>(this.observers);
 
-			foreach (IObserver<T> observer in copy)
+			foreach (Mapbox.IObserver<T> observer in copy)
 			{
 				observer.OnNext(next);
 			}
