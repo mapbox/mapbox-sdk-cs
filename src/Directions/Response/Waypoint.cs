@@ -6,12 +6,14 @@
 
 namespace Mapbox.Directions
 {
-	using Mapbox.Json;
+    using Mapbox.Json;
+    using Mapbox.Utils;
+    using Mapbox.Utils.JsonConverters;
 
-	/// <summary>
-	/// A Waypoint from a Directions API call.
-	/// </summary>
-	public class Waypoint
+    /// <summary>
+    /// A Waypoint from a Directions API call.
+    /// </summary>
+    public class Waypoint
 	{
 		/// <summary>
 		/// Gets or sets the name.

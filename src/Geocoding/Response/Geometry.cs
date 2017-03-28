@@ -5,13 +5,15 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Geocoding {
-	using System;
-	using Mapbox.Json;
+    using System;
+    using Mapbox.Json;
+    using Mapbox.Utils;
+    using Mapbox.Utils.JsonConverters;
 
-	/// <summary> Point geometry representing location of geocode result. </summary>
+    /// <summary> Point geometry representing location of geocode result. </summary>
 #if !WINDOWS_UWP
-	//http://stackoverflow.com/a/12903628
-	[Serializable]
+    //http://stackoverflow.com/a/12903628
+    [Serializable]
 #endif
 	public class Geometry {
 		/// <summary>

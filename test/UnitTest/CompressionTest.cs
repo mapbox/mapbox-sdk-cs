@@ -6,11 +6,12 @@
 
 namespace Mapbox.UnitTest
 {
-	using System.Text;
-	using Mapbox.Utils;
-	using NUnit.Framework;
+    using System.Text;
+    using Mapbox.Platform;
+    using Mapbox.Utils;
+    using NUnit.Framework;
 
-	[TestFixture]
+    [TestFixture]
 	internal class CompressionTest
 	{
 		[Test]

@@ -6,11 +6,12 @@
 
 namespace Mapbox.UnitTest
 {
-	using System.Drawing;
-	using Mapbox.Map;
-	using NUnit.Framework;
+    using System.Drawing;
+    using Mapbox.Map;
+    using Mapbox.Utils;
+    using NUnit.Framework;
 
-	[TestFixture]
+    [TestFixture]
 	internal class MapTest
 	{
 		private Mono.FileSource fs;

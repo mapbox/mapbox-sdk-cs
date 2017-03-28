@@ -6,12 +6,13 @@
 
 namespace Mapbox.UnitTest
 {
-	using System;
-	using System.Collections.Generic;
-	using Mapbox.Map;
-	using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using Mapbox.Map;
+    using Mapbox.Utils;
+    using NUnit.Framework;
 
-	[TestFixture]
+    [TestFixture]
 	internal class TileCoverTest
 	{
 		[Test]

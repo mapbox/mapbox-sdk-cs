@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Utils.JsonConverters
 {
 	using Mapbox.Json;
 

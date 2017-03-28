@@ -6,12 +6,13 @@
 
 namespace Mapbox.Directions
 {
-	using System;
-	using System.Collections.Generic;
-	using Platform;
+    using System;
+    using System.Collections.Generic;
+    using Mapbox.Utils;
+    using Platform;
 
-	/// <summary> A directions request. </summary>
-	public class DirectionResource : Resource
+    /// <summary> A directions request. </summary>
+    public class DirectionResource : Resource
 	{
 		private string apiEndpoint = "directions/v5/";
 

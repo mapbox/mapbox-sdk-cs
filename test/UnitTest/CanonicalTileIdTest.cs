@@ -6,10 +6,11 @@
 
 namespace Mapbox.UnitTest
 {
-	using Mapbox.Map;
-	using NUnit.Framework;
+    using Mapbox.Map;
+    using Mapbox.Utils;
+    using NUnit.Framework;
 
-	[TestFixture]
+    [TestFixture]
 	internal class CanonicalTileIdTest
 	{
 		[Test]

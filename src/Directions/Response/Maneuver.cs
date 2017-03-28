@@ -6,12 +6,13 @@
 
 namespace Mapbox.Directions
 {
-	using Mapbox.Json;
+    using Mapbox.Json;
+    using Mapbox.Utils;
 
-	/// <summary>
-	/// A Maneuver from a directions API call.
-	/// </summary>
-	public class Maneuver
+    /// <summary>
+    /// A Maneuver from a directions API call.
+    /// </summary>
+    public class Maneuver
 	{
 		/// <summary>
 		/// Gets or sets the bearing after.

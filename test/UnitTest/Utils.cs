@@ -5,14 +5,15 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.UnitTest {
-	using System;
-	using System.Collections.Generic;
-	using System.Drawing;
-	using System.IO;
-	using Mapbox.Map;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+    using Mapbox.Map;
+    using Mapbox.Platform;
 
-	internal static class Utils {
-		internal class VectorMapObserver : Mapbox.IObserver<VectorTile> {
+    internal static class Utils {
+		internal class VectorMapObserver : Mapbox.Utils.IObserver<VectorTile> {
 			private List<VectorTile> tiles = new List<VectorTile>();
 
 			public List<VectorTile> Tiles {
@@ -28,7 +29,7 @@ namespace Mapbox.UnitTest {
 			}
 		}
 
-		internal class RasterMapObserver : Mapbox.IObserver<RasterTile> {
+		internal class RasterMapObserver : Mapbox.Utils.IObserver<RasterTile> {
 			private List<Image> tiles = new List<Image>();
 
 			public List<Image> Tiles {
@@ -45,7 +46,7 @@ namespace Mapbox.UnitTest {
 			}
 		}
 
-		internal class ClassicRasterMapObserver : Mapbox.IObserver<ClassicRasterTile> {
+		internal class ClassicRasterMapObserver : Mapbox.Utils.IObserver<ClassicRasterTile> {
 			private List<Image> tiles = new List<Image>();
 
 			public List<Image> Tiles {

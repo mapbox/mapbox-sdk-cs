@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Utils
 {
 	/// <summary>
 	///     An observable interface, similar to .NET 4.0 own IObservable.
@@ -16,10 +16,10 @@ namespace Mapbox
 	{
 		/// <summary> Add an <see cref="T:IObserver" /> to the observer list. </summary>
 		/// <param name="observer"> The object subscribing to events. </param>
-		void Subscribe(Mapbox.IObserver<T> observer);
+		void Subscribe(Mapbox.Utils.IObserver<T> observer);
 
 		/// <summary> Remove an <see cref="T:IObserver" /> to the observer list. </summary>
 		/// <param name="observer"> The object unsubscribing to events. </param>
-		void Unsubscribe(Mapbox.IObserver<T> observer);
+        void Unsubscribe(Mapbox.Utils.IObserver<T> observer);
 	}
 }

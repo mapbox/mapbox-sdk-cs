@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Utils
 {
 	/// <summary> Represents a bounding box derived from a southwest corner and a northeast corner. </summary>
 	public struct GeoCoordinateBounds

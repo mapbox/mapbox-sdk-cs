@@ -6,12 +6,13 @@
 
 namespace Mapbox.Map
 {
-	using System;
+    using System;
+    using Mapbox.Utils;
 
-	/// <summary>
-	///     Canonical tile identifier in a slippy map.
-	/// </summary>
-	public struct CanonicalTileId
+    /// <summary>
+    ///     Canonical tile identifier in a slippy map.
+    /// </summary>
+    public struct CanonicalTileId
 	{
 		/// <summary> The zoom level. </summary>
 		public readonly int Z;

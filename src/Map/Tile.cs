@@ -4,16 +4,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map {
+namespace Mapbox.Map 
+{
+    using System;
+    using Mapbox.Platform;
 
-	using System;
-
-	/// <summary>
-	///    A Map tile, a square with vector or raster data representing a geographic
-	///    bounding box. More info <see href="https://en.wikipedia.org/wiki/Tiled_web_map">
-	///    here </see>.
-	/// </summary>
-	public abstract class Tile {
+    /// <summary>
+    ///    A Map tile, a square with vector or raster data representing a geographic
+    ///    bounding box. More info <see href="https://en.wikipedia.org/wiki/Tiled_web_map">
+    ///    here </see>.
+    /// </summary>
+    public abstract class Tile {
 
 		private CanonicalTileId id;
 		private string error;

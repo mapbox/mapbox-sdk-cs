@@ -6,16 +6,18 @@
 
 namespace Mapbox.Directions
 {
-	using System;
-	using System.Text;
-	using Mapbox.Json;
+    using System;
+    using System.Text;
+    using Mapbox.Json;
+    using Mapbox.Platform;
+    using Mapbox.Utils.JsonConverters;
 
-	/// <summary>
-	///     Wrapper around the <see href="https://www.mapbox.com/api-documentation/#directions">
-	///     Mapbox Directions API</see>. The Mapbox Directions API will show you how to get where
-	///     you're going.
-	/// </summary>
-	public sealed class Directions
+    /// <summary>
+    ///     Wrapper around the <see href="https://www.mapbox.com/api-documentation/#directions">
+    ///     Mapbox Directions API</see>. The Mapbox Directions API will show you how to get where
+    ///     you're going.
+    /// </summary>
+    public sealed class Directions
 	{
 		private readonly IFileSource fileSource;
 

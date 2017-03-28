@@ -6,11 +6,11 @@
 
 namespace Mapbox.Geocoding
 {
-	using Mapbox;
-	using System.Collections.Generic;
+    using System.Collections.Generic;
+    using Mapbox.Utils;
 
-	/// <summary> A reverse geocode request. </summary>
-	public sealed class ReverseGeocodeResource : GeocodeResource<GeoCoordinate>
+    /// <summary> A reverse geocode request. </summary>
+    public sealed class ReverseGeocodeResource : GeocodeResource<GeoCoordinate>
 	{
 		// Required
 		private GeoCoordinate query;

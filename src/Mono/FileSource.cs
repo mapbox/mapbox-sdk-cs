@@ -6,20 +6,21 @@
 
 namespace Mapbox.Mono
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Threading;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using Mapbox.Platform;
 
-	/// <summary>
-	///     Mono implementation of the FileSource class. It will use Mono's
-	///     <see href="http://www.mono-project.com/docs/advanced/runtime/">runtime</see> to
-	///     asynchronously fetch data from the network via HTTP or HTTPS requests.
-	/// </summary>
-	/// <remarks>
-	///     This implementation requires .NET 4.5 and later. The access token is expected to
-	///     be exported to the environment as MAPBOX_ACCESS_TOKEN.
-	/// </remarks>
-	public sealed class FileSource : IFileSource
+    /// <summary>
+    ///     Mono implementation of the FileSource class. It will use Mono's
+    ///     <see href="http://www.mono-project.com/docs/advanced/runtime/">runtime</see> to
+    ///     asynchronously fetch data from the network via HTTP or HTTPS requests.
+    /// </summary>
+    /// <remarks>
+    ///     This implementation requires .NET 4.5 and later. The access token is expected to
+    ///     be exported to the environment as MAPBOX_ACCESS_TOKEN.
+    /// </remarks>
+    public sealed class FileSource : IFileSource
 	{
 		private readonly List<HTTPRequest> requests = new List<HTTPRequest>();
 		private readonly string accessToken = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN");

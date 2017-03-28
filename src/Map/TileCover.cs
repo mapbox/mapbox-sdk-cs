@@ -4,15 +4,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map {
-	using System;
-	using System.Collections.Generic;
+namespace Mapbox.Map 
+{
+    using System;
+    using System.Collections.Generic;
+    using Mapbox.Utils;
 
-	/// <summary>
-	///     Helper funtions to get a tile cover, i.e. a set of tiles needed for
-	///     covering a bounding box.
-	/// </summary>
-	public static class TileCover {
+    /// <summary>
+    ///     Helper funtions to get a tile cover, i.e. a set of tiles needed for
+    ///     covering a bounding box.
+    /// </summary>
+    public static class TileCover {
 		/// <summary> Get a tile cover for the specified bounds and zoom. </summary>
 		/// <param name="bounds"> Geographic bounding box.</param>
 		/// <param name="zoom"> Zoom level. </param>

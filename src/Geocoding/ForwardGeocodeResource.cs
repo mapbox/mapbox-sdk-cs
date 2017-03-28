@@ -6,11 +6,12 @@
 
 namespace Mapbox.Geocoding
 {
-	using System;
-	using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
+    using Mapbox.Utils;
 
-	/// <summary> A forward geocode request. </summary>
-	public sealed class ForwardGeocodeResource : GeocodeResource<string>
+    /// <summary> A forward geocode request. </summary>
+    public sealed class ForwardGeocodeResource : GeocodeResource<string>
 	{
 		/// <summary>
 		///     ISO 3166-1 alpha-2 country codes.

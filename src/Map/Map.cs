@@ -6,18 +6,20 @@
 
 namespace Mapbox.Map
 {
-	using System;
-	using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
+    using Mapbox.Platform;
+    using Mapbox.Utils;
 
-	/// <summary>
-	///     The Mapbox Map abstraction will take care of fetching and decoding
-	///     data for a geographic bounding box at a certain zoom level.
-	/// </summary>
-	/// <typeparam name="T">
-	///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
-	///     <see cref="T:Mapbox.Map.Raster"/>.
-	/// </typeparam>
-	public sealed class Map<T> : Mapbox.IObservable<T> where T : Tile, new()
+    /// <summary>
+    ///     The Mapbox Map abstraction will take care of fetching and decoding
+    ///     data for a geographic bounding box at a certain zoom level.
+    /// </summary>
+    /// <typeparam name="T">
+    ///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
+    ///     <see cref="T:Mapbox.Map.Raster"/>.
+    /// </typeparam>
+    public sealed class Map<T> : Mapbox.Utils.IObservable<T> where T : Tile, new()
 	{
 		/// <summary>
 		///     Arbitrary limit of tiles this class will handle simultaneously.
@@ -30,7 +32,7 @@ namespace Mapbox.Map
 		private string mapId;
 
 		private HashSet<T> tiles = new HashSet<T>();
-		private List<Mapbox.IObserver<T>> observers = new List<Mapbox.IObserver<T>>();
+		private List<Mapbox.Utils.IObserver<T>> observers = new List<Mapbox.Utils.IObserver<T>>();
 
 		/// <summary>
 		///     Initializes a new instance of the <see cref="T:Mapbox.Map.Map`1"/> class.
@@ -141,23 +143,23 @@ namespace Mapbox.Map
 
 		/// <summary> Add an <see cref="T:IObserver" /> to the observer list. </summary>
 		/// <param name="observer"> The object subscribing to events. </param>
-		public void Subscribe(Mapbox.IObserver<T> observer)
+		public void Subscribe(Mapbox.Utils.IObserver<T> observer)
 		{
 			this.observers.Add(observer);
 		}
 
 		/// <summary> Remove an <see cref="T:IObserver" /> to the observer list. </summary>
 		/// <param name="observer"> The object unsubscribing to events. </param>
-		public void Unsubscribe(Mapbox.IObserver<T> observer)
+		public void Unsubscribe(Mapbox.Utils.IObserver<T> observer)
 		{
 			this.observers.Remove(observer);
 		}
 
 		private void NotifyNext(T next)
 		{
-			var copy = new List<Mapbox.IObserver<T>>(this.observers);
+			var copy = new List<Mapbox.Utils.IObserver<T>>(this.observers);
 
-			foreach (Mapbox.IObserver<T> observer in copy)
+			foreach (Mapbox.Utils.IObserver<T> observer in copy)
 			{
 				observer.OnNext(next);
 			}

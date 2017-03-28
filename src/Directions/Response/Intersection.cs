@@ -6,13 +6,15 @@
 
 namespace Mapbox.Directions
 {
-	using System.Collections.Generic;
-	using Mapbox.Json;
+    using System.Collections.Generic;
+    using Mapbox.Json;
+    using Mapbox.Utils;
+    using Mapbox.Utils.JsonConverters;
 
-	/// <summary>
-	/// An Intersection from a Directions API call.
-	/// </summary>
-	public class Intersection
+    /// <summary>
+    /// An Intersection from a Directions API call.
+    /// </summary>
+    public class Intersection
 	{
 		/// <summary>
 		/// Gets or sets the out.

@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Utils
 {
 	/// <summary>
 	///     An observer interface, similar to .NET 4.0 own IObserver.
