@@ -27,7 +27,7 @@ namespace Mapbox.Directions
 		/// </summary>
 		/// <value>The location.</value>
 		[JsonProperty("location")]
-		[JsonConverter(typeof(LonLatToGeoCoordinateConverter))]
-		public GeoCoordinate Location { get; set; }
+		[JsonConverter(typeof(LonLatToVector2dConverter))]
+		public Vector2d Location { get; set; }
 	}
 }

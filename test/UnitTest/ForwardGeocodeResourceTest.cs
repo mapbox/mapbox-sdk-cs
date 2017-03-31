@@ -67,7 +67,7 @@ namespace Mapbox.UnitTest
             Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false", this.fgr.GetUrl());
 
             // With bbox
-            this.fgr.Bbox = new GeoCoordinateBounds(new GeoCoordinate(15, 10), new GeoCoordinate(25, 20));
+            this.fgr.Bbox = new Vector2dBounds(new Vector2d(15, 10), new Vector2d(25, 20));
             Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000", this.fgr.GetUrl());
 
             // With one country
@@ -79,7 +79,7 @@ namespace Mapbox.UnitTest
             Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000&country=ar%2Cfi", this.fgr.GetUrl());
 
             // With proximity
-            this.fgr.Proximity = new GeoCoordinate(10, 5);
+            this.fgr.Proximity = new Vector2d(10, 5);
             Assert.AreEqual("https://api.mapbox.com/geocoding/v5/mapbox.places/Minneapolis%2C%20MN.json?autocomplete=false&bbox=10.00000%2C15.00000%2C20.00000%2C25.00000&country=ar%2Cfi&proximity=5.00000%2C10.00000", this.fgr.GetUrl());
 
             // With one types

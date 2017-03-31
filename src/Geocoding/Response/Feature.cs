@@ -62,16 +62,16 @@ namespace Mapbox.Geocoding {
 		/// </summary>
 		/// <value>The bbox.</value>
 		[JsonProperty("bbox", NullValueHandling = NullValueHandling.Ignore)]
-		[JsonConverter(typeof(BboxToGeoCoordinateBoundsConverter))]
-		public GeoCoordinateBounds? Bbox { get; set; }
+		[JsonConverter(typeof(BboxToVector2dBoundsConverter))]
+		public Vector2dBounds? Bbox { get; set; }
 
 		/// <summary>
 		/// Gets or sets the center.
 		/// </summary>
 		/// <value>The center.</value>
 		[JsonProperty("center")]
-		[JsonConverter(typeof(LonLatToGeoCoordinateConverter))]
-		public GeoCoordinate Center { get; set; }
+		[JsonConverter(typeof(LonLatToVector2dConverter))]
+		public Vector2d Center { get; set; }
 
 		/// <summary>
 		/// Gets or sets the geometry.

@@ -28,8 +28,8 @@ namespace Mapbox.Directions
 		/// </summary>
 		/// <value>The geometry.</value>
 		[JsonProperty("geometry")]
-		[JsonConverter(typeof(PolylineToGeoCoordinateListConverter))]
-		public List<GeoCoordinate> Geometry { get; set; }
+		[JsonConverter(typeof(PolylineToVector2dListConverter))]
+		public List<Vector2d> Geometry { get; set; }
 
 		/// <summary>
 		/// Gets or sets the duration.

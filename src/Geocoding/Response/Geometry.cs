@@ -27,8 +27,8 @@ namespace Mapbox.Geocoding {
 		///     Gets or sets coordinates. Because they are points, Geocode results will always be  a single Geocoordinate.
 		/// </summary>
 		/// <value>The coordinates.</value>
-		[JsonConverter(typeof(LonLatToGeoCoordinateConverter))]
+		[JsonConverter(typeof(LonLatToVector2dConverter))]
 		[JsonProperty("coordinates")]
-		public GeoCoordinate Coordinates { get; set; }
+		public Vector2d Coordinates { get; set; }
 	}
 }

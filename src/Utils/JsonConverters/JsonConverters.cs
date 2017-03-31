@@ -18,9 +18,9 @@ namespace Mapbox.Utils.JsonConverters
 		/// </summary>
 		private static JsonConverter[] converters =
 		{
-			new LonLatToGeoCoordinateConverter(),
-			new BboxToGeoCoordinateBoundsConverter(),
-			new PolylineToGeoCoordinateListConverter()
+			new LonLatToVector2dConverter(),
+			new BboxToVector2dBoundsConverter(),
+			new PolylineToVector2dListConverter()
 		};
 
 		/// <summary>

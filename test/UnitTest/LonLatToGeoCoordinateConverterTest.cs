@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LonLatToGeoCoordinateConverterTest.cs" company="Mapbox">
+// <copyright file="LonLatToVector2dConverterTest.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
@@ -12,15 +12,15 @@ namespace Mapbox.UnitTest
     using NUnit.Framework;
 
     [TestFixture]
-    internal class LonLatToGeoCoordinateConverterTest
+    internal class LonLatToVector2dConverterTest
     {
         private string lonLatStr = "[-77.0295,38.9165]";
-        private GeoCoordinate lonLatObj = new GeoCoordinate(longitude: -77.0295, latitude: 38.9165);
+        private Vector2d lonLatObj = new Vector2d(x: -77.0295, y: 38.9165);
 
         [Test]
         public void Deserialize()
         {
-            GeoCoordinate deserializedLonLat = JsonConvert.DeserializeObject<GeoCoordinate>(this.lonLatStr, JsonConverters.Converters);
+            Vector2d deserializedLonLat = JsonConvert.DeserializeObject<Vector2d>(this.lonLatStr, JsonConverters.Converters);
             Assert.AreEqual(this.lonLatObj.ToString(), deserializedLonLat.ToString());
         }
 

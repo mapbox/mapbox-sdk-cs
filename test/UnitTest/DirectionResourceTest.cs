@@ -13,7 +13,7 @@ namespace Mapbox.UnitTest
     [TestFixture]
     internal class DirectionResourceTest
     {
-        private GeoCoordinate[] coordinates = { new GeoCoordinate(10, 10), new GeoCoordinate(20, 20) };
+        private Vector2d[] coordinates = { new Vector2d(10, 10), new Vector2d(20, 20) };
         private Directions.RoutingProfile profile = Directions.RoutingProfile.Driving;
         private Directions.DirectionResource dr;
 

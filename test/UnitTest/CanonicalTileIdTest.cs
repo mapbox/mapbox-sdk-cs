@@ -14,13 +14,13 @@ namespace Mapbox.UnitTest
 	internal class CanonicalTileIdTest
 	{
 		[Test]
-		public void ToGeoCoordinate()
+		public void ToVector2d()
 		{
-			var set = TileCover.Get(GeoCoordinateBounds.World(), 5);
+			var set = TileCover.Get(Vector2dBounds.World(), 5);
 
 			foreach (var tile in set)
 			{
-				var reverse = TileCover.CoordinateToTileId(tile.ToGeoCoordinate(), 5);
+				var reverse = TileCover.CoordinateToTileId(tile.ToVector2d(), 5);
 
 				Assert.AreEqual(tile.Z, reverse.Z);
 				Assert.AreEqual(tile.X, reverse.X);

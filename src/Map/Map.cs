@@ -27,7 +27,7 @@ namespace Mapbox.Map
 		public const int TileMax = 256;
 
 		private readonly IFileSource fs;
-		private GeoCoordinateBounds latLngBounds;
+		private Vector2dBounds latLngBounds;
 		private int zoom;
 		private string mapId;
 
@@ -41,7 +41,7 @@ namespace Mapbox.Map
 		public Map(IFileSource fs)
 		{
 			this.fs = fs;
-			this.latLngBounds = new GeoCoordinateBounds();
+			this.latLngBounds = new Vector2dBounds();
 			this.zoom = 0;
 		}
 
@@ -91,7 +91,7 @@ namespace Mapbox.Map
 
 		/// <summary>Gets or sets a geographic bounding box.</summary>
 		/// <value>New geographic bounding box.</value>
-		public GeoCoordinateBounds GeoCoordinateBounds {
+		public Vector2dBounds Vector2dBounds {
 			get {
 				return this.latLngBounds;
 			}
@@ -104,7 +104,7 @@ namespace Mapbox.Map
 
 		/// <summary>Gets or sets the central coordinate of the map.</summary>
 		/// <value>The central coordinate.</value>
-		public GeoCoordinate Center {
+		public Vector2d Center {
 			get {
 				return this.latLngBounds.Center;
 			}
@@ -134,7 +134,7 @@ namespace Mapbox.Map
 		/// </summary>
 		/// <param name="bounds"> Coordinates bounds. </param>
 		/// <param name="zoom"> Zoom level. </param>
-		public void SetGeoCoordinateBoundsZoom(GeoCoordinateBounds bounds, int zoom)
+		public void SetVector2dBoundsZoom(Vector2dBounds bounds, int zoom)
 		{
 			this.latLngBounds = bounds;
 			this.zoom = zoom;

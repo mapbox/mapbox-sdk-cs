@@ -47,7 +47,7 @@ namespace Mapbox.Directions
 		/// </summary>
 		/// <value>The location.</value>
 		[JsonProperty("Location")]
-		public GeoCoordinate Location { get; set; }
+		public Vector2d Location { get; set; }
 
 		/// <summary>
 		/// Gets or sets the instruction.

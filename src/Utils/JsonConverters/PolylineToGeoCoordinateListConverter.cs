@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PolylineToGeoCoordinateListConverter.cs" company="Mapbox">
+// <copyright file="PolylineToVector2dListConverter.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
@@ -15,10 +15,10 @@ namespace Mapbox.Utils.JsonConverters
 	/// <summary>
 	/// Bbox to geo coordinate bounds converter.
 	/// </summary>
-	public class PolylineToGeoCoordinateListConverter : CustomCreationConverter<List<GeoCoordinate>>
+	public class PolylineToVector2dListConverter : CustomCreationConverter<List<Vector2d>>
 	{
 		/// <summary>
-		/// Gets a value indicating whether this <see cref="T:Mapbox.PolylineToGeoCoordinateListConverter"/> can write.
+		/// Gets a value indicating whether this <see cref="T:Mapbox.PolylineToVector2dListConverter"/> can write.
 		/// </summary>
 		/// <value><c>true</c> if can write; otherwise, <c>false</c>.</value>
 		public override bool CanWrite {
@@ -29,8 +29,8 @@ namespace Mapbox.Utils.JsonConverters
 		/// Create the specified objectType.
 		/// </summary>
 		/// <param name="objectType">Object type.</param>
-		/// <returns>A List of <see cref="GeoCoordinate"/>.</returns>
-		public override List<GeoCoordinate> Create(Type objectType)
+		/// <returns>A List of <see cref="Vector2d"/>.</returns>
+		public override List<Vector2d> Create(Type objectType)
 		{
 			throw new NotImplementedException();
 		}
@@ -40,8 +40,8 @@ namespace Mapbox.Utils.JsonConverters
 		/// </summary>
 		/// <param name="objectType">Object type.</param>
 		/// <param name="polyLine">String representation of a polyLine.</param>
-		/// <returns>A List of <see cref="GeoCoordinate"/>.</returns>
-		public List<GeoCoordinate> Create(Type objectType, string polyLine)
+		/// <returns>A List of <see cref="Vector2d"/>.</returns>
+		public List<Vector2d> Create(Type objectType, string polyLine)
 		{
 			return PolylineUtils.Decode(polyLine);
 		}
@@ -54,7 +54,7 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="serializer">A <see cref="JsonSerializer"/>.</param>
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			var val = (List<GeoCoordinate>)value;
+			var val = (List<Vector2d>)value;
 
 			serializer.Serialize(writer, PolylineUtils.Encode(val));
 		}

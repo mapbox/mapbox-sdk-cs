@@ -14,7 +14,7 @@ namespace Mapbox.UnitTest
     internal class ReverseGeocodeResourceTest
     {
         private const string Base = "https://api.mapbox.com/geocoding/v5/mapbox.places/";
-        private GeoCoordinate query = new GeoCoordinate(10, 10);
+        private Vector2d query = new Vector2d(10, 10);
         private string expectedQueryString = "10.00000,10.00000";
         private Geocoding.ReverseGeocodeResource rgr;
 

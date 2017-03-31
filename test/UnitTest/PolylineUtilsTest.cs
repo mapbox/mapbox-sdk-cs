@@ -26,16 +26,16 @@ namespace Mapbox.UnitTest
         public void TestDecode()
         {
             // _p~iF~ps|U_ulLnnqC_mqNvxq`@
-            List<GeoCoordinate> path = PolylineUtils.Decode(
+            List<Vector2d> path = PolylineUtils.Decode(
               "_p~iF~ps|U_ulLnnqC_mqNvxq`@");
 
             // (38.5, -120.2), (40.7, -120.95), (43.252, -126.453)
-            Assert.AreEqual(-120.2, path[0].Longitude);
-            Assert.AreEqual(38.5, path[0].Latitude);
-            Assert.AreEqual(-120.95, path[1].Longitude);
-            Assert.AreEqual(40.7, path[1].Latitude);
-            Assert.AreEqual(-126.453, path[2].Longitude);
-            Assert.AreEqual(43.252, path[2].Latitude);
+            Assert.AreEqual(-120.2, path[0].y);
+            Assert.AreEqual(38.5, path[0].x);
+            Assert.AreEqual(-120.95, path[1].y);
+            Assert.AreEqual(40.7, path[1].x);
+            Assert.AreEqual(-126.453, path[2].y);
+            Assert.AreEqual(43.252, path[2].x);
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace Mapbox.UnitTest
         public void TestEncode()
         {
             // (38.5, -120.2), (40.7, -120.95), (43.252, -126.453)
-            var path = new List<GeoCoordinate>();
-            path.Add(new GeoCoordinate(38.5, -120.2));
-            path.Add(new GeoCoordinate(40.7, -120.95));
-            path.Add(new GeoCoordinate(43.252, -126.453));
+            var path = new List<Vector2d>();
+            path.Add(new Vector2d(38.5, -120.2));
+            path.Add(new Vector2d(40.7, -120.95));
+            path.Add(new Vector2d(43.252, -126.453));
 
             // _p~iF~ps|U_ulLnnqC_mqNvxq`@
             Assert.AreEqual("_p~iF~ps|U_ulLnnqC_mqNvxq`@", PolylineUtils.Encode(path));

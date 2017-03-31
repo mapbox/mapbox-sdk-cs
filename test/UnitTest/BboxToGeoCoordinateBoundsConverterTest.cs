@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="BboxToGeoCoordinateBoundsConverterTest.cs" company="Mapbox">
+// <copyright file="BboxToVector2dBoundsConverterTest.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
@@ -12,26 +12,26 @@ namespace Mapbox.UnitTest
     using NUnit.Framework;
 
     [TestFixture]
-    internal class BboxToGeoCoordinateBoundsConverterTest
+    internal class BboxToVector2dBoundsConverterTest
     {
         private string geoCoordinateBoundsStr = "[38.9165,-77.0295,30.2211,-80.5521]";
 
-        private GeoCoordinateBounds geoCoordinateBoundsObj = new GeoCoordinateBounds(
-            sw: new GeoCoordinate(longitude: -77.0295, latitude: 38.9165),
-            ne: new GeoCoordinate(longitude: -80.5521, latitude: 30.2211));
+        private Vector2dBounds geoCoordinateBoundsObj = new Vector2dBounds(
+            sw: new Vector2d(x: -77.0295, y: 38.9165),
+            ne: new Vector2d(x: -80.5521, y: 30.2211));
 
         [Test]
         public void Deserialize()
         {
-            GeoCoordinateBounds deserializedGeoCoordinateBounds = JsonConvert.DeserializeObject<GeoCoordinateBounds>(this.geoCoordinateBoundsStr, JsonConverters.Converters);
-            Assert.AreEqual(this.geoCoordinateBoundsObj.ToString(), deserializedGeoCoordinateBounds.ToString());
+            Vector2dBounds deserializedVector2dBounds = JsonConvert.DeserializeObject<Vector2dBounds>(this.geoCoordinateBoundsStr, JsonConverters.Converters);
+            Assert.AreEqual(this.geoCoordinateBoundsObj.ToString(), deserializedVector2dBounds.ToString());
         }
 
         [Test]
         public void Serialize()
         {
-            string serializedGeoCoordinateBounds = JsonConvert.SerializeObject(this.geoCoordinateBoundsObj, JsonConverters.Converters);
-            Assert.AreEqual(this.geoCoordinateBoundsStr, serializedGeoCoordinateBounds);
+            string serializedVector2dBounds = JsonConvert.SerializeObject(this.geoCoordinateBoundsObj, JsonConverters.Converters);
+            Assert.AreEqual(this.geoCoordinateBoundsStr, serializedVector2dBounds);
         }
     }
 }

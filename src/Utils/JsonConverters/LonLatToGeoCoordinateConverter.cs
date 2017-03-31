@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LonLatToGeoCoordinateConverter.cs" company="Mapbox">
+// <copyright file="LonLatToVector2dConverter.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
@@ -14,10 +14,10 @@ namespace Mapbox.Utils.JsonConverters
 	/// <summary>
 	/// Bbox to geo coordinate bounds converter.
 	/// </summary>
-	public class LonLatToGeoCoordinateConverter : CustomCreationConverter<GeoCoordinate>
+	public class LonLatToVector2dConverter : CustomCreationConverter<Vector2d>
 	{
 		/// <summary>
-		/// Gets a value indicating whether this <see cref="T:Mapbox.LonLatToGeoCoordinateConverter"/> can write.
+		/// Gets a value indicating whether this <see cref="T:Mapbox.LonLatToVector2dConverter"/> can write.
 		/// </summary>
 		/// <value><c>true</c> if can write; otherwise, <c>false</c>.</value>
 		public override bool CanWrite {
@@ -28,8 +28,8 @@ namespace Mapbox.Utils.JsonConverters
 		/// Create the specified objectType.
 		/// </summary>
 		/// <param name="objectType">Object type.</param>
-		/// <returns>A <see cref="GeoCoordinate"/>.</returns>
-		public override GeoCoordinate Create(Type objectType)
+		/// <returns>A <see cref="Vector2d"/>.</returns>
+		public override Vector2d Create(Type objectType)
 		{
 			throw new NotImplementedException();
 		}
@@ -39,11 +39,11 @@ namespace Mapbox.Utils.JsonConverters
 		/// </summary>
 		/// <param name="objectType">Object type.</param>
 		/// <param name="val">Jarray representing a two length array of coordinates.</param>
-		/// <returns>A <see cref="GeoCoordinate"/>.</returns>
-		public GeoCoordinate Create(Type objectType, JArray val)
+		/// <returns>A <see cref="Vector2d"/>.</returns>
+		public Vector2d Create(Type objectType, JArray val)
 		{
 			// Assumes long,lat order (like in geojson)
-			return new GeoCoordinate(longitude: (double)val[0], latitude: (double)val[1]);
+			return new Vector2d(y: (double)val[0], x: (double)val[1]);
 		}
 
 		/// <summary>
@@ -54,11 +54,11 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="serializer">A <see cref="JsonSerializer"/>.</param>
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			var val = (GeoCoordinate)value;
+			var val = (Vector2d)value;
 
 			Array valAsArray = val.ToArray();
 
-			// By default, GeoCoordinate outputs an array with [lat, lon] order, but we want the reverse.
+			// By default, Vector2d outputs an array with [lat, lon] order, but we want the reverse.
 			Array.Reverse(valAsArray);
 
 			serializer.Serialize(writer, valAsArray);

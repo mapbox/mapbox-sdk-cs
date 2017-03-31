@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PolylineToGeoCoordinateListConverterTest.cs" company="Mapbox">
+// <copyright file="PolylineToVector2dListConverterTest.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
@@ -13,14 +13,14 @@ namespace Mapbox.UnitTest
     using NUnit.Framework;
 
     [TestFixture]
-    internal class PolylineToGeoCoordinateListConverterTest
+    internal class PolylineToVector2dListConverterTest
     {
         // (38.5, -120.2), (40.7, -120.95), (43.252, -126.453)
-        private readonly List<GeoCoordinate> polyLineObj = new List<GeoCoordinate>()
+        private readonly List<Vector2d> polyLineObj = new List<Vector2d>()
         {
-            new GeoCoordinate(38.5, -120.2),
-            new GeoCoordinate(40.7, -120.95),
-            new GeoCoordinate(43.252, -126.453)
+            new Vector2d(38.5, -120.2),
+            new Vector2d(40.7, -120.95),
+            new Vector2d(43.252, -126.453)
         };
 
         private string polyLineString = "\"_p~iF~ps|U_ulLnnqC_mqNvxq`@\"";
@@ -28,7 +28,7 @@ namespace Mapbox.UnitTest
         [Test]
         public void Deserialize()
         {
-            List<GeoCoordinate> deserializedLine = JsonConvert.DeserializeObject<List<GeoCoordinate>>(this.polyLineString, JsonConverters.Converters);
+            List<Vector2d> deserializedLine = JsonConvert.DeserializeObject<List<Vector2d>>(this.polyLineString, JsonConverters.Converters);
             Assert.AreEqual(this.polyLineObj, deserializedLine);
         }
 
