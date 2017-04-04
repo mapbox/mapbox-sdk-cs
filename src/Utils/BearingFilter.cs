@@ -46,7 +46,7 @@ namespace Mapbox.Utils
 		/// <returns> Returns a string for use in a Mapbox query URL. </returns>
 		public override string ToString()
 		{
-			if (this.Bearing != null || this.Range != null)
+			if (this.Bearing != null && this.Range != null)
 			{
 				return this.Bearing.ToString() + "," + this.Range.ToString();
 			}
