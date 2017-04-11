@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-namespace Mapbox
+namespace Mapbox.Platform
 {
 	/// <summary> A response from a <see cref="IFileSource" /> request. </summary>
 	public struct Response

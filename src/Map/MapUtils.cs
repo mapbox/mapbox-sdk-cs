@@ -6,13 +6,13 @@
 
 namespace Mapbox.Map
 {
-	using System;
-	using System.Text;
+    using System;
+    using Mapbox.Utils;
 
-	/// <summary>
-	/// Utilities for working with Map APIs.
-	/// </summary>
-	public static class MapUtils
+    /// <summary>
+    /// Utilities for working with Map APIs.
+    /// </summary>
+    public static class MapUtils
 	{
 		/// <summary>
 		/// Normalizes a static style URL.

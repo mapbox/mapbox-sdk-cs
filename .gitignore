@@ -1,5 +1,7 @@
 # Autosave files
 *~
+docfx.zip
+/docfx
 scriptcs/
 nuget.exe
 *project.lock.json

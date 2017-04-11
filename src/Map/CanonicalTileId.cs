@@ -6,12 +6,13 @@
 
 namespace Mapbox.Map
 {
-	using System;
+    using System;
+    using Mapbox.Utils;
 
-	/// <summary>
-	///     Canonical tile identifier in a slippy map.
-	/// </summary>
-	public struct CanonicalTileId
+    /// <summary>
+    ///     Canonical tile identifier in a slippy map.
+    /// </summary>
+    public struct CanonicalTileId
 	{
 		/// <summary> The zoom level. </summary>
 		public readonly int Z;
@@ -53,7 +54,7 @@ namespace Mapbox.Map
 		///     Get the cordinate at the top left of corner of the tile.
 		/// </summary>
 		/// <returns> The coordinate. </returns>
-		public GeoCoordinate ToGeoCoordinate()
+		public Vector2d ToVector2d()
 		{
 			double n = Math.PI - ((2.0 * Math.PI * this.Y) / Math.Pow(2.0, this.Z));
 
@@ -61,7 +62,7 @@ namespace Mapbox.Map
 			double lng = (this.X / Math.Pow(2.0, this.Z) * 360.0) - 180.0;
 
 			// FIXME: Super hack because of rounding issues.
-			return new GeoCoordinate(lat - 0.0001, lng + 0.0001);
+			return new Vector2d(lat - 0.0001, lng + 0.0001);
 		}
 
 		/// <summary>

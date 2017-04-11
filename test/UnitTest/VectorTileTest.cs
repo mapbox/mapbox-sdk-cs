@@ -5,14 +5,15 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.UnitTest {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using Mapbox.Map;
-	using Mapbox.Utils;
-	using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Mapbox.Map;
+    using Mapbox.Platform;
+    using Mapbox.Utils;
+    using NUnit.Framework;
 
-	[TestFixture]
+    [TestFixture]
 	internal class VectorTileTest {
 		private Mono.FileSource fs;
 
@@ -29,7 +30,7 @@ namespace Mapbox.UnitTest {
 			map.Subscribe(mapObserver);
 
 			// Helsinki city center.
-			map.Center = new GeoCoordinate(60.163200, 24.937700);
+			map.Center = new Vector2d(60.163200, 24.937700);
 
 			for (int zoom = 0; zoom < 15; ++zoom) {
 				map.Zoom = zoom;
@@ -67,7 +68,7 @@ namespace Mapbox.UnitTest {
 			var mapObserver = new Utils.VectorMapObserver();
 			map.Subscribe(mapObserver);
 
-			map.Center = new GeoCoordinate(60.163200, 60.163200);
+			map.Center = new Vector2d(60.163200, 60.163200);
 			map.Zoom = 13;
 
 			mockFs.WaitForAllRequests();
@@ -86,7 +87,7 @@ namespace Mapbox.UnitTest {
 			var mapObserver = new Utils.VectorMapObserver();
 			map.Subscribe(mapObserver);
 
-			map.GeoCoordinateBounds = GeoCoordinateBounds.World();
+			map.Vector2dBounds = Vector2dBounds.World();
 			map.Zoom = 3; // 64 tiles.
 
 			this.fs.WaitForAllRequests();

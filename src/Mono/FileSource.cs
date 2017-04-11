@@ -5,9 +5,10 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Mono {
-	using System;
-	using System.Collections.Generic;
-	using System.Threading;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using Mapbox.Platform;
 
 	/// <summary>
 	///     Mono implementation of the FileSource class. It will use Mono's

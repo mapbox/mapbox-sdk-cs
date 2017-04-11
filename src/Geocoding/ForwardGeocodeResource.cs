@@ -6,11 +6,12 @@
 
 namespace Mapbox.Geocoding
 {
-	using System;
-	using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
+    using Mapbox.Utils;
 
-	/// <summary> A forward geocode request. </summary>
-	public sealed class ForwardGeocodeResource : GeocodeResource<string>
+    /// <summary> A forward geocode request. </summary>
+    public sealed class ForwardGeocodeResource : GeocodeResource<string>
 	{
 		/// <summary>
 		///     ISO 3166-1 alpha-2 country codes.
@@ -31,10 +32,10 @@ namespace Mapbox.Geocoding
 		private string[] country;
 
 		// Optional
-		private GeoCoordinate? proximity;
+		private Vector2d? proximity;
 
 		// Optional
-		private GeoCoordinateBounds? bbox;
+		private Vector2dBounds? bbox;
 
 		/// <summary> Initializes a new instance of the <see cref="ForwardGeocodeResource" /> class.</summary>
 		/// <param name="query"> Place name for forward geocoding. </param>
@@ -69,7 +70,7 @@ namespace Mapbox.Geocoding
 		///     Gets or sets the bounding box option. Bounding box is a rectangle within which to
 		///     limit results, given as <see cref="Bbox"/>.
 		/// </summary>
-		public GeoCoordinateBounds? Bbox {
+		public Vector2dBounds? Bbox {
 			get {
 				return this.bbox;
 			}
@@ -110,9 +111,9 @@ namespace Mapbox.Geocoding
 
 		/// <summary>
 		///     Gets or sets the proximity option, which is a location around which to bias results,
-		///     given as <see cref="GeoCoordinate"/>.
+		///     given as <see cref="Vector2d"/>.
 		/// </summary>
-		public GeoCoordinate? Proximity {
+		public Vector2d? Proximity {
 			get {
 				return this.proximity;
 			}
@@ -135,7 +136,7 @@ namespace Mapbox.Geocoding
 
 			if (this.Bbox != null)
 			{
-				var nonNullableBbox = (GeoCoordinateBounds)this.Bbox;
+				var nonNullableBbox = (Vector2dBounds)this.Bbox;
 				opts.Add("bbox", nonNullableBbox.ToString());
 			}
 
@@ -146,7 +147,7 @@ namespace Mapbox.Geocoding
 
 			if (this.Proximity != null)
 			{
-				var nonNullableProx = (GeoCoordinate)this.Proximity;
+				var nonNullableProx = (Vector2d)this.Proximity;
 				opts.Add("proximity", nonNullableProx.ToString());
 			}
 

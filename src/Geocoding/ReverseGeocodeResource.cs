@@ -6,24 +6,24 @@
 
 namespace Mapbox.Geocoding
 {
-	using Mapbox;
-	using System.Collections.Generic;
+    using System.Collections.Generic;
+    using Mapbox.Utils;
 
-	/// <summary> A reverse geocode request. </summary>
-	public sealed class ReverseGeocodeResource : GeocodeResource<GeoCoordinate>
+    /// <summary> A reverse geocode request. </summary>
+    public sealed class ReverseGeocodeResource : GeocodeResource<Vector2d>
 	{
 		// Required
-		private GeoCoordinate query;
+		private Vector2d query;
 
 		/// <summary> Initializes a new instance of the <see cref="ReverseGeocodeResource" /> class.</summary>
 		/// <param name="query"> Location to reverse geocode. </param>
-		public ReverseGeocodeResource(GeoCoordinate query)
+		public ReverseGeocodeResource(Vector2d query)
 		{
 			this.Query = query;
 		}
 
 		/// <summary> Gets or sets the location. </summary>
-		public override GeoCoordinate Query {
+		public override Vector2d Query {
 			get {
 				return this.query;
 			}

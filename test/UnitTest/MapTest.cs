@@ -6,11 +6,12 @@
 
 namespace Mapbox.UnitTest
 {
-	using System.Drawing;
-	using Mapbox.Map;
-	using NUnit.Framework;
+    using System.Drawing;
+    using Mapbox.Map;
+    using Mapbox.Utils;
+    using NUnit.Framework;
 
-	[TestFixture]
+    [TestFixture]
 	internal class MapTest
 	{
 		private Mono.FileSource fs;
@@ -26,7 +27,7 @@ namespace Mapbox.UnitTest
 		{
 			var map = new Map<VectorTile>(this.fs);
 
-			map.GeoCoordinateBounds = GeoCoordinateBounds.World();
+			map.Vector2dBounds = Vector2dBounds.World();
 			map.Zoom = 3;
 
 			var mapObserver = new Utils.VectorMapObserver();
@@ -44,7 +45,7 @@ namespace Mapbox.UnitTest
 		{
 			var map = new Map<RasterTile>(this.fs);
 
-			map.Center = new GeoCoordinate(60.163200, 24.937700);
+			map.Center = new Vector2d(60.163200, 24.937700);
 			map.Zoom = 13;
 
 			var mapObserver = new Utils.RasterMapObserver();
@@ -68,7 +69,7 @@ namespace Mapbox.UnitTest
 			var mapObserver = new Utils.ClassicRasterMapObserver();
 			map.Subscribe(mapObserver);
 
-			map.Center = new GeoCoordinate(60.163200, 24.937700);
+			map.Center = new Vector2d(60.163200, 24.937700);
 			map.Zoom = 13;
 			map.MapId = "invalid";
 
@@ -92,15 +93,15 @@ namespace Mapbox.UnitTest
 		}
 
 		[Test]
-		public void SetGeoCoordinateBoundsZoom()
+		public void SetVector2dBoundsZoom()
 		{
 			var map1 = new Map<RasterTile>(this.fs);
 			var map2 = new Map<RasterTile>(this.fs);
 
 			map1.Zoom = 3;
-			map1.GeoCoordinateBounds = GeoCoordinateBounds.World();
+			map1.Vector2dBounds = Vector2dBounds.World();
 
-			map2.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 3);
+			map2.SetVector2dBoundsZoom(Vector2dBounds.World(), 3);
 
 			Assert.AreEqual(map1.Tiles.Count, map2.Tiles.Count);
 		}
@@ -110,11 +111,11 @@ namespace Mapbox.UnitTest
 		{
 			var map = new Map<RasterTile>(this.fs);
 
-			map.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 2);
+			map.SetVector2dBoundsZoom(Vector2dBounds.World(), 2);
 			Assert.Less(map.Tiles.Count, Map<RasterTile>.TileMax); // 16
 
 			// Should stay the same, ignore requests.
-			map.SetGeoCoordinateBoundsZoom(GeoCoordinateBounds.World(), 5);
+			map.SetVector2dBoundsZoom(Vector2dBounds.World(), 5);
 			Assert.AreEqual(16, map.Tiles.Count);
 		}
 

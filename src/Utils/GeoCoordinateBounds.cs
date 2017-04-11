@@ -1,24 +1,24 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GeoCoordinateBounds.cs" company="Mapbox">
+// <copyright file="Vector2dBounds.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Utils
 {
 	/// <summary> Represents a bounding box derived from a southwest corner and a northeast corner. </summary>
-	public struct GeoCoordinateBounds
+	public struct Vector2dBounds
 	{
 		/// <summary> Southwest corner of bounding box. </summary>
-		public GeoCoordinate SouthWest;
+		public Vector2d SouthWest;
 
 		/// <summary> Northeast corner of bounding box. </summary>
-		public GeoCoordinate NorthEast;
+		public Vector2d NorthEast;
 
-		/// <summary> Initializes a new instance of the <see cref="GeoCoordinateBounds" /> struct. </summary>
+		/// <summary> Initializes a new instance of the <see cref="Vector2dBounds" /> struct. </summary>
 		/// <param name="sw"> Geographic coordinate representing southwest corner of bounding box. </param>
 		/// <param name="ne"> Geographic coordinate representing northeast corner of bounding box. </param>
-		public GeoCoordinateBounds(GeoCoordinate sw, GeoCoordinate ne)
+		public Vector2dBounds(Vector2d sw, Vector2d ne)
 		{
 			this.SouthWest = sw;
 			this.NorthEast = ne;
@@ -28,7 +28,7 @@ namespace Mapbox
 		/// <value> The south latitude. </value>
 		public double South {
 			get {
-				return this.SouthWest.Latitude;
+				return this.SouthWest.x;
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace Mapbox
 		/// <value> The west longitude. </value>
 		public double West {
 			get {
-				return this.SouthWest.Longitude;
+				return this.SouthWest.y;
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace Mapbox
 		/// <value> The north latitude. </value>
 		public double North {
 			get {
-				return this.NorthEast.Latitude;
+				return this.NorthEast.x;
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace Mapbox
 		/// <value> The east longitude. </value>
 		public double East {
 			get {
-				return this.NorthEast.Longitude;
+				return this.NorthEast.y;
 			}
 		}
 
@@ -61,22 +61,22 @@ namespace Mapbox
 		///     setting a new center, the bounding box will retain its original size.
 		/// </summary>
 		/// <value> The central coordinate. </value>
-		public GeoCoordinate Center {
+		public Vector2d Center {
 			get {
-				var lat = (this.SouthWest.Latitude + this.NorthEast.Latitude) / 2;
-				var lng = (this.SouthWest.Longitude + this.NorthEast.Longitude) / 2;
+				var lat = (this.SouthWest.x + this.NorthEast.x) / 2;
+				var lng = (this.SouthWest.y + this.NorthEast.y) / 2;
 
-				return new GeoCoordinate(lat, lng);
+				return new Vector2d(lat, lng);
 			}
 
 			set {
-				var lat = (this.NorthEast.Latitude - this.SouthWest.Latitude) / 2;
-				this.SouthWest.Latitude = value.Latitude - lat;
-				this.NorthEast.Latitude = value.Latitude + lat;
+				var lat = (this.NorthEast.x - this.SouthWest.x) / 2;
+				this.SouthWest.x = value.x - lat;
+				this.NorthEast.x = value.x + lat;
 
-				var lng = (this.NorthEast.Longitude - this.SouthWest.Longitude) / 2;
-				this.SouthWest.Longitude = value.Longitude - lng;
-				this.NorthEast.Longitude = value.Longitude + lng;
+				var lng = (this.NorthEast.y - this.SouthWest.y) / 2;
+				this.SouthWest.y = value.y - lng;
+				this.NorthEast.y = value.y + lng;
 			}
 		}
 
@@ -87,9 +87,9 @@ namespace Mapbox
 		/// <param name="a"> The first point. </param>
 		/// <param name="b"> The second point. </param>
 		/// <returns> The convex hull. </returns>
-		public static GeoCoordinateBounds FromCoordinates(GeoCoordinate a, GeoCoordinate b)
+		public static Vector2dBounds FromCoordinates(Vector2d a, Vector2d b)
 		{
-			var bounds = new GeoCoordinateBounds(a, a);
+			var bounds = new Vector2dBounds(a, a);
 			bounds.Extend(b);
 
 			return bounds;
@@ -97,42 +97,42 @@ namespace Mapbox
 
 		/// <summary> A bounding box containing the world. </summary>
 		/// <returns> The world bounding box. </returns>
-		public static GeoCoordinateBounds World()
+		public static Vector2dBounds World()
 		{
-			var sw = new GeoCoordinate(-90, -180);
-			var ne = new GeoCoordinate(90, 180);
+			var sw = new Vector2d(-90, -180);
+			var ne = new Vector2d(90, 180);
 
-			return new GeoCoordinateBounds(sw, ne);
+			return new Vector2dBounds(sw, ne);
 		}
 
 		/// <summary> Extend the bounding box to contain the point. </summary>
 		/// <param name="point"> A geographic coordinate. </param>
-		public void Extend(GeoCoordinate point)
+		public void Extend(Vector2d point)
 		{
-			if (point.Latitude < this.SouthWest.Latitude)
+			if (point.x < this.SouthWest.x)
 			{
-				this.SouthWest.Latitude = point.Latitude;
+				this.SouthWest.x = point.x;
 			}
 
-			if (point.Latitude > this.NorthEast.Latitude)
+			if (point.x > this.NorthEast.x)
 			{
-				this.NorthEast.Latitude = point.Latitude;
+				this.NorthEast.x = point.x;
 			}
 
-			if (point.Longitude < this.SouthWest.Longitude)
+			if (point.y < this.SouthWest.y)
 			{
-				this.SouthWest.Longitude = point.Longitude;
+				this.SouthWest.y = point.y;
 			}
 
-			if (point.Longitude > this.NorthEast.Longitude)
+			if (point.y > this.NorthEast.y)
 			{
-				this.NorthEast.Longitude = point.Longitude;
+				this.NorthEast.y = point.y;
 			}
 		}
 
 		/// <summary> Extend the bounding box to contain the bounding box. </summary>
 		/// <param name="bounds"> A bounding box. </param>
-		public void Extend(GeoCoordinateBounds bounds)
+		public void Extend(Vector2dBounds bounds)
 		{
 			this.Extend(bounds.SouthWest);
 			this.Extend(bounds.NorthEast);
@@ -142,8 +142,8 @@ namespace Mapbox
 		/// <returns> <c>true</c>, if empty, <c>false</c> otherwise. </returns>
 		public bool IsEmpty()
 		{
-			return this.SouthWest.Latitude > this.NorthEast.Latitude ||
-					   this.SouthWest.Longitude > this.NorthEast.Longitude;
+			return this.SouthWest.x > this.NorthEast.x ||
+					   this.SouthWest.y > this.NorthEast.y;
 		}
 
 		/// <summary>
@@ -154,10 +154,10 @@ namespace Mapbox
 		{
 			double[] array =
 			{
-				this.SouthWest.Latitude,
-				this.SouthWest.Longitude,
-				this.NorthEast.Latitude,
-				this.NorthEast.Longitude
+				this.SouthWest.x,
+				this.SouthWest.y,
+				this.NorthEast.x,
+				this.NorthEast.y
 			};
 
 			return array;

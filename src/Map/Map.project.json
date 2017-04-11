@@ -1,4 +1,11 @@
 ﻿{
-    "frameworks": { "net35": {} },
-    "runtimes": { "win": {} }
+  "frameworks": {
+    "net35": {}
+  },
+  "runtimes": {
+    "win": {}
+  },
+  "dependencies": {
+    "Mapbox.VectorTile": "1.0.3-alpha2"
+  }
 }

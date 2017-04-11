@@ -61,10 +61,16 @@
     <Compile Include="JsonConverters\LonLatToGeoCoordinateConverter.cs" />
     <Compile Include="JsonConverters\PolylineToGeoCoordinateListConverter.cs" />
     <Compile Include="JsonConverters\JsonConverters.cs" />
+    <Compile Include="Vector2d\Mathd.cs" />
+    <Compile Include="Vector2d\RectD.cs" />
+    <Compile Include="Vector2d\Vector2d.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Utils.project.json" />
+    <None Include="Vector2d\Mathd.cs.meta" />
+    <None Include="Vector2d\RectD.cs.meta" />
+    <None Include="Vector2d\Vector2d.cs.meta" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

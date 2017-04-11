@@ -5,9 +5,10 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Mono {
-	using System;
-	using System.Net.Http;
-	using System.Threading.Tasks;
+    using System;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Mapbox.Platform;
 
 	internal sealed class HTTPRequest : IAsyncRequest {
 		private static readonly HttpClient Client = new HttpClient();

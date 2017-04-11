@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox
+namespace Mapbox.Utils
 {
 	/// <summary> Collection of constants used across the project. </summary>
 	public static class Constants

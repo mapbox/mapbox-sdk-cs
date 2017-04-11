@@ -6,14 +6,15 @@
 
 namespace Mapbox.UnitTest
 {
-	using Geocoding;
-	using Mapbox.Json;
-	using NUnit.Framework;
+    using Geocoding;
+    using Mapbox.Json;
+    using Mapbox.Utils.JsonConverters;
+    using NUnit.Framework;
 
-	/// <summary>
-	/// Test that Geocoder serializes and deserializes responses correctly.
-	/// </summary>
-	[TestFixture]
+    /// <summary>
+    /// Test that Geocoder serializes and deserializes responses correctly.
+    /// </summary>
+    [TestFixture]
 	internal class GeocoderTest
 	{
 		private readonly Geocoder geocoder = new Geocoder(new Mono.FileSource());

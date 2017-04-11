@@ -5,13 +5,15 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Geocoding {
-	using System;
-	using Mapbox.Json;
+    using System;
+    using Mapbox.Json;
+    using Mapbox.Utils;
+    using Mapbox.Utils.JsonConverters;
 
-	/// <summary> Point geometry representing location of geocode result. </summary>
+    /// <summary> Point geometry representing location of geocode result. </summary>
 #if !WINDOWS_UWP
-	//http://stackoverflow.com/a/12903628
-	[Serializable]
+    //http://stackoverflow.com/a/12903628
+    [Serializable]
 #endif
 	public class Geometry {
 		/// <summary>
@@ -25,8 +27,8 @@ namespace Mapbox.Geocoding {
 		///     Gets or sets coordinates. Because they are points, Geocode results will always be  a single Geocoordinate.
 		/// </summary>
 		/// <value>The coordinates.</value>
-		[JsonConverter(typeof(LonLatToGeoCoordinateConverter))]
+		[JsonConverter(typeof(LonLatToVector2dConverter))]
 		[JsonProperty("coordinates")]
-		public GeoCoordinate Coordinates { get; set; }
+		public Vector2d Coordinates { get; set; }
 	}
 }

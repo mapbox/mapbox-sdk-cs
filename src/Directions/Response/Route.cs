@@ -6,13 +6,15 @@
 
 namespace Mapbox.Directions
 {
-	using System.Collections.Generic;
-	using Mapbox.Json;
+    using System.Collections.Generic;
+    using Mapbox.Json;
+    using Mapbox.Utils;
+    using Mapbox.Utils.JsonConverters;
 
-	/// <summary>
-	/// A Route from a Directions API call.
-	/// </summary>
-	public class Route
+    /// <summary>
+    /// A Route from a Directions API call.
+    /// </summary>
+    public class Route
 	{
 		/// <summary>
 		/// Gets or sets the legs.
@@ -26,8 +28,8 @@ namespace Mapbox.Directions
 		/// </summary>
 		/// <value>The geometry.</value>
 		[JsonProperty("geometry")]
-		[JsonConverter(typeof(PolylineToGeoCoordinateListConverter))]
-		public List<GeoCoordinate> Geometry { get; set; }
+		[JsonConverter(typeof(PolylineToVector2dListConverter))]
+		public List<Vector2d> Geometry { get; set; }
 
 		/// <summary>
 		/// Gets or sets the duration.

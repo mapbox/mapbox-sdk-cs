@@ -1,42 +1,42 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PolylineToGeoCoordinateListConverterTest.cs" company="Mapbox">
+// <copyright file="PolylineToVector2dListConverterTest.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 
 namespace Mapbox.UnitTest
 {
-	using System;
-	using System.Collections.Generic;
-	using Mapbox;
-	using Mapbox.Json;
-	using NUnit.Framework;
+    using System.Collections.Generic;
+    using Mapbox.Json;
+    using Mapbox.Utils;
+    using Mapbox.Utils.JsonConverters;
+    using NUnit.Framework;
 
-	[TestFixture]
-	internal class PolylineToGeoCoordinateListConverterTest
-	{
-		// (38.5, -120.2), (40.7, -120.95), (43.252, -126.453)
-		private readonly List<GeoCoordinate> polyLineObj = new List<GeoCoordinate>()
-		{
-			new GeoCoordinate(38.5, -120.2),
-			new GeoCoordinate(40.7, -120.95),
-			new GeoCoordinate(43.252, -126.453)
-		};
+    [TestFixture]
+    internal class PolylineToVector2dListConverterTest
+    {
+        // (38.5, -120.2), (40.7, -120.95), (43.252, -126.453)
+        private readonly List<Vector2d> polyLineObj = new List<Vector2d>()
+        {
+            new Vector2d(38.5, -120.2),
+            new Vector2d(40.7, -120.95),
+            new Vector2d(43.252, -126.453)
+        };
 
-		private string polyLineString = "\"_p~iF~ps|U_ulLnnqC_mqNvxq`@\"";
+        private string polyLineString = "\"_p~iF~ps|U_ulLnnqC_mqNvxq`@\"";
 
-		[Test]
-		public void Deserialize()
-		{
-			List<GeoCoordinate> deserializedLine = JsonConvert.DeserializeObject<List<GeoCoordinate>>(this.polyLineString, JsonConverters.Converters);
-			Assert.AreEqual(this.polyLineObj, deserializedLine);
-		}
+        [Test]
+        public void Deserialize()
+        {
+            List<Vector2d> deserializedLine = JsonConvert.DeserializeObject<List<Vector2d>>(this.polyLineString, JsonConverters.Converters);
+            Assert.AreEqual(this.polyLineObj, deserializedLine);
+        }
 
-		[Test]
-		public void Serialize()
-		{
-			string serializedLine = JsonConvert.SerializeObject(this.polyLineObj, JsonConverters.Converters);
-			Assert.AreEqual(this.polyLineString, serializedLine);
-		}
-	}
+        [Test]
+        public void Serialize()
+        {
+            string serializedLine = JsonConvert.SerializeObject(this.polyLineObj, JsonConverters.Converters);
+            Assert.AreEqual(this.polyLineString, serializedLine);
+        }
+    }
 }
