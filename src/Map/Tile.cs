@@ -4,17 +4,18 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map 
+namespace Mapbox.Map
 {
-    using System;
-    using Mapbox.Platform;
+	using System;
+	using Mapbox.Platform;
 
-    /// <summary>
-    ///    A Map tile, a square with vector or raster data representing a geographic
-    ///    bounding box. More info <see href="https://en.wikipedia.org/wiki/Tiled_web_map">
-    ///    here </see>.
-    /// </summary>
-    public abstract class Tile {
+	/// <summary>
+	///    A Map tile, a square with vector or raster data representing a geographic
+	///    bounding box. More info <see href="https://en.wikipedia.org/wiki/Tiled_web_map">
+	///    here </see>.
+	/// </summary>
+	public abstract class Tile
+	{
 
 		private CanonicalTileId id;
 		private string error;
@@ -23,7 +24,8 @@ namespace Mapbox.Map
 		private Action callback;
 
 		/// <summary> Tile state. </summary>
-		public enum State {
+		public enum State
+		{
 			/// <summary> New tile, not yet initialized. </summary>
 			New,
 			/// <summary> Loading data. </summary>
@@ -34,21 +36,26 @@ namespace Mapbox.Map
 			Canceled
 		}
 
-		/// <summary> Gets the canonical tile identifier. </summary>
+		/// <summary> Gets the <see cref="T:Mapbox.Map.CanonicalTileId"/> identifier. </summary>
 		/// <value> The canonical tile identifier. </value>
-		public CanonicalTileId Id {
-			get {
+		public CanonicalTileId Id
+		{
+			get
+			{
 				return this.id;
 			}
-			set {
+			set
+			{
 				this.id = value;
 			}
 		}
 
 		/// <summary> Gets the error message if any. </summary>
 		/// <value> The error string. </value>
-		public string Error {
-			get {
+		public string Error
+		{
+			get
+			{
 				return this.error;
 			}
 		}
@@ -57,7 +64,8 @@ namespace Mapbox.Map
 		/// Sets the error message.
 		/// </summary>
 		/// <param name="errorMessage"></param>
-		public void SetError(string errorMessage) {
+		public void SetError(string errorMessage)
+		{
 			error = errorMessage;
 		}
 
@@ -67,8 +75,10 @@ namespace Mapbox.Map
 		///     is accusing any error.
 		/// </summary>
 		/// <value> The tile state. </value>
-		public State CurrentState {
-			get {
+		public State CurrentState
+		{
+			get
+			{
 				return this.state;
 			}
 		}
@@ -79,7 +89,8 @@ namespace Mapbox.Map
 		/// </summary>
 		/// <param name="param"> Initialization parameters. </param>
 		/// <param name="callback"> The completion callback. </param>
-		public void Initialize(Parameters param, Action callback) {
+		public void Initialize(Parameters param, Action callback)
+		{
 			this.Cancel();
 
 			this.state = State.Loading;
@@ -96,7 +107,8 @@ namespace Mapbox.Map
 		///     A <see cref="T:System.String"/> that represents the current
 		///     <see cref="T:Mapbox.Map.Tile"/>.
 		/// </returns>
-		public override string ToString() {
+		public override string ToString()
+		{
 			return this.Id.ToString();
 		}
 
@@ -104,8 +116,30 @@ namespace Mapbox.Map
 		///     Cancels the request for the <see cref="T:Mapbox.Map.Tile"/> object.
 		///     It will stop a network request and set the tile's state to Canceled.
 		/// </summary>
-		public void Cancel() {
-			if (this.request != null) {
+		/// <example>
+		/// <code>
+		/// // Do not request tiles that we are already requesting
+		///	// but at the same time exclude the ones we don't need
+		///	// anymore, cancelling the network request.
+		///	this.tiles.RemoveWhere((T tile) =>
+		///	{
+		///		if (cover.Remove(tile.Id))
+		///		{
+		///			return false;
+		///		}
+		///		else
+		///		{
+		///			tile.Cancel();
+		///			this.NotifyNext(tile);
+		///			return true;			
+		/// 	}
+		///	});
+		/// </code>
+		/// </example>
+		public void Cancel()
+		{
+			if (this.request != null)
+			{
 				this.request.Cancel();
 				this.request = null;
 			}
@@ -125,10 +159,14 @@ namespace Mapbox.Map
 		// a Worker class to abstract this, so on platforms that support threads (like Unity
 		// on the desktop, Android, etc) we can use worker threads and when building for
 		// the browser, we keep it single-threaded.
-		private void HandleTileResponse(Response response) {
-			if (!string.IsNullOrEmpty(response.Error)) {
+		private void HandleTileResponse(Response response)
+		{
+			if (!string.IsNullOrEmpty(response.Error))
+			{
 				this.error = response.Error;
-			} else if (this.ParseTileData(response.Data) == false) {
+			}
+			else if (this.ParseTileData(response.Data) == false)
+			{
 				this.error = "ParseError";
 			}
 
@@ -139,7 +177,16 @@ namespace Mapbox.Map
 		/// <summary>
 		///    Parameters for initializing a Tile object.
 		/// </summary>
-		public struct Parameters {
+		/// <example>
+		/// <code>
+		/// var parameters = new Tile.Parameters();
+		/// parameters.Fs = MapboxAccess.Instance;
+		/// parameters.Id = new CanonicalTileId(_zoom, _tileCoorindateX, _tileCoordinateY);
+		/// parameters.MapId = "mapbox.mapbox-streets-v7";
+		/// </code>
+		/// </example>
+		public struct Parameters
+		{
 			/// <summary> The tile id. </summary>
 			public CanonicalTileId Id;
 

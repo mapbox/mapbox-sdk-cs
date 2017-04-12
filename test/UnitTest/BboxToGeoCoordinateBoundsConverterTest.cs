@@ -17,8 +17,8 @@ namespace Mapbox.UnitTest
         private string geoCoordinateBoundsStr = "[38.9165,-77.0295,30.2211,-80.5521]";
 
         private Vector2dBounds geoCoordinateBoundsObj = new Vector2dBounds(
-            sw: new Vector2d(x: -77.0295, y: 38.9165),
-            ne: new Vector2d(x: -80.5521, y: 30.2211));
+            sw: new Vector2d(y: -77.0295, x: 38.9165),
+            ne: new Vector2d(y: -80.5521, x: 30.2211));
 
         [Test]
         public void Deserialize()
