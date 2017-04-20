@@ -63,7 +63,7 @@ namespace Mapbox.Platform {
 			getResponseAsync(_hwr, EvaluateResponse);
 		}
 
-#region oldversion
+		#region oldversion
 
 		//private void GetResponseAsync(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
 		//	//private void GetResponseAsync(HttpWebRequest request) {
@@ -124,7 +124,7 @@ namespace Mapbox.Platform {
 		//}
 
 
-#endregion
+		#endregion
 
 		private void getResponseAsync(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
 
@@ -137,27 +137,33 @@ namespace Mapbox.Platform {
 			// initial synchronous setup tasks before an exception for an error is thrown or the method succeeds.
 
 			Action actionWrapper = () => {
-				// BeginInvoke runs on a thread of the thread pool (!= main/UI thread)
-				// that's why we need SynchronizationContext when 
-				// TODO: how to influence threadpool: nr of threads etc.
-				request.BeginGetResponse((asycnResult) => {
-					try { // there's a try/catch here because execution path is different from invokation one, exception here may cause a crash
-						HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asycnResult);
-						gotResponse(response, null);
-					}
-					// EndGetResponse() throws on on some status codes, try to get response anyway (and status codes)
-					catch (WebException wex) {
-						HttpWebResponse hwr = wex.Response as HttpWebResponse;
-						if (null == hwr) {
-							throw;
+				try {
+					// BeginInvoke runs on a thread of the thread pool (!= main/UI thread)
+					// that's why we need SynchronizationContext when 
+					// TODO: how to influence threadpool: nr of threads etc.
+					request.BeginGetResponse((asycnResult) => {
+						try { // there's a try/catch here because execution path is different from invokation one, exception here may cause a crash
+							HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asycnResult);
+							gotResponse(response, null);
 						}
-						gotResponse(hwr, wex);
+						// EndGetResponse() throws on on some status codes, try to get response anyway (and status codes)
+						catch (WebException wex) {
+							HttpWebResponse hwr = wex.Response as HttpWebResponse;
+							if (null == hwr) {
+								throw;
+							}
+							gotResponse(hwr, wex);
+						}
+						catch (Exception ex) {
+							gotResponse(null, ex);
+						}
 					}
-					catch (Exception ex) {
-						gotResponse(null, ex);
-					}
+					, null);
 				}
-				, null);
+				catch (Exception ex) {
+					//catch exception from HttpWebRequest.Abort
+					gotResponse(null, ex);
+				}
 			};
 
 			try {
@@ -194,7 +200,7 @@ namespace Mapbox.Platform {
 				if (null != apiResponse.Headers) {
 					response.Headers = new Dictionary<string, string>();
 					for (int i = 0; i < apiResponse.Headers.Count; i++) {
-// TODO: implement .Net Core / UWP implementation
+						// TODO: implement .Net Core / UWP implementation
 #if !NETFX_CORE
 						string key = apiResponse.Headers.Keys[i];
 						string val = apiResponse.Headers[i];
@@ -245,17 +251,24 @@ namespace Mapbox.Platform {
 			// Unity: SynchronizationContext doesn't do anything
 			//        use the Dispatcher
 #if !UNITY
-			_sync.Post(delegate { _callback(response); }, null);
+			_sync.Post(delegate {
+				_callback(response);
+				IsCompleted = true;
+				_callback = null;
+			}, null);
 #else
-			UnityMainThreadDispatcher.Instance().Enqueue(() => _callback(response));
+			UnityMainThreadDispatcher.Instance().Enqueue(() => {
+				_callback(response);
+				IsCompleted = true;
+				_callback = null;
+			});
 #endif
-			IsCompleted = true;
+
 		}
 
 
 		public void Cancel() {
 
-			_callback = null;
 			if (null != _hwr) {
 				_hwr.Abort();
 			}

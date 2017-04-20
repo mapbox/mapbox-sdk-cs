@@ -8,6 +8,7 @@ namespace Mapbox.UnitTest {
 	using System;
 	using Mapbox.Platform;
 	using NUnit.Framework;
+	using System.Net;
 
 	[TestFixture]
 	internal class FileSourceTest {
@@ -55,7 +56,10 @@ namespace Mapbox.UnitTest {
 			var request = this.fs.Request(
 				Uri,
 				(Response res) => {
-					Assert.Fail("Should never happen.");
+					Assert.IsTrue(res.HasError);
+					WebException wex = res.Exceptions[0] as WebException;
+					Assert.IsNotNull(wex);
+					Assert.AreEqual(wex.Status, WebExceptionStatus.RequestCanceled);
 				});
 
 			request.Cancel();
