@@ -15,11 +15,11 @@ namespace Mapbox.UnitTest {
 
     [TestFixture]
 	internal class VectorTileTest {
-		private Mono.FileSource fs;
+		private FileSource fs;
 
 		[SetUp]
 		public void SetUp() {
-			this.fs = new Mono.FileSource();
+			this.fs = new FileSource();
 		}
 
 		[Test]

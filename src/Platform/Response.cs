@@ -4,20 +4,61 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
-namespace Mapbox.Platform
-{
+namespace Mapbox.Platform {
+
+
 	/// <summary> A response from a <see cref="IFileSource" /> request. </summary>
-	public struct Response
-	{
+	public struct Response {
+
+
+		public bool RateLimitHit {
+			get { return StatusCode.HasValue ? 429 == StatusCode.Value : false; }
+		}
+
+		public bool HasError {
+			get {
+				return _exceptions == null ? false : _exceptions.Count > 0;
+			}
+		}
+
+		public int? StatusCode;
+
+
+		public string ContentType;
+
+
+		/// <summary>Length of rate-limiting interval in seconds. https://www.mapbox.com/api-documentation/#rate-limits </summary>
+		public int? XRateLimitInterval;
+
+		/// <summary>Maximum number of requests you may make in the current interval before reaching the limit. https://www.mapbox.com/api-documentation/#rate-limits </summary>
+		public long? XRateLimitLimit;
+
+		/// <summary>Timestamp of when the current interval will end and the ratelimit counter is reset. https://www.mapbox.com/api-documentation/#rate-limits </summary>
+		public DateTime? XRateLimitReset;
+
+		private List<Exception> _exceptions;
 		/// <summary> Error description, set on error, empty otherwise. </summary>
-		public string Error;
+		public ReadOnlyCollection<Exception> Exceptions {
+			get { return null == _exceptions ? null : _exceptions.AsReadOnly(); }
+		}
+
 
 		/// <summary> Headers of the response. </summary>
 		public Dictionary<string, string> Headers;
 
+
 		/// <summary> Raw data fetched from the request. </summary>
 		public byte[] Data;
+
+		public void AddException(Exception ex) {
+			if (null == _exceptions) { _exceptions = new List<Exception>(); }
+			_exceptions.Add(ex);
+		}
+
+
 	}
 }

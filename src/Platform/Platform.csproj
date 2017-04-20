@@ -41,6 +41,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="FileSource.cs" />
+    <Compile Include="HTTPRequest.cs" />
     <Compile Include="IFileSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IAsyncRequest.cs" />

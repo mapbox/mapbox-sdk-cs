@@ -4,11 +4,18 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Mono {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using Mapbox.Platform;
+namespace Mapbox.Platform {
+
+
+	using System;
+	using System.Collections.Generic;
+	using System.Net;
+	using System.Net.Security;
+#if !NETFX_CORE
+	using System.Security.Cryptography.X509Certificates;
+#endif
+	using System.Threading;
+
 
 	/// <summary>
 	///     Mono implementation of the FileSource class. It will use Mono's
@@ -21,8 +28,18 @@ namespace Mapbox.Mono {
 	/// </remarks>
 	public sealed class FileSource : IFileSource {
 
+
 		private readonly List<HTTPRequest> _requests = new List<HTTPRequest>();
 		private readonly string _accessToken = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN");
+
+
+		/// <summary>Length of rate-limiting interval in seconds. https://www.mapbox.com/api-documentation/#rate-limits </summary>
+		private int? XRateLimitInterval;
+		/// <summary>Maximum number of requests you may make in the current interval before reaching the limit. https://www.mapbox.com/api-documentation/#rate-limits </summary>
+		private long? XRateLimitLimit;
+		/// <summary>Timestamp of when the current interval will end and the ratelimit counter is reset. https://www.mapbox.com/api-documentation/#rate-limits </summary>
+		private DateTime? XRateLimitReset;
+
 
 		/// <summary> Performs a request asynchronously. </summary>
 		/// <param name="url"> The HTTP/HTTPS url. </param>
@@ -37,11 +54,27 @@ namespace Mapbox.Mono {
 				url += "?access_token=" + _accessToken;
 			}
 
+			// TODO:
+			// * add queue for requests
+			// * evaluate rate limits (headers and status code)
+			// * throttle requests accordingly
+
+			//var request = new HTTPRequest_v2(url, proxyResponse);
 			var request = new HTTPRequest(url, callback);
 			_requests.Add(request);
 
 			return request;
 		}
+
+
+		// TODO: look at requests and implement throttling if needed
+		private void proxyResponse(Response response) {
+			if (response.XRateLimitInterval.HasValue) { XRateLimitInterval = response.XRateLimitInterval; }
+			if (response.XRateLimitLimit.HasValue) { XRateLimitLimit = response.XRateLimitLimit; }
+			if (response.XRateLimitReset.HasValue) { XRateLimitReset = response.XRateLimitReset; }
+			//callback(response);
+		}
+
 
 		/// <summary>
 		///     Block until all the requests are processed.
@@ -50,7 +83,7 @@ namespace Mapbox.Mono {
 			while (true) {
 				// Reverse for safely removing while iterating.
 				for (int i = _requests.Count - 1; i >= 0; i--) {
-					if (_requests[i].Wait()) {
+					if (_requests[i].IsCompleted) {
 						_requests.RemoveAt(i);
 					}
 				}
@@ -60,11 +93,16 @@ namespace Mapbox.Mono {
 				}
 
 #if !WINDOWS_UWP
-				Thread.Sleep(10);
+				Thread.Sleep(50);
 #else
-				System.Threading.Tasks.Task.Delay(5).Wait();
+				System.Threading.Tasks.Task.Delay(50).Wait();
 #endif
 			}
 		}
+
+
+
+
+
 	}
 }

@@ -90,10 +90,6 @@
       <Project>{89F8BAB2-2E7A-425E-B715-2CC4519D561F}</Project>
       <Name>Geocoding</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Mono\Mono.csproj">
-      <Project>{346B1208-1587-490B-A7DE-A96B86E81CD6}</Project>
-      <Name>Mono</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Platform\Platform.csproj">
       <Project>{FE49745C-01F6-4A3F-BF08-828113D3E19F}</Project>
       <Name>Platform</Name>

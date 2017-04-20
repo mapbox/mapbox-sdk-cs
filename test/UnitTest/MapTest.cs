@@ -4,27 +4,24 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.UnitTest
-{
-    using System.Drawing;
-    using Mapbox.Map;
-    using Mapbox.Utils;
-    using NUnit.Framework;
+namespace Mapbox.UnitTest {
+	using System.Drawing;
+	using Mapbox.Map;
+	using Mapbox.Platform;
+	using Mapbox.Utils;
+	using NUnit.Framework;
 
-    [TestFixture]
-	internal class MapTest
-	{
-		private Mono.FileSource fs;
+	[TestFixture]
+	internal class MapTest {
+		private FileSource fs;
 
 		[SetUp]
-		public void SetUp()
-		{
-			this.fs = new Mono.FileSource();
+		public void SetUp() {
+			this.fs = new FileSource();
 		}
 
 		[Test]
-		public void World()
-		{
+		public void World() {
 			var map = new Map<VectorTile>(this.fs);
 
 			map.Vector2dBounds = Vector2dBounds.World();
@@ -42,8 +39,7 @@ namespace Mapbox.UnitTest
 		}
 
 		[Test]
-		public void RasterHelsinki()
-		{
+		public void RasterHelsinki() {
 			var map = new Map<RasterTile>(this.fs);
 
 			map.Center = new Vector2d(60.163200, 24.937700);
@@ -64,8 +60,7 @@ namespace Mapbox.UnitTest
 		}
 
 		[Test]
-		public void ChangeMapId()
-		{
+		public void ChangeMapId() {
 			var map = new Map<ClassicRasterTile>(this.fs);
 
 			var mapObserver = new Utils.ClassicRasterMapObserver();
@@ -98,8 +93,7 @@ namespace Mapbox.UnitTest
 		}
 
 		[Test]
-		public void SetVector2dBoundsZoom()
-		{
+		public void SetVector2dBoundsZoom() {
 			var map1 = new Map<RasterTile>(this.fs);
 			var map2 = new Map<RasterTile>(this.fs);
 
@@ -112,8 +106,7 @@ namespace Mapbox.UnitTest
 		}
 
 		[Test]
-		public void TileMax()
-		{
+		public void TileMax() {
 			var map = new Map<RasterTile>(this.fs);
 
 			map.SetVector2dBoundsZoom(Vector2dBounds.World(), 2);
@@ -127,8 +120,7 @@ namespace Mapbox.UnitTest
 		}
 
 		[Test]
-		public void Zoom()
-		{
+		public void Zoom() {
 			var map = new Map<RasterTile>(this.fs);
 
 			map.Zoom = 50;

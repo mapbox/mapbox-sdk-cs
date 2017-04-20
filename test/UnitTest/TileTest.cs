@@ -7,17 +7,18 @@
 namespace Mapbox.UnitTest
 {
 	using Mapbox.Map;
+	using Mapbox.Platform;
 	using NUnit.Framework;
 
 	[TestFixture]
 	internal class TileTest
 	{
-		private Mono.FileSource fs;
+		private FileSource fs;
 
 		[SetUp]
 		public void SetUp()
 		{
-			this.fs = new Mono.FileSource();
+			this.fs = new FileSource();
 		}
 
 		[Test]
