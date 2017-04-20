@@ -82,7 +82,7 @@ namespace Mapbox.UnitTest {
 			this.fs.Request(
 				"https://mapbox.com/forbidden",
 				(Response res) => {
-					Assert.IsTrue(res.HasError, "Forbidden");
+					Assert.IsTrue(res.HasError);
 				});
 
 			this.fs.WaitForAllRequests();

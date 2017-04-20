@@ -61,7 +61,12 @@ namespace Mapbox.UnitTest {
 
 			fs.WaitForAllRequests();
 
+			//tiles are automatically decompressed during HttpRequest on full .Net framework
+#if NETFX_CORE
 			Assert.Less(buffer.Length, Compression.Decompress(buffer).Length);
+#else
+			Assert.AreEqual(buffer.Length, Compression.Decompress(buffer).Length);
+#endif
 		}
 	}
 }
