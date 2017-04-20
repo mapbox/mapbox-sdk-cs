@@ -14,20 +14,23 @@ namespace Mapbox.UnitTest
     [TestFixture]
     internal class LonLatToVector2dConverterTest
     {
+		// Mapbox API returns longitude,latitude
         private string lonLatStr = "[-77.0295,38.9165]";
-        private Vector2d lonLatObj = new Vector2d(x: -77.0295, y: 38.9165);
 
+		// In Unity, x = latitude, y = longitude
+		private Vector2d latLonObject = new Vector2d(y: -77.0295, x: 38.9165);
+		
         [Test]
         public void Deserialize()
         {
             Vector2d deserializedLonLat = JsonConvert.DeserializeObject<Vector2d>(this.lonLatStr, JsonConverters.Converters);
-            Assert.AreEqual(this.lonLatObj.ToString(), deserializedLonLat.ToString());
+            Assert.AreEqual(this.latLonObject.ToString(), deserializedLonLat.ToString());
         }
 
         [Test]
         public void Serialize()
         {
-            string serializedLonLat = JsonConvert.SerializeObject(this.lonLatObj, JsonConverters.Converters);
+            string serializedLonLat = JsonConvert.SerializeObject(this.latLonObject, JsonConverters.Converters);
             Assert.AreEqual(this.lonLatStr, serializedLonLat);
         }
     }

@@ -53,19 +53,14 @@
     <None Include="articles\intro.md" />
     <None Include="articles\toc.md" />
     <None Include="articles\toc.yml" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\docfx.msbuild.2.4.0\build\docfx.msbuild.targets" Condition="Exists('..\..\packages\docfx.msbuild.2.4.0\build\docfx.msbuild.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\docfx.msbuild.2.4.0\build\docfx.msbuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\docfx.msbuild.2.4.0\build\docfx.msbuild.targets'))" />
-  </Target>
   <PropertyGroup>
     <PreBuildEvent Condition="'$(OS)'=='Windows_NT'">copy /Y "$(ProjectDir)docfx.msbuild.targets" "$(SolutionDir)packages/docfx.msbuild.2.4.0/build/"</PreBuildEvent>
     <PreBuildEvent Condition="'$(OS)'!='Windows_NT'">cp -f "$(ProjectDir)docfx.msbuild.targets" "$(SolutionDir)packages/docfx.msbuild.2.4.0/build/"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent />
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

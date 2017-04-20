@@ -6,20 +6,35 @@
 
 namespace Mapbox.Map
 {
-    using System;
-    using System.Collections.Generic;
-    using Mapbox.Platform;
-    using Mapbox.Utils;
+	using System;
+	using System.Collections.Generic;
+	using Mapbox.Platform;
+	using Mapbox.Utils;
 
-    /// <summary>
-    ///     The Mapbox Map abstraction will take care of fetching and decoding
-    ///     data for a geographic bounding box at a certain zoom level.
-    /// </summary>
-    /// <typeparam name="T">
-    ///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
-    ///     <see cref="T:Mapbox.Map.Raster"/>.
-    /// </typeparam>
-    public sealed class Map<T> : Mapbox.Utils.IObservable<T> where T : Tile, new()
+	/// <summary>
+	///     The Mapbox Map abstraction will take care of fetching and decoding
+	///     data for a geographic bounding box at a certain zoom level.
+	/// </summary>
+	/// <typeparam name="T">
+	///     The tile type, currently <see cref="T:Mapbox.Map.Vector"/> or
+	///     <see cref="T:Mapbox.Map.Raster"/>.
+	/// </typeparam>
+	/// <example>
+	/// Request a map of the whole world:
+	/// <code>
+	/// var map = new Map&lt;RasterTile&gt;(MapboxAccess.Instance);
+	/// map.Zoom = 2
+	/// map.Vector2dBounds = Vector2dBounds.World();
+	/// map.MapId = "mapbox://styles/mapbox/streets-v10
+	/// 
+	/// // Register for tile updates.
+	/// map.Subscribe(this);
+	/// 
+	/// // Trigger the request.
+	/// map.Update();
+	/// </code>
+	/// </example>
+	public sealed class Map<T> : Mapbox.Utils.IObservable<T> where T : Tile, new()
 	{
 		/// <summary>
 		///     Arbitrary limit of tiles this class will handle simultaneously.
@@ -55,12 +70,15 @@ namespace Mapbox.Map
 		///     <see cref="T:Mapbox.Map.RasterTile"/> will take the full style URL
 		///     from where the tile is composited from, like "mapbox://styles/mapbox/streets-v9".
 		/// </value>
-		public string MapId {
-			get {
+		public string MapId
+		{
+			get
+			{
 				return this.mapId;
 			}
 
-			set {
+			set
+			{
 				if (this.mapId == value)
 				{
 					return;
@@ -74,7 +92,6 @@ namespace Mapbox.Map
 				}
 
 				this.tiles.Clear();
-				this.Update();
 			}
 		}
 
@@ -83,54 +100,61 @@ namespace Mapbox.Map
 		///     in a incomplete state.
 		/// </summary>
 		/// <value> The tiles. </value>
-		public HashSet<T> Tiles {
-			get {
+		public HashSet<T> Tiles
+		{
+			get
+			{
 				return this.tiles;
 			}
 		}
 
 		/// <summary>Gets or sets a geographic bounding box.</summary>
 		/// <value>New geographic bounding box.</value>
-		public Vector2dBounds Vector2dBounds {
-			get {
+		public Vector2dBounds Vector2dBounds
+		{
+			get
+			{
 				return this.latLngBounds;
 			}
 
-			set {
+			set
+			{
 				this.latLngBounds = value;
-				this.Update();
 			}
 		}
 
 		/// <summary>Gets or sets the central coordinate of the map.</summary>
 		/// <value>The central coordinate.</value>
-		public Vector2d Center {
-			get {
+		public Vector2d Center
+		{
+			get
+			{
 				return this.latLngBounds.Center;
 			}
 
-			set {
+			set
+			{
 				this.latLngBounds.Center = value;
-				this.Update();
 			}
 		}
 
 		/// <summary>Gets or sets the map zoom level.</summary>
 		/// <value>The new zoom level.</value>
-		public int Zoom {
-			get {
+		public int Zoom
+		{
+			get
+			{
 				return this.zoom;
 			}
 
-			set {
+			set
+			{
 				this.zoom = Math.Max(0, Math.Min(20, value));
-				this.Update();
 			}
 		}
 
 		/// <summary>
-		///     Sets the coordinates bounds and zoom at once. More efficient than
-		///     doing it in two steps because it only causes one map update.
+		///     Sets the coordinates bounds and zoom at once.
 		/// </summary>
 		/// <param name="bounds"> Coordinates bounds. </param>
 		/// <param name="zoom"> Zoom level. </param>
@@ -138,7 +162,6 @@ namespace Mapbox.Map
 		{
 			this.latLngBounds = bounds;
 			this.zoom = zoom;
-			this.Update();
 		}
 
 		/// <summary> Add an <see cref="T:IObserver" /> to the observer list. </summary>
@@ -165,7 +188,10 @@ namespace Mapbox.Map
 			}
 		}
 
-		private void Update()
+		/// <summary>
+		/// Request tiles after changing map properties.
+		/// </summary>
+		public void Update()
 		{
 			var cover = TileCover.Get(this.latLngBounds, this.zoom);
 

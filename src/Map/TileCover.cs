@@ -1,30 +1,55 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="TileCover.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map 
+namespace Mapbox.Map
 {
-    using System;
-    using System.Collections.Generic;
-    using Mapbox.Utils;
+	using System;
+	using System.Collections.Generic;
+	using Mapbox.Utils;
 
-    /// <summary>
-    ///     Helper funtions to get a tile cover, i.e. a set of tiles needed for
-    ///     covering a bounding box.
-    /// </summary>
-    public static class TileCover {
+	/// <summary>
+	///     Helper funtions to get a tile cover, i.e. a set of tiles needed for
+	///     covering a bounding box.
+	/// </summary>
+	public static class TileCover
+	{
 		/// <summary> Get a tile cover for the specified bounds and zoom. </summary>
 		/// <param name="bounds"> Geographic bounding box.</param>
 		/// <param name="zoom"> Zoom level. </param>
 		/// <returns> The tile cover set. </returns>
-		public static HashSet<CanonicalTileId> Get(Vector2dBounds bounds, int zoom) {
+		/// <example>
+		/// Build a map of Colorado using TileCover:
+		/// <code>
+		/// var sw = new Vector2d(36.997749, -109.0524961);
+		/// var ne = new Vector2d(41.0002612, -102.0609668);
+		/// var coloradoBounds = new Vector2dBounds(sw, ne);
+		/// var tileCover = TileCover.Get(coloradoBounds, 8);
+		/// Console.Write("Tiles Needed: " + tileCover.Count);
+		/// foreach (var id in tileCover)
+		/// {
+		/// 	var tile = new RasterTile();
+		/// 	var parameters = new Tile.Parameters();
+		/// 	parameters.Id = id;
+		///		parameters.Fs = MapboxAccess.Instance;
+		///		parameters.MapId = "mapbox://styles/mapbox/outdoors-v10";
+		///		tile.Initialize(parameters, (Action)(() =&gt;
+		///		{
+		///			// Place tiles and load textures.
+		///		}));
+		///	}
+		/// </code>
+		/// </example>
+		public static HashSet<CanonicalTileId> Get(Vector2dBounds bounds, int zoom)
+		{
 			var tiles = new HashSet<CanonicalTileId>();
 
-			if(bounds.IsEmpty() ||
+			if (bounds.IsEmpty() ||
 				bounds.South > Constants.LatitudeMax ||
-				bounds.North < -Constants.LatitudeMax) {
+				bounds.North < -Constants.LatitudeMax)
+			{
 				return tiles;
 			}
 
@@ -36,8 +61,10 @@ namespace Mapbox.Map
 			var ne = CoordinateToTileId(hull.NorthEast, zoom);
 
 			// Scanlines.
-			for(var x = sw.X; x <= ne.X; ++x) {
-				for(var y = ne.Y; y <= sw.Y; ++y) {
+			for (var x = sw.X; x <= ne.X; ++x)
+			{
+				for (var y = ne.Y; y <= sw.Y; ++y)
+				{
 					tiles.Add(new UnwrappedTileId(zoom, x, y).Canonical);
 				}
 			}
@@ -49,7 +76,15 @@ namespace Mapbox.Map
 		/// <param name="coord"> Geographic coordinate. </param>
 		/// <param name="zoom"> Zoom level. </param>
 		/// <returns>The to tile identifier.</returns>
-		public static UnwrappedTileId CoordinateToTileId(Vector2d coord, int zoom) {
+		/// <example>
+		/// Convert a geocoordinate to a TileId:
+		/// <code>
+		/// var unwrappedTileId = TileCover.CoordinateToTileId(new Vector2d(40.015, -105.2705), 18);
+		/// Console.Write("UnwrappedTileId: " + unwrappedTileId.ToString());
+		/// </code>
+		/// </example>
+		public static UnwrappedTileId CoordinateToTileId(Vector2d coord, int zoom)
+		{
 			var lat = coord.x;
 			var lng = coord.y;
 

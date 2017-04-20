@@ -6,13 +6,14 @@
 
 namespace Mapbox.Map
 {
-    using System;
-    using Mapbox.Utils;
+	using System;
+	using Mapbox.Utils;
 
-    /// <summary>
-    ///     Canonical tile identifier in a slippy map.
-    /// </summary>
-    public struct CanonicalTileId
+	/// <summary>
+	/// Data type to store  <see href="https://en.wikipedia.org/wiki/Web_Mercator"> Web Mercator</see> tile scheme.
+	/// <see href="http://www.maptiler.org/google-maps-coordinates-tile-bounds-projection/"> See tile IDs in action. </see>
+	/// </summary>
+	public struct CanonicalTileId
 	{
 		/// <summary> The zoom level. </summary>
 		public readonly int Z;

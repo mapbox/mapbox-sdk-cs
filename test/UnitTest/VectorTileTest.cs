@@ -34,6 +34,7 @@ namespace Mapbox.UnitTest {
 
 			for (int zoom = 0; zoom < 15; ++zoom) {
 				map.Zoom = zoom;
+				map.Update();
 				this.fs.WaitForAllRequests();
 			}
 
@@ -70,6 +71,7 @@ namespace Mapbox.UnitTest {
 
 			map.Center = new Vector2d(60.163200, 60.163200);
 			map.Zoom = 13;
+			map.Update();
 
 			mockFs.WaitForAllRequests();
 
@@ -89,6 +91,7 @@ namespace Mapbox.UnitTest {
 
 			map.Vector2dBounds = Vector2dBounds.World();
 			map.Zoom = 3; // 64 tiles.
+			map.Update();
 
 			this.fs.WaitForAllRequests();
 

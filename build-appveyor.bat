@@ -6,6 +6,7 @@ ECHO ~~~~~~~~~~~~~~~~~~~ %~f0 ~~~~~~~~~~~~~~~~~~~
 SET ROOTDIR=%CD%
 SET PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
 SET PATH=%CD%\scriptcs;%PATH%
+SET PATH=%CD%\docfx;%PATH%
 
 FOR /F "tokens=*" %%i in ('powershell Get-ExecutionPolicy') do SET PSPOLICY=%%i
 ECHO Powershell execution policy^: %PSPOLICY%

@@ -32,6 +32,7 @@ namespace Mapbox.UnitTest
 
 			var mapObserver = new Utils.VectorMapObserver();
 			map.Subscribe(mapObserver);
+			map.Update();
 
 			this.fs.WaitForAllRequests();
 
@@ -50,6 +51,7 @@ namespace Mapbox.UnitTest
 
 			var mapObserver = new Utils.RasterMapObserver();
 			map.Subscribe(mapObserver);
+			map.Update();
 
 			this.fs.WaitForAllRequests();
 
@@ -72,16 +74,19 @@ namespace Mapbox.UnitTest
 			map.Center = new Vector2d(60.163200, 24.937700);
 			map.Zoom = 13;
 			map.MapId = "invalid";
+			map.Update();
 
 			this.fs.WaitForAllRequests();
 			Assert.AreEqual(0, mapObserver.Tiles.Count);
 
 			map.MapId = "mapbox.terrain-rgb";
+			map.Update();
 
 			this.fs.WaitForAllRequests();
 			Assert.AreEqual(1, mapObserver.Tiles.Count);
 
 			map.MapId = null; // Use default map ID.
+			map.Update();
 
 			this.fs.WaitForAllRequests();
 			Assert.AreEqual(2, mapObserver.Tiles.Count);
@@ -112,10 +117,12 @@ namespace Mapbox.UnitTest
 			var map = new Map<RasterTile>(this.fs);
 
 			map.SetVector2dBoundsZoom(Vector2dBounds.World(), 2);
+			map.Update();
 			Assert.Less(map.Tiles.Count, Map<RasterTile>.TileMax); // 16
 
 			// Should stay the same, ignore requests.
 			map.SetVector2dBoundsZoom(Vector2dBounds.World(), 5);
+			map.Update();
 			Assert.AreEqual(16, map.Tiles.Count);
 		}
 
