@@ -148,11 +148,16 @@ namespace Mapbox.Platform {
 						}
 						// EndGetResponse() throws on on some status codes, try to get response anyway (and status codes)
 						catch (WebException wex) {
-							HttpWebResponse hwr = wex.Response as HttpWebResponse;
-							if (null == hwr) {
-								throw;
+							//another place to watchout for HttpWebRequest.Abort to occur
+							if (wex.Status == WebExceptionStatus.RequestCanceled) {
+								gotResponse(null, wex);
+							} else {
+								HttpWebResponse hwr = wex.Response as HttpWebResponse;
+								if (null == hwr) {
+									throw;
+								}
+								gotResponse(hwr, wex);
 							}
-							gotResponse(hwr, wex);
 						}
 						catch (Exception ex) {
 							gotResponse(null, ex);
