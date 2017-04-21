@@ -20,6 +20,9 @@ namespace Mapbox.Platform {
 	using System.Collections.Generic;
 	using System.Threading;
 	using System.ComponentModel;
+#if NETFX_CORE
+	using System.Net.Http;
+#endif
 
 	//using System.Windows.Threading;
 
@@ -63,70 +66,16 @@ namespace Mapbox.Platform {
 			getResponseAsync(_hwr, EvaluateResponse);
 		}
 
-		#region oldversion
-
-		//private void GetResponseAsync(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
-		//	//private void GetResponseAsync(HttpWebRequest request) {
-
-		//	// create an additional action wrapper, because of:
-		//	// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.begingetresponse.aspx
-		//	// The BeginGetResponse method requires some synchronous setup tasks to complete (DNS resolution,
-		//	//proxy detection, and TCP socket connection, for example) before this method becomes asynchronous.
-		//	// As a result, this method should never be called on a user interface (UI) thread because it might
-		//	// take considerable time(up to several minutes depending on network settings) to complete the
-		//	// initial synchronous setup tasks before an exception for an error is thrown or the method succeeds.
-
-		//	Action actionWrapper = () => {
-		//		request.BeginGetResponse((r) => {
-		//			try { // there's a try/catch here because execution path is different from invokation one, exception here may cause a crash
-		//				HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(r);
-		//				System.Diagnostics.Debug.WriteLine(string.Format("HTTPRequest before 'gotResponse', thread id:{0}", System.Threading.Thread.CurrentThread.ManagedThreadId));
-		//				gotResponse(response, null);
-		//			}
-		//			// EndGetResponse() throws on on some status codes, try to get response anyway (and status codes)
-		//			catch (WebException wex) {
-		//				HttpWebResponse hwr = wex.Response as HttpWebResponse;
-		//				if (null == hwr) {
-		//					throw;
-		//				}
-		//				gotResponse(hwr, wex);
-		//			}
-		//			catch (Exception ex) {
-		//				gotResponse(null, ex);
-		//			}
-		//		}
-		//	, request);
-		//	};
-
-		//	//http://www.cshandler.com/2011/07/delegate-and-async-programming-part-ii.html
-		//	//http://www.yoda.arachsys.com/csharp/threads/printable.shtml
-		//	//https://msdn.microsoft.com/en-us/library/2e08f6yc(v=vs.110).aspx
-		//	//http://www.c-sharpcorner.com/UploadFile/vendettamit/delegate-and-async-programming-C-Sharp-asynccallback-and-object-state/
-		//	//http://xcalibursystems.com/2011/10/c-how-to-get-a-return-value-from-an-action/
-		//	//https://stackoverflow.com/questions/8099631/how-to-return-value-from-action
-		//	//http://blog.aggregatedintelligence.com/2010/06/c-asynchronous-programming-using.html
-		//	//http://csharpindepth.com/Articles/Chapter2/Events.aspx?printable=true
-
-
-		//	// !!!!BeginInvoke runs on a thread of the thread pool (!= main thread)!!!!
-		//	// TODO: how to influence threadpool: nr of threads etc.
-		//	System.Diagnostics.Debug.WriteLine(string.Format("HTTPRequest before 'BeginInvoke', thread id:{0}", System.Threading.Thread.CurrentThread.ManagedThreadId));
-		//	actionWrapper.BeginInvoke(new AsyncCallback((iASyncResult) => {
-		//		System.Diagnostics.Debug.WriteLine(string.Format("HTTPRequest within 'BeginInvoke', thread id:{0}", System.Threading.Thread.CurrentThread.ManagedThreadId));
-		//		var action = (Action)iASyncResult.AsyncState;
-		//		action.EndInvoke(iASyncResult);
-		//		System.Diagnostics.Debug.WriteLine(string.Format("HTTPRequest after 'EndInvoke', thread id:{0}", System.Threading.Thread.CurrentThread.ManagedThreadId));
-		//	})
-		//	, actionWrapper
-		//	);
-
-		//	System.Diagnostics.Debug.WriteLine(string.Format("HTTPRequest past 'BeginInvoke', thread id:{0}", System.Threading.Thread.CurrentThread.ManagedThreadId));
-		//}
-
-
-		#endregion
 
 		private void getResponseAsync(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
+
+#if NETFX_CORE
+			using (var client = new HttpClient()) {
+				using (var response = await client.GetAsync(_hwr.RequestUri)) {
+					string result = await response.Content.ReadAsStringAsync();
+				}
+			}
+#else
 
 			// create an additional action wrapper, because of:
 			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.begingetresponse.aspx
@@ -181,6 +130,7 @@ namespace Mapbox.Platform {
 			catch (Exception ex) {
 				gotResponse(null, ex);
 			}
+#endif
 		}
 
 
