@@ -22,6 +22,7 @@ namespace Mapbox.Platform {
 	using System.ComponentModel;
 #if NETFX_CORE
 	using System.Net.Http;
+	using System.Linq;
 #endif
 
 	//using System.Windows.Threading;
@@ -55,11 +56,11 @@ namespace Mapbox.Platform {
 			_hwr.Method = "GET";
 #if !UNITY && !NETFX_CORE
 			_hwr.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+			_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
 #endif
 #if !NETFX_CORE
 			_hwr.UserAgent = "mapbox-sdk-cs";
 			//_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-			_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
 #endif
 			//_hwr.Timeout = timeOut * 1000; doesn't work in async calls, see below
 
@@ -67,15 +68,95 @@ namespace Mapbox.Platform {
 		}
 
 
-		private void getResponseAsync(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
-
 #if NETFX_CORE
+		private async void getResponseAsync(HttpWebRequest request, Action<HttpResponseMessage, Exception> gotResponse) {
+
+			//http://rextester.com/discussion/XPKY90132/async-example-with-HttpClient
 			using (var client = new HttpClient()) {
-				using (var response = await client.GetAsync(_hwr.RequestUri)) {
-					string result = await response.Content.ReadAsStringAsync();
+				var response = await client.GetAsync(_hwr.RequestUri);
+				gotResponse(response, null);
+			}
+		}
+
+
+		private async void EvaluateResponse(HttpResponseMessage apiResponse, Exception apiEx) {
+
+			var response = new Response();
+
+			if (null != apiEx) {
+				response.AddException(apiEx);
+			}
+
+			// timeout: API response is null
+			if (null == apiResponse) {
+				response.AddException(new Exception("No Reponse."));
+			} else {
+				// TODO: evaluate headers and add custom exception, eg if rate limit is exceeded
+				// https://www.mapbox.com/api-documentation/#rate-limits
+				// X-Rate-Limit-Interval
+				// X-Rate-Limit-Limit
+				// X-Rate-Limit-Reset
+				if (null != apiResponse.Headers) {
+					response.Headers = new Dictionary<string, string>();
+					foreach (var hdr in apiResponse.Headers) {
+						string key = hdr.Key;
+						string val = hdr.Value.FirstOrDefault();
+						response.Headers.Add(key, val);
+						if (key.Equals("X-Rate-Limit-Interval", StringComparison.OrdinalIgnoreCase)) {
+							int limitInterval;
+							if (int.TryParse(val, out limitInterval)) { response.XRateLimitInterval = limitInterval; }
+						} else if (key.Equals("X-Rate-Limit-Limit", StringComparison.OrdinalIgnoreCase)) {
+							long limitLimit;
+							if (long.TryParse(val, out limitLimit)) { response.XRateLimitLimit = limitLimit; }
+						} else if (key.Equals("X-Rate-Limit-Reset", StringComparison.OrdinalIgnoreCase)) {
+							double unixTimestamp;
+							if (double.TryParse(val, out unixTimestamp)) {
+								DateTime beginningOfTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+								response.XRateLimitReset = beginningOfTime.AddSeconds(unixTimestamp).ToLocalTime();
+							}
+						} else if (key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase)) {
+							response.ContentType = val;
+						}
+					}
+				}
+
+				if (apiResponse.StatusCode != HttpStatusCode.OK) {
+					response.AddException(new Exception(string.Format("{0}: {1}", apiResponse.StatusCode, apiResponse.ReasonPhrase)));
+				}
+				int statusCode = (int)apiResponse.StatusCode;
+				response.StatusCode = statusCode;
+				if (429 == statusCode) {
+					response.AddException(new Exception("Rate limit hit"));
+				}
+
+				if (null != apiResponse) {
+					response.Data = await apiResponse.Content.ReadAsByteArrayAsync();
 				}
 			}
+
+			// post (async) callback back to the main/UI thread
+			// Unity: SynchronizationContext doesn't do anything
+			//        use the Dispatcher
+#if !UNITY
+			_sync.Post(delegate {
+				_callback(response);
+				IsCompleted = true;
+				_callback = null;
+			}, null);
 #else
+			UnityMainThreadDispatcher.Instance().Enqueue(() => {
+				_callback(response);
+				IsCompleted = true;
+				_callback = null;
+			});
+#endif
+		}
+
+#endif
+
+
+#if !NETFX_CORE
+		private void getResponseAsync(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
 
 			// create an additional action wrapper, because of:
 			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.begingetresponse.aspx
@@ -130,7 +211,6 @@ namespace Mapbox.Platform {
 			catch (Exception ex) {
 				gotResponse(null, ex);
 			}
-#endif
 		}
 
 
@@ -156,7 +236,6 @@ namespace Mapbox.Platform {
 					response.Headers = new Dictionary<string, string>();
 					for (int i = 0; i < apiResponse.Headers.Count; i++) {
 						// TODO: implement .Net Core / UWP implementation
-#if !NETFX_CORE
 						string key = apiResponse.Headers.Keys[i];
 						string val = apiResponse.Headers[i];
 						response.Headers.Add(key, val);
@@ -175,7 +254,6 @@ namespace Mapbox.Platform {
 						} else if (key.Equals("Content-Type", StringComparison.InvariantCultureIgnoreCase)) {
 							response.ContentType = val;
 						}
-#endif
 					}
 				}
 
@@ -218,8 +296,9 @@ namespace Mapbox.Platform {
 				_callback = null;
 			});
 #endif
-
 		}
+#endif
+
 
 
 		public void Cancel() {
