@@ -290,7 +290,7 @@ namespace Mapbox.Platform {
 				_callback = null;
 			}, null);
 #else
-			UnityMainThreadDispatcher.Instance().Enqueue(() => {
+			UnityMainThreadDispatcher.Enqueue(() => {
 				_callback(response);
 				IsCompleted = true;
 				_callback = null;
