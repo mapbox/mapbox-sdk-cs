@@ -48,18 +48,42 @@ namespace Mapbox.Platform {
 		/// <param name="callback"></param>
 		/// <param name="timeOut">seconds</param>
 		public HTTPRequest(string url, Action<Response> callback, int timeOut = 10) {
-
+			//UnityEngine.Debug.Log(url);
 			_callback = callback;
 			_timeOut = timeOut;
 
+			//The answer is changing HttpWebRequest / HttpWebResponse to WebRequest/ WebResponse only.That fixed the problem.
+
 			_hwr = WebRequest.Create(url) as HttpWebRequest;
+			_hwr.Credentials = CredentialCache.DefaultCredentials;
+			_hwr.KeepAlive = true;
+
+			//_hwr.ProtocolVersion = HttpVersion.Version11; //that's it!!!
+
+			//that' it !!!!
+			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest(v=vs.90).aspx#Remarks
+			// use a value that is 12 times the number of CPUs on the local computer
+
+			_hwr.ServicePoint.ConnectionLimit  = Environment.ProcessorCount * 6;
+
+			_hwr.ServicePoint.UseNagleAlgorithm = true;
+			_hwr.ServicePoint.Expect100Continue = false;
+			_hwr.ServicePoint.MaxIdleTime = 2000;
+			//System.Net.ServicePointManager.SetTcpKeepAlive(false, 0, 0);
+
+
+			//UnityEngine.Debug.Log("CurrentConnections: " + _hwr.ServicePoint.CurrentConnections);
+			//UnityEngine.Debug.Log("ConnectionLimit: " + _hwr.ServicePoint.ConnectionLimit);
+			//UnityEngine.Debug.Log("ConnectionName: " + _hwr.ServicePoint.ConnectionName);
 			_hwr.Method = "GET";
-#if !UNITY && !NETFX_CORE
+			_hwr.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
 			_hwr.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-			_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
+#if !UNITY && !NETFX_CORE
+			_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.CacheIfAvailable);
 #endif
 #if !NETFX_CORE
-			_hwr.UserAgent = "mapbox-sdk-cs";
+			//_hwr.UserAgent = "mapbox-sdk-cs";
+			_hwr.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36";
 			//_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
 #endif
 			//_hwr.Timeout = timeOut * 1000; doesn't work in async calls, see below
@@ -171,9 +195,17 @@ namespace Mapbox.Platform {
 					// BeginInvoke runs on a thread of the thread pool (!= main/UI thread)
 					// that's why we need SynchronizationContext when 
 					// TODO: how to influence threadpool: nr of threads etc.
+					long startTicks = DateTime.Now.Ticks;
 					request.BeginGetResponse((asycnResult) => {
 						try { // there's a try/catch here because execution path is different from invokation one, exception here may cause a crash
+							long beforeEndGet = DateTime.Now.Ticks;
 							HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asycnResult);
+							//long finished = DateTime.Now.Ticks;
+							//long duration = finished - startTicks;
+							//TimeSpan ts = TimeSpan.FromTicks(duration);
+							//TimeSpan tsEndGet = TimeSpan.FromTicks(finished - beforeEndGet);
+							//TimeSpan tsBeginGet = TimeSpan.FromTicks(beforeEndGet - startTicks);
+							//UnityEngine.Debug.Log("received response - " + ts.Milliseconds + "ms" + " BeginGet: " + tsBeginGet.Milliseconds + " EndGet: " + tsEndGet.Milliseconds + " CompletedSynchronously: " + asycnResult.CompletedSynchronously);
 							gotResponse(response, null);
 						}
 						// EndGetResponse() throws on on some status codes, try to get response anyway (and status codes)
@@ -277,6 +309,7 @@ namespace Mapbox.Platform {
 							response.Data = ms.ToArray();
 						}
 					}
+					apiResponse.Close();
 				}
 			}
 
@@ -290,7 +323,12 @@ namespace Mapbox.Platform {
 				_callback = null;
 			}, null);
 #else
-			UnityMainThreadDispatcher.Enqueue(() => {
+			//UnityMainThreadDispatcher.Enqueue(() => {
+			//	_callback(response);
+			//	IsCompleted = true;
+			//	_callback = null;
+			//});
+			UnityToolbag.Dispatcher.InvokeAsync(() => {
 				_callback(response);
 				IsCompleted = true;
 				_callback = null;
