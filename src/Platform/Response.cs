@@ -14,6 +14,7 @@ namespace Mapbox.Platform {
 	/// <summary> A response from a <see cref="IFileSource" /> request. </summary>
 	public struct Response {
 
+		public IAsyncRequest Request;
 
 		public bool RateLimitHit {
 			get { return StatusCode.HasValue ? 429 == StatusCode.Value : false; }

@@ -79,11 +79,12 @@ namespace Mapbox.Platform {
 			_hwr.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
 			_hwr.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 #if !UNITY && !NETFX_CORE
-			_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.CacheIfAvailable);
+			//_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.CacheIfAvailable);
+			_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
 #endif
 #if !NETFX_CORE
-			//_hwr.UserAgent = "mapbox-sdk-cs";
-			_hwr.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36";
+			_hwr.UserAgent = "mapbox-sdk-cs";
+			//_hwr.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36";
 			//_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
 #endif
 			//_hwr.Timeout = timeOut * 1000; doesn't work in async calls, see below
@@ -250,6 +251,7 @@ namespace Mapbox.Platform {
 		private void EvaluateResponse(HttpWebResponse apiResponse, Exception apiEx) {
 
 			var response = new Response();
+			response.Request = this;
 
 			if (null != apiEx) {
 				response.AddException(apiEx);

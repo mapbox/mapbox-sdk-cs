@@ -29,9 +29,9 @@ namespace Mapbox.Platform {
 	public sealed class FileSource : IFileSource {
 
 
-		private readonly List<HTTPRequest> _requests = new List<HTTPRequest>();
+		private readonly Dictionary<IAsyncRequest, int> _requests = new Dictionary<IAsyncRequest, int>();
 		private readonly string _accessToken = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN");
-
+		private readonly object _lock = new object();
 
 		/// <summary>Length of rate-limiting interval in seconds. https://www.mapbox.com/api-documentation/#rate-limits </summary>
 		private int? XRateLimitInterval;
@@ -58,21 +58,33 @@ namespace Mapbox.Platform {
 			// * add queue for requests
 			// * evaluate rate limits (headers and status code)
 			// * throttle requests accordingly
-
-			//var request = new HTTPRequest_v2(url, proxyResponse);
-			var request = new HTTPRequest(url, callback);
-			_requests.Add(request);
+			//var request = new HTTPRequest(url, callback);
+			IEnumerator<HTTPRequest> proxy = proxyResponse(url, callback);
+			proxy.MoveNext();
+			HTTPRequest request = proxy.Current;
 
 			return request;
 		}
 
 
 		// TODO: look at requests and implement throttling if needed
-		private void proxyResponse(Response response) {
-			if (response.XRateLimitInterval.HasValue) { XRateLimitInterval = response.XRateLimitInterval; }
-			if (response.XRateLimitLimit.HasValue) { XRateLimitLimit = response.XRateLimitLimit; }
-			if (response.XRateLimitReset.HasValue) { XRateLimitReset = response.XRateLimitReset; }
-			//callback(response);
+		private IEnumerator<HTTPRequest> proxyResponse(string url, Action<Response> callback) {
+
+			// TODO: plugin caching somewhere around here
+
+			var request = new HTTPRequest(url, (Response response) => {
+				if (response.XRateLimitInterval.HasValue) { XRateLimitInterval = response.XRateLimitInterval; }
+				if (response.XRateLimitLimit.HasValue) { XRateLimitLimit = response.XRateLimitLimit; }
+				if (response.XRateLimitReset.HasValue) { XRateLimitReset = response.XRateLimitReset; }
+				callback(response);
+				lock (_lock) {
+					_requests.Remove(response.Request);
+				}
+			});
+			lock (_lock) {
+				_requests.Add(request, 0);
+			}
+			yield return request;
 		}
 
 
@@ -80,20 +92,30 @@ namespace Mapbox.Platform {
 		///     Block until all the requests are processed.
 		/// </summary>
 		public void WaitForAllRequests() {
-			while (true) {
+			while (_requests.Count > 0) {
 				// Reverse for safely removing while iterating.
-				for (int i = _requests.Count - 1; i >= 0; i--) {
-					if (_requests[i].IsCompleted) {
-						_requests.RemoveAt(i);
+				lock (_lock) {
+					foreach (var req in _requests) {
+						if (((HTTPRequest)req.Key).IsCompleted) {
+							_requests.Remove(req.Key);
+						}
 					}
-				}
-
-				if (_requests.Count == 0) {
-					break;
 				}
 
 #if !WINDOWS_UWP
 				Thread.Sleep(50);
+				// TODO: get rid of DoEvents!!! and find non-blocking wait that works for Net3.5
+				System.Windows.Forms.Application.DoEvents();
+
+				//var resetEvent = new ManualResetEvent(false);
+				//ThreadPool.QueueUserWorkItem(new WaitCallback(delegate {
+				//	Thread.Sleep(2500);
+				//	resetEvent.Set();
+				//}), null);
+				//resetEvent.WaitOne();
+				//resetEvent.Close();
+				//resetEvent = null;
+
 #else
 				System.Threading.Tasks.Task.Delay(50).Wait();
 #endif
