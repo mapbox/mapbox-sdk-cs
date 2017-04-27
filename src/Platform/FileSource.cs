@@ -105,7 +105,7 @@ namespace Mapbox.Platform {
 #if !WINDOWS_UWP
 				Thread.Sleep(50);
 				// TODO: get rid of DoEvents!!! and find non-blocking wait that works for Net3.5
-				System.Windows.Forms.Application.DoEvents();
+				//System.Windows.Forms.Application.DoEvents();
 
 				//var resetEvent = new ManualResetEvent(false);
 				//ThreadPool.QueueUserWorkItem(new WaitCallback(delegate {
