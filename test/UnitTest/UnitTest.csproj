@@ -34,6 +34,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HttpMock, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HttpMock.2.0.1\lib\net45\HttpMock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kayak, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Kayak.0.7.2\lib\Kayak.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Mapbox.Json">
       <HintPath>..\..\3rdparty\Json.Net.Unity3D\Net35\Mapbox.Json.dll</HintPath>
     </Reference>
@@ -51,10 +63,6 @@
     </Reference>
     <Reference Include="Mapbox.VectorTile.VectorTileReader, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Mapbox.VectorTile.1.0.3-alpha2\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RichardSzalay.MockHttp, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RichardSzalay.MockHttp.1.5.0\lib\net45\RichardSzalay.MockHttp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -110,6 +118,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

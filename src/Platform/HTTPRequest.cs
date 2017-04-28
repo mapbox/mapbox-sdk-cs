@@ -30,7 +30,7 @@ namespace Mapbox.Platform {
 	internal sealed class HTTPRequest : IAsyncRequest {
 
 
-		public bool IsCompleted = false;
+		public bool IsCompleted { get; private set; }
 
 
 		private Action<Response> _callback;
@@ -48,6 +48,7 @@ namespace Mapbox.Platform {
 		/// <param name="callback"></param>
 		/// <param name="timeOut">seconds</param>
 		public HTTPRequest(string url, Action<Response> callback, int timeOut = 10) {
+			IsCompleted = false;
 			//UnityEngine.Debug.Log(url);
 			_callback = callback;
 			_timeOut = timeOut;
