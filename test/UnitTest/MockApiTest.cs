@@ -30,7 +30,7 @@ namespace Mapbox.UnitTest {
 			public static string rateLimitHit = "/ratelimithit";
 		}
 
-		[TearDown]
+		[OneTimeTearDown]
 		public void Finished() {
 			if (null == _mockApi) { return; }
 			_mockApi.Dispose();
@@ -38,7 +38,7 @@ namespace Mapbox.UnitTest {
 		}
 
 
-		[SetUp]
+		[OneTimeSetUp]
 		public void SetupMockHttp() {
 
 			var serverFactory = new HttpServerFactory();
@@ -52,7 +52,7 @@ namespace Mapbox.UnitTest {
 				.OK();
 
 			// test status code ('Unavailable For Legal Reasons') not available in .NET HttpStatusCode enum
-			_mockApi.Stub(r => r.Get(_testUrl.testMockServer1)).WithStatus((HttpStatusCode)451);
+			_mockApi.Stub(r => r.Get(_testUrl.testMockServer2)).WithStatus((HttpStatusCode)451);
 
 			_mockApi.Stub(r => r.Get(_testUrl.rateLimitHit))
 				.Return(string.Empty)

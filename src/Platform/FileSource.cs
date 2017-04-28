@@ -98,8 +98,8 @@ namespace Mapbox.Platform {
 		///     Block until all the requests are processed.
 		/// </summary>
 		public void WaitForAllRequests() {
+			int waitTimeMs = 150;
 			while (_requests.Count > 0) {
-				// Reverse for safely removing while iterating.
 				lock (_lock) {
 					foreach (var req in _requests) {
 						if (((HTTPRequest)req.Key).IsCompleted) {
@@ -115,21 +115,21 @@ namespace Mapbox.Platform {
 				}
 
 #if !WINDOWS_UWP
-				Thread.Sleep(50);
+				//Thread.Sleep(50);
 				// TODO: get rid of DoEvents!!! and find non-blocking wait that works for Net3.5
 				//System.Windows.Forms.Application.DoEvents();
 
-				//var resetEvent = new ManualResetEvent(false);
-				//ThreadPool.QueueUserWorkItem(new WaitCallback(delegate {
-				//	Thread.Sleep(2500);
-				//	resetEvent.Set();
-				//}), null);
-				//resetEvent.WaitOne();
-				//resetEvent.Close();
-				//resetEvent = null;
+				var resetEvent = new ManualResetEvent(false);
+				ThreadPool.QueueUserWorkItem(new WaitCallback(delegate {
+					Thread.Sleep(waitTimeMs);
+					resetEvent.Set();
+				}), null);
+				resetEvent.WaitOne();
+				resetEvent.Close();
+				resetEvent = null;
 
 #else
-				System.Threading.Tasks.Task.Delay(50).Wait();
+				System.Threading.Tasks.Task.Delay(waitTimeMs).Wait();
 #endif
 			}
 		}
