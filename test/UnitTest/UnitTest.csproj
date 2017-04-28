@@ -73,7 +73,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MockApiTest.cs" />
+    <Compile Include="FileSourceMockApiTest.cs" />
     <Compile Include="FileSourceTest.cs" />
     <Compile Include="ForwardGeocodeResourceTest.cs" />
     <Compile Include="ReverseGeocodeResourceTest.cs" />

@@ -20,6 +20,7 @@ namespace Mapbox.Platform {
 	using System.Collections.Generic;
 	using System.Threading;
 	using System.ComponentModel;
+	using Utils;
 #if NETFX_CORE
 	using System.Net.Http;
 	using System.Linq;
@@ -287,8 +288,7 @@ namespace Mapbox.Platform {
 						} else if (key.Equals("X-Rate-Limit-Reset", StringComparison.InvariantCultureIgnoreCase)) {
 							double unixTimestamp;
 							if (double.TryParse(val, out unixTimestamp)) {
-								DateTime beginningOfTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-								response.XRateLimitReset = beginningOfTime.AddSeconds(unixTimestamp).ToLocalTime();
+								response.XRateLimitReset = UnixTimestampUtils.From(unixTimestamp);
 							}
 						} else if (key.Equals("Content-Type", StringComparison.InvariantCultureIgnoreCase)) {
 							response.ContentType = val;
