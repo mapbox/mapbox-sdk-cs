@@ -53,13 +53,19 @@
       <HintPath>..\..\packages\Mapbox.VectorTile.1.0.3-alpha2\lib\net35\Mapbox.VectorTile.VectorTileReader.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RichardSzalay.MockHttp, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RichardSzalay.MockHttp.1.5.0\lib\net45\RichardSzalay.MockHttp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MockApiTest.cs" />
     <Compile Include="FileSourceTest.cs" />
     <Compile Include="ForwardGeocodeResourceTest.cs" />
     <Compile Include="ReverseGeocodeResourceTest.cs" />
