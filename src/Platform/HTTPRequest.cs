@@ -346,7 +346,6 @@ namespace Mapbox.Platform {
 			if (null != _hwr) {
 				_hwr.Abort();
 			}
-			IsCompleted = true;
 		}
 
 

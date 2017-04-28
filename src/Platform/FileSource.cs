@@ -78,7 +78,13 @@ namespace Mapbox.Platform {
 				if (response.XRateLimitReset.HasValue) { XRateLimitReset = response.XRateLimitReset; }
 				callback(response);
 				lock (_lock) {
-					_requests.Remove(response.Request);
+					//another place to catch if request has been cancelled
+					try {
+						_requests.Remove(response.Request);
+					}
+					catch (Exception ex) {
+						System.Diagnostics.Debug.WriteLine(ex);
+					}
 				}
 			});
 			lock (_lock) {
@@ -97,7 +103,13 @@ namespace Mapbox.Platform {
 				lock (_lock) {
 					foreach (var req in _requests) {
 						if (((HTTPRequest)req.Key).IsCompleted) {
-							_requests.Remove(req.Key);
+							// another place to watch out if request has been cancelled
+							try {
+								_requests.Remove(req.Key);
+							}
+							catch(Exception ex) {
+								System.Diagnostics.Debug.WriteLine(ex);
+							}
 						}
 					}
 				}
