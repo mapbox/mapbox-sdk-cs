@@ -55,6 +55,8 @@ namespace Mapbox.Platform {
 			//The answer is changing HttpWebRequest / HttpWebResponse to WebRequest/ WebResponse only.That fixed the problem.
 
 			_hwr = WebRequest.Create(url) as HttpWebRequest;
+
+#if !NETFX_CORE
 			_hwr.Credentials = CredentialCache.DefaultCredentials;
 			_hwr.KeepAlive = true;
 
@@ -78,6 +80,8 @@ namespace Mapbox.Platform {
 			_hwr.Method = "GET";
 			_hwr.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
 			_hwr.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+#endif
+
 #if !UNITY && !NETFX_CORE
 			//_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.CacheIfAvailable);
 			_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
