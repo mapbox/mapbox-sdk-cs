@@ -187,6 +187,11 @@ namespace Mapbox.Utils
 
         public override string ToString()
         {
+            return string.Format(NumberFormatInfo.InvariantInfo, "{0:F5},{1:F5}", this.x, this.y);
+        }
+
+        public string SerializeToLonLat()
+        {
             return string.Format(NumberFormatInfo.InvariantInfo, "{0:F5},{1:F5}", this.y, this.x);
         }
 

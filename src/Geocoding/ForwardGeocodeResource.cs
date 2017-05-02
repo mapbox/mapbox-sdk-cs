@@ -148,7 +148,7 @@ namespace Mapbox.Geocoding
 			if (this.Proximity != null)
 			{
 				var nonNullableProx = (Vector2d)this.Proximity;
-				opts.Add("proximity", nonNullableProx.ToString());
+				opts.Add("proximity", nonNullableProx.SerializeToLonLat());
 			}
 
 			if (this.Types != null)

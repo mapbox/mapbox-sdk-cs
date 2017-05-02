@@ -167,7 +167,7 @@ namespace Mapbox.Utils
 		/// <returns> Returns a string for use in a Mapbox query URL. </returns>
 		public override string ToString()
 		{
-			return string.Format("{0},{1}", this.SouthWest.ToString(), this.NorthEast.ToString());
+			return string.Format("{0},{1}", this.SouthWest.SerializeToLonLat(), this.NorthEast.SerializeToLonLat());
 		}
 	}
 }

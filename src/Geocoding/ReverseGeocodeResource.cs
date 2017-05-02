@@ -47,7 +47,7 @@ namespace Mapbox.Geocoding
 			return Constants.BaseAPI +
 							this.ApiEndpoint +
 							this.Mode +
-							this.Query.ToString() +
+							this.Query.SerializeToLonLat() +
 							".json" +
 							EncodeQueryString(opts);
 		}
