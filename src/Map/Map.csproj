@@ -69,6 +69,8 @@
     <Compile Include="RawPngRasterTile.cs" />
     <Compile Include="MapUtils.cs" />
     <Compile Include="ClassicRasterTile.cs" />
+    <Compile Include="RetinaRasterTile.cs" />
+    <Compile Include="ClassicRetinaRasterTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Map.project.json" />

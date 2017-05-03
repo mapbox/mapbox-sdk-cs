@@ -80,6 +80,8 @@
     <Compile Include="TileResource.cs" />
     <Compile Include="UnwrappedTileId.cs" />
     <Compile Include="VectorTile.cs" />
+    <Compile Include="RetinaRasterTile.cs" />
+    <Compile Include="ClassicRetinaRasterTile.cs" />
     <EmbeddedResource Include="Properties\MapUWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
