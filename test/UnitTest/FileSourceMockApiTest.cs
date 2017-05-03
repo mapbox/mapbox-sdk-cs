@@ -25,8 +25,8 @@ namespace Mapbox.UnitTest {
 		IHttpServer _mockApi;
 
 		private struct _testUrl {
-			public static string testMockServer1 = "/testmock1";
-			public static string testMockServer2 = "/testmock2";
+			public static string simpleJson = "/testmock1";
+			public static string customStatusCode = "/testmock2";
 			public static string rateLimitHit = "/ratelimithit";
 			public static string xrateheader = "/xrateheader";
 		}
@@ -47,13 +47,13 @@ namespace Mapbox.UnitTest {
 
 			_mockApi.Start();
 
-			_mockApi.Stub(r => r.Get(_testUrl.testMockServer1))
+			_mockApi.Stub(r => r.Get(_testUrl.simpleJson))
 				.Return(@"{""name"":""first test""}")
 				.AsContentType("application/json")
 				.OK();
 
 			// test status code ('Unavailable For Legal Reasons') not available in .NET HttpStatusCode enum
-			_mockApi.Stub(r => r.Get(_testUrl.testMockServer2)).WithStatus((HttpStatusCode)451);
+			_mockApi.Stub(r => r.Get(_testUrl.customStatusCode)).WithStatus((HttpStatusCode)451);
 
 			_mockApi.Stub(r => r.Get(_testUrl.rateLimitHit))
 				.Return(string.Empty)
@@ -70,10 +70,10 @@ namespace Mapbox.UnitTest {
 
 
 		[Test]
-		public void TestMockServer() {
+		public void SimpleJson() {
 
 			_fs.Request(
-				_mockBaseUrl + _testUrl.testMockServer1
+				_mockBaseUrl + _testUrl.simpleJson
 				, (Response r) => {
 					Assert.IsTrue(r.StatusCode.HasValue, "mock api did not set status code");
 					Assert.AreEqual(200, r.StatusCode, "mock api returned wrong status code");
@@ -86,7 +86,7 @@ namespace Mapbox.UnitTest {
 
 
 			_fs.Request(
-				_mockBaseUrl + _testUrl.testMockServer2
+				_mockBaseUrl + _testUrl.customStatusCode
 				, (Response r) => {
 					Assert.IsTrue(r.StatusCode.HasValue, "mock api did not set status code");
 					Assert.AreEqual(451, r.StatusCode, "mock api returned wrong status code");
@@ -105,7 +105,7 @@ namespace Mapbox.UnitTest {
 				, (Response r) => {
 					Assert.IsTrue(r.StatusCode.HasValue, "request did not set status code");
 					Assert.AreEqual(429, r.StatusCode, "request did not set rate limit status code correctly");
-					Assert.IsTrue(r.HasError, "request did not set HasError");
+					Assert.IsTrue(r.HasError, "request did not set 'HasError'");
 					Assert.NotNull(r.Exceptions, "request did not set any exceptions");
 					Assert.GreaterOrEqual(r.Exceptions.Count, 1, "request did not set enough exceptions");
 				}
@@ -135,6 +135,23 @@ namespace Mapbox.UnitTest {
 			_fs.WaitForAllRequests();
 		}
 
+
+		[Test]
+		public void DoesNotExist404() {
+
+			_fs.Request(
+				_mockBaseUrl + "/doesnotexist/mvt.pbf"
+				, (Response r) => {
+					Assert.IsTrue(r.StatusCode.HasValue, "request did not set status code");
+					Assert.AreEqual(404, r.StatusCode, "request did not set 404 status code correctly");
+					Assert.IsTrue(r.HasError, "request did not set 'HasError'");
+					Assert.NotNull(r.Exceptions, "request did not set any exceptions");
+					Assert.GreaterOrEqual(r.Exceptions.Count, 1, "request did not set enough exceptions");
+				}
+			);
+
+			_fs.WaitForAllRequests();
+		}
 
 
 	}
