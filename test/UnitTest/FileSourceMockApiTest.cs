@@ -107,7 +107,7 @@ namespace Mapbox.UnitTest {
 					Assert.AreEqual(429, r.StatusCode, "request did not set rate limit status code correctly");
 					Assert.IsTrue(r.HasError, "request did not set HasError");
 					Assert.NotNull(r.Exceptions, "request did not set any exceptions");
-					Assert.GreaterOrEqual(1, r.Exceptions.Count, "request did not set enough exceptions");
+					Assert.GreaterOrEqual(r.Exceptions.Count, 1, "request did not set enough exceptions");
 				}
 			);
 
