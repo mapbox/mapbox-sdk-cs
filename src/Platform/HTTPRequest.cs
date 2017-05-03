@@ -35,11 +35,18 @@ namespace Mapbox.Platform {
 
 
 		private Action<Response> _callback;
-		private HttpWebRequest _hwr;
-		private int _timeOut;
+#if !NETFX_CORE
+		private HttpWebRequest _request;
+#else
+		private HttpClient _request;
+		private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+#endif
 #if !UNITY
 		private SynchronizationContext _sync = AsyncOperationManager.SynchronizationContext;
 #endif
+		private int _timeOut;
+		private string _requestUrl;
+		private readonly string _userAgent = "mapbox-sdk-cs";
 
 
 		/// <summary>
@@ -49,64 +56,83 @@ namespace Mapbox.Platform {
 		/// <param name="callback"></param>
 		/// <param name="timeOut">seconds</param>
 		public HTTPRequest(string url, Action<Response> callback, int timeOut = 10) {
+
 			IsCompleted = false;
-			//UnityEngine.Debug.Log(url);
 			_callback = callback;
 			_timeOut = timeOut;
+			_requestUrl = url;
 
-			//The answer is changing HttpWebRequest / HttpWebResponse to WebRequest/ WebResponse only.That fixed the problem.
-
-			_hwr = WebRequest.Create(url) as HttpWebRequest;
-
-#if !NETFX_CORE
-			_hwr.Credentials = CredentialCache.DefaultCredentials;
-			_hwr.KeepAlive = true;
-
-			//_hwr.ProtocolVersion = HttpVersion.Version11; //that's it!!!
-
-			//that' it !!!!
-			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest(v=vs.90).aspx#Remarks
-			// use a value that is 12 times the number of CPUs on the local computer
-
-			_hwr.ServicePoint.ConnectionLimit  = Environment.ProcessorCount * 6;
-
-			_hwr.ServicePoint.UseNagleAlgorithm = true;
-			_hwr.ServicePoint.Expect100Continue = false;
-			_hwr.ServicePoint.MaxIdleTime = 2000;
-			//System.Net.ServicePointManager.SetTcpKeepAlive(false, 0, 0);
-
-
-			//UnityEngine.Debug.Log("CurrentConnections: " + _hwr.ServicePoint.CurrentConnections);
-			//UnityEngine.Debug.Log("ConnectionLimit: " + _hwr.ServicePoint.ConnectionLimit);
-			//UnityEngine.Debug.Log("ConnectionName: " + _hwr.ServicePoint.ConnectionName);
-			_hwr.Method = "GET";
-			_hwr.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
-			_hwr.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-#endif
-
-#if !UNITY && !NETFX_CORE
-			//_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.CacheIfAvailable);
-			_hwr.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-#endif
-#if !NETFX_CORE
-			_hwr.UserAgent = "mapbox-sdk-cs";
-			//_hwr.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36";
-			//_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-#endif
-			//_hwr.Timeout = timeOut * 1000; doesn't work in async calls, see below
-
-			getResponseAsync(_hwr, EvaluateResponse);
+			setupRequest();
+			getResponseAsync(_request, EvaluateResponse);
 		}
 
 
-#if NETFX_CORE
-		private async void getResponseAsync(HttpWebRequest request, Action<HttpResponseMessage, Exception> gotResponse) {
+		private void setupRequest() {
 
-			//http://rextester.com/discussion/XPKY90132/async-example-with-HttpClient
-			using (var client = new HttpClient()) {
-				var response = await client.GetAsync(_hwr.RequestUri);
+#if !NETFX_CORE
+			_request = WebRequest.Create(_requestUrl) as HttpWebRequest;
+			_request.UserAgent = _userAgent;
+			//_hwr.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36";
+			//_hwr.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+			_request.Credentials = CredentialCache.DefaultCredentials;
+			_request.KeepAlive = true;
+			_request.ProtocolVersion = HttpVersion.Version11; // improved performance
+
+			// improved performance. 
+			// ServicePointManager.DefaultConnectionLimit doesn't seem to change anything
+			// set ConnectionLimit per request
+			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest(v=vs.90).aspx#Remarks
+			// use a value that is 12 times the number of CPUs on the local computer
+			_request.ServicePoint.ConnectionLimit  = Environment.ProcessorCount * 6;
+
+			_request.ServicePoint.UseNagleAlgorithm = true;
+			_request.ServicePoint.Expect100Continue = false;
+			_request.ServicePoint.MaxIdleTime = 2000;
+			_request.Method = "GET";
+			_request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+			_request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+			//_hwr.Timeout = timeOut * 1000; doesn't work in async calls, see below
+
+#else
+			HttpClientHandler handler = new HttpClientHandler() {
+				AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+				AllowAutoRedirect = true,
+				UseDefaultCredentials = true
+
+			};
+			_request = new HttpClient(handler);
+			_request.DefaultRequestHeaders.Add("User-Agent", _userAgent);
+			_request.Timeout = TimeSpan.FromSeconds(_timeOut);
+
+			// TODO: how to set ConnectionLimit? ServicePoint.ConnectionLimit doesn't seem to be available.
+#endif
+
+#if !UNITY && !NETFX_CORE
+			// 'NoCacheNoStore' greatly reduced the number of faulty request
+			// seems that .Net caching and Mapbox API don't play well together
+			_request.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+#endif
+		}
+
+
+
+#if NETFX_CORE
+
+		private async void getResponseAsync(HttpClient request, Action<HttpResponseMessage, Exception> gotResponse) {
+
+			// TODO: implement a strategy similar to the full .Net one to avoid blocking of 'GetAsync()'
+			// see 'Remarks' https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient.timeout?view=netcore-1.1#System_Net_Http_HttpClient_Timeout
+			// "A Domain Name System (DNS) query may take up to 15 seconds to return or time out."
+
+			HttpResponseMessage response = null;
+			try {
+				response = await request.GetAsync(_requestUrl, _cancellationTokenSource.Token);
 				gotResponse(response, null);
 			}
+			catch (Exception ex) {
+				gotResponse(response, ex);
+			}
+
 		}
 
 
@@ -122,11 +148,7 @@ namespace Mapbox.Platform {
 			if (null == apiResponse) {
 				response.AddException(new Exception("No Reponse."));
 			} else {
-				// TODO: evaluate headers and add custom exception, eg if rate limit is exceeded
 				// https://www.mapbox.com/api-documentation/#rate-limits
-				// X-Rate-Limit-Interval
-				// X-Rate-Limit-Limit
-				// X-Rate-Limit-Reset
 				if (null != apiResponse.Headers) {
 					response.Headers = new Dictionary<string, string>();
 					foreach (var hdr in apiResponse.Headers) {
@@ -173,12 +195,24 @@ namespace Mapbox.Platform {
 				_callback(response);
 				IsCompleted = true;
 				_callback = null;
+#if NETFX_CORE
+				if (null != _request) {
+					_request.Dispose();
+					_request = null;
+				}
+#endif
 			}, null);
 #else
-			UnityMainThreadDispatcher.Instance().Enqueue(() => {
+			UnityToolbag.Dispatcher.InvokeAsync(() => {
 				_callback(response);
 				IsCompleted = true;
 				_callback = null;
+#if NETFX_CORE
+				if (null != _request) {
+					_request.Dispose();
+					_request = null;
+				}
+#endif
 			});
 #endif
 		}
@@ -267,11 +301,7 @@ namespace Mapbox.Platform {
 			if (null == apiResponse) {
 				response.AddException(new Exception("No Reponse."));
 			} else {
-				// TODO: evaluate headers and add custom exception, eg if rate limit is exceeded
 				// https://www.mapbox.com/api-documentation/#rate-limits
-				// X-Rate-Limit-Interval
-				// X-Rate-Limit-Limit
-				// X-Rate-Limit-Reset
 				if (null != apiResponse.Headers) {
 					response.Headers = new Dictionary<string, string>();
 					for (int i = 0; i < apiResponse.Headers.Count; i++) {
@@ -328,17 +358,24 @@ namespace Mapbox.Platform {
 				_callback(response);
 				IsCompleted = true;
 				_callback = null;
+#if NETFX_CORE
+				if (null != _request) {
+					_request.Dispose();
+					_request = null;
+				}
+#endif
 			}, null);
 #else
-			//UnityMainThreadDispatcher.Enqueue(() => {
-			//	_callback(response);
-			//	IsCompleted = true;
-			//	_callback = null;
-			//});
 			UnityToolbag.Dispatcher.InvokeAsync(() => {
 				_callback(response);
 				IsCompleted = true;
 				_callback = null;
+#if NETFX_CORE
+				if (null != _request) {
+					_request.Dispose();
+					_request = null;
+				}
+#endif
 			});
 #endif
 		}
@@ -348,9 +385,13 @@ namespace Mapbox.Platform {
 
 		public void Cancel() {
 
-			if (null != _hwr) {
-				_hwr.Abort();
+#if !NETFX_CORE
+			if (null != _request) {
+				_request.Abort();
 			}
+#else
+			_cancellationTokenSource.Cancel();
+#endif
 		}
 
 
