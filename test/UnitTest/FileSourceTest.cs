@@ -10,15 +10,18 @@ namespace Mapbox.UnitTest {
 	using NUnit.Framework;
 	using System.Net;
 
+
 	[TestFixture]
 	internal class FileSourceTest {
-		private const string Uri = "https://api.mapbox.com/geocoding/v5/mapbox.places/helsinki.json";
-		private FileSource fs;
+		private const string _url = "https://api.mapbox.com/geocoding/v5/mapbox.places/helsinki.json";
+		private FileSource _fs;
+
 
 		[SetUp]
 		public void SetUp() {
-			this.fs = new FileSource();
+			_fs = new FileSource();
 		}
+
 
 		[Test]
 		public void AccessTokenSet() {
@@ -27,34 +30,37 @@ namespace Mapbox.UnitTest {
 				"MAPBOX_ACCESS_TOKEN not set in the environment.");
 		}
 
+
 		[Test]
 		public void Request() {
-			this.fs.Request(
-				Uri,
+			_fs.Request(
+				_url,
 				(Response res) => {
 					Assert.IsNotNull(res.Data, "No data received from the servers.");
 				});
 
-			this.fs.WaitForAllRequests();
+			_fs.WaitForAllRequests();
 		}
+
 
 		[Test]
 		public void MultipleRequests() {
 			int count = 0;
 
-			this.fs.Request(Uri, (Response res) => ++count);
-			this.fs.Request(Uri, (Response res) => ++count);
-			this.fs.Request(Uri, (Response res) => ++count);
+			_fs.Request(_url, (Response res) => ++count);
+			_fs.Request(_url, (Response res) => ++count);
+			_fs.Request(_url, (Response res) => ++count);
 
-			this.fs.WaitForAllRequests();
+			_fs.WaitForAllRequests();
 
 			Assert.AreEqual(count, 3, "Should have received 3 replies.");
 		}
 
+
 		[Test]
 		public void RequestCancel() {
-			var request = this.fs.Request(
-				Uri,
+			var request = _fs.Request(
+				_url,
 				(Response res) => {
 					Assert.IsTrue(res.HasError);
 					WebException wex = res.Exceptions[0] as WebException;
@@ -64,38 +70,43 @@ namespace Mapbox.UnitTest {
 
 			request.Cancel();
 
-			this.fs.WaitForAllRequests();
+			_fs.WaitForAllRequests();
 		}
+
 
 		[Test]
 		public void RequestDnsError() {
-			this.fs.Request(
+			_fs.Request(
 				"https://dnserror.shouldnotwork",
 				(Response res) => {
 					Assert.IsTrue(res.HasError);
 				});
 
-			this.fs.WaitForAllRequests();
+			_fs.WaitForAllRequests();
 		}
+
 
 		[Test]
 		public void RequestForbidden() {
 			// Mapbox servers will return a forbidden when attempting
 			// to access a page outside the API space with a token
 			// on the query. Let's hope the behaviour stay like this.
-			this.fs.Request(
+			_fs.Request(
 				"https://mapbox.com/forbidden",
 				(Response res) => {
 					Assert.IsTrue(res.HasError);
 				});
 
-			this.fs.WaitForAllRequests();
+			_fs.WaitForAllRequests();
 		}
+
 
 		[Test]
 		public void WaitWithNoRequests() {
 			// This should simply not block.
-			this.fs.WaitForAllRequests();
+			_fs.WaitForAllRequests();
 		}
+
+
 	}
 }

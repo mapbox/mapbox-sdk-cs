@@ -8,6 +8,9 @@ namespace Mapbox.Map {
 	using System;
 	using Mapbox.Platform;
 	using System.Linq;
+	using System.Collections.Generic;
+	using System.Collections.ObjectModel;
+
 
 	/// <summary>
 	///    A Map tile, a square with vector or raster data representing a geographic
@@ -16,11 +19,13 @@ namespace Mapbox.Map {
 	/// </summary>
 	public abstract class Tile {
 
-		private CanonicalTileId id;
-		private string error;
-		private State state = State.New;
-		private IAsyncRequest request;
-		private Action callback;
+
+		private CanonicalTileId _id;
+		private List<Exception> _exceptions;
+		private State _state = State.New;
+		private IAsyncRequest _request;
+		private Action _callback;
+
 
 		/// <summary> Tile state. </summary>
 		public enum State {
@@ -37,29 +42,34 @@ namespace Mapbox.Map {
 		/// <summary> Gets the <see cref="T:Mapbox.Map.CanonicalTileId"/> identifier. </summary>
 		/// <value> The canonical tile identifier. </value>
 		public CanonicalTileId Id {
+			get { return _id; }
+			set { _id = value; }
+		}
+
+
+		/// <summary>Flag to indicate if the request was successful</summary>
+		public bool HasError {
 			get {
-				return this.id;
-			}
-			set {
-				this.id = value;
+				return _exceptions == null ? false : _exceptions.Count > 0;
 			}
 		}
 
-		/// <summary> Gets the error message if any. </summary>
-		/// <value> The error string. </value>
-		public string Error {
-			get {
-				return this.error;
-			}
+
+		/// <summary> Exceptions that might have occured during creation of the tile. </summary>
+		public ReadOnlyCollection<Exception> Exceptions {
+			get { return null == _exceptions ? null : _exceptions.AsReadOnly(); }
 		}
+
 
 		/// <summary>
 		/// Sets the error message.
 		/// </summary>
 		/// <param name="errorMessage"></param>
-		public void SetError(string errorMessage) {
-			error = errorMessage;
+		internal void AddException(Exception ex) {
+			if (null == _exceptions) { _exceptions = new List<Exception>(); }
+			_exceptions.Add(ex);
 		}
+
 
 		/// <summary>
 		///     Gets the current state. When fully loaded, you must
@@ -69,9 +79,10 @@ namespace Mapbox.Map {
 		/// <value> The tile state. </value>
 		public State CurrentState {
 			get {
-				return this.state;
+				return _state;
 			}
 		}
+
 
 		/// <summary>
 		///     Initializes the <see cref="T:Mapbox.Map.Tile"/> object. It will
@@ -80,13 +91,14 @@ namespace Mapbox.Map {
 		/// <param name="param"> Initialization parameters. </param>
 		/// <param name="callback"> The completion callback. </param>
 		public void Initialize(Parameters param, Action callback) {
-			this.Cancel();
+			Cancel();
 
-			this.state = State.Loading;
-			this.id = param.Id;
-			this.request = param.Fs.Request(this.MakeTileResource(param.MapId).GetUrl(), this.HandleTileResponse);
-			this.callback = callback;
+			_state = State.Loading;
+			_id = param.Id;
+			_request = param.Fs.Request(MakeTileResource(param.MapId).GetUrl(), HandleTileResponse);
+			_callback = callback;
 		}
+
 
 		/// <summary>
 		///     Returns a <see cref="T:System.String"/> that represents the current
@@ -97,8 +109,9 @@ namespace Mapbox.Map {
 		///     <see cref="T:Mapbox.Map.Tile"/>.
 		/// </returns>
 		public override string ToString() {
-			return this.Id.ToString();
+			return Id.ToString();
 		}
+
 
 		/// <summary>
 		///     Cancels the request for the <see cref="T:Mapbox.Map.Tile"/> object.
@@ -109,7 +122,7 @@ namespace Mapbox.Map {
 		/// // Do not request tiles that we are already requesting
 		///	// but at the same time exclude the ones we don't need
 		///	// anymore, cancelling the network request.
-		///	this.tiles.RemoveWhere((T tile) =>
+		///	tiles.RemoveWhere((T tile) =>
 		///	{
 		///		if (cover.Remove(tile.Id))
 		///		{
@@ -118,43 +131,51 @@ namespace Mapbox.Map {
 		///		else
 		///		{
 		///			tile.Cancel();
-		///			this.NotifyNext(tile);
+		///			NotifyNext(tile);
 		///			return true;			
 		/// 	}
 		///	});
 		/// </code>
 		/// </example>
 		public void Cancel() {
-			if (this.request != null) {
-				this.request.Cancel();
-				this.request = null;
+			if (_request != null) {
+				_request.Cancel();
+				_request = null;
 			}
 
-			this.state = State.Canceled;
+			_state = State.Canceled;
 		}
 
-		public void SetState(State state) { this.state = state; }
 
 		// Get the tile resource (raster/vector/etc).
 		internal abstract TileResource MakeTileResource(string mapid);
 
+
 		// Decode the tile.
 		internal abstract bool ParseTileData(byte[] data);
+
 
 		// TODO: Currently the tile decoding is done on the main thread. We must implement
 		// a Worker class to abstract this, so on platforms that support threads (like Unity
 		// on the desktop, Android, etc) we can use worker threads and when building for
 		// the browser, we keep it single-threaded.
 		private void HandleTileResponse(Response response) {
+
 			if (response.HasError) {
-				this.error = string.Join(Environment.NewLine, response.Exceptions.Select(e => e.Message).ToArray());
-			} else if (this.ParseTileData(response.Data) == false) {
-				this.error = "ParseError";
+				response.Exceptions.ToList().ForEach(e => AddException(e));
+			} else {
+				// only try to parse if request was successful
+
+				// current implementation doesn't need to check if parsing is successful:
+				// * Mapbox.Map.VectorTile.ParseTileData() already adds any exception to the list
+				// * Mapbox.Map.RasterTile.ParseTileData() doesn't do any parsing
+				ParseTileData(response.Data);
 			}
 
-			this.state = State.Loaded;
-			this.callback();
+			_state = State.Loaded;
+			_callback();
 		}
+
 
 		/// <summary>
 		///    Parameters for initializing a Tile object.
@@ -181,5 +202,7 @@ namespace Mapbox.Map {
 			/// <summary> The data source abstraction. </summary>
 			public IFileSource Fs;
 		}
+
+
 	}
 }

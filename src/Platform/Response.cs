@@ -20,6 +20,8 @@ namespace Mapbox.Platform {
 			get { return StatusCode.HasValue ? 429 == StatusCode.Value : false; }
 		}
 
+
+		/// <summary>Flag to indicate if the request was successful</summary>
 		public bool HasError {
 			get {
 				return _exceptions == null ? false : _exceptions.Count > 0;
@@ -42,7 +44,7 @@ namespace Mapbox.Platform {
 		public DateTime? XRateLimitReset;
 
 		private List<Exception> _exceptions;
-		/// <summary> Error description, set on error, empty otherwise. </summary>
+		/// <summary> Exceptions that might have occured during the request. </summary>
 		public ReadOnlyCollection<Exception> Exceptions {
 			get { return null == _exceptions ? null : _exceptions.AsReadOnly(); }
 		}

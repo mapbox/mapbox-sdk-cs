@@ -5,26 +5,31 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.UnitTest {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Mapbox.Map;
-    using Mapbox.Platform;
-    using Mapbox.Utils;
-    using NUnit.Framework;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using Mapbox.Map;
+	using Mapbox.Platform;
+	using Mapbox.Utils;
+	using NUnit.Framework;
 
-    [TestFixture]
+
+	[TestFixture]
 	internal class VectorTileTest {
-		private FileSource fs;
+
+
+		private FileSource _fs;
+
 
 		[SetUp]
 		public void SetUp() {
-			this.fs = new FileSource();
+			_fs = new FileSource();
 		}
+
 
 		[Test]
 		public void ParseSuccess() {
-			var map = new Map<VectorTile>(this.fs);
+			var map = new Map<VectorTile>(_fs);
 
 			var mapObserver = new Utils.VectorMapObserver();
 			map.Subscribe(mapObserver);
@@ -35,7 +40,7 @@ namespace Mapbox.UnitTest {
 			for (int zoom = 0; zoom < 15; ++zoom) {
 				map.Zoom = zoom;
 				map.Update();
-				this.fs.WaitForAllRequests();
+				_fs.WaitForAllRequests();
 			}
 
 			// We must have all the tiles for Helsinki from 0-15.
@@ -53,6 +58,7 @@ namespace Mapbox.UnitTest {
 
 			map.Unsubscribe(mapObserver);
 		}
+
 
 		[Test]
 		public void ParseFailure() {
@@ -82,9 +88,10 @@ namespace Mapbox.UnitTest {
 			map.Unsubscribe(mapObserver);
 		}
 
+
 		[Test]
 		public void SeveralTiles() {
-			var map = new Map<VectorTile>(this.fs);
+			var map = new Map<VectorTile>(_fs);
 
 			var mapObserver = new Utils.VectorMapObserver();
 			map.Subscribe(mapObserver);
@@ -93,20 +100,21 @@ namespace Mapbox.UnitTest {
 			map.Zoom = 3; // 64 tiles.
 			map.Update();
 
-			this.fs.WaitForAllRequests();
+			_fs.WaitForAllRequests();
 
 			Assert.AreEqual(64, mapObserver.Tiles.Count);
 
 			foreach (var tile in mapObserver.Tiles) {
-				if (string.IsNullOrEmpty(tile.Error)) {
+				if (!tile.HasError) {
 					Assert.Greater(tile.GeoJson.Length, 41);
 				} else {
-					// NotFound is fine.
-					Assert.AreNotEqual("ParseError", tile.Error);
+					Assert.GreaterOrEqual(tile.Exceptions.Count, 1, "not set enough exceptions set on 'Tile'");
 				}
 			}
 
 			map.Unsubscribe(mapObserver);
 		}
+
+
 	}
 }
