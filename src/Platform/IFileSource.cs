@@ -22,6 +22,6 @@ namespace Mapbox.Platform {
 		///     request. This handle can be completely ignored if there is no intention of ever
 		///     canceling the request.
 		/// </returns>
-		IAsyncRequest Request(string uri, Action<Response> callback, Action<int> progressCallback = null, Action finishedCallback = null);
+		IAsyncRequest Request(string uri, Action<Response> callback, Action<int> progressCallback = null, Action finishedCallback = null, int timeout = 10, bool threaded = true);
 	}
 }

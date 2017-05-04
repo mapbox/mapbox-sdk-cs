@@ -44,6 +44,7 @@ namespace Mapbox.Platform {
 #if !UNITY
 		private SynchronizationContext _sync = AsyncOperationManager.SynchronizationContext;
 #endif
+		private bool _threaded;
 		private int _timeOut;
 		private string _requestUrl;
 		private readonly string _userAgent = "mapbox-sdk-cs";
@@ -55,15 +56,21 @@ namespace Mapbox.Platform {
 		/// <param name="url"></param>
 		/// <param name="callback"></param>
 		/// <param name="timeOut">seconds</param>
-		public HTTPRequest(string url, Action<Response> callback, int timeOut = 10) {
+		public HTTPRequest(string url, Action<Response> callback, int timeOut = 10, bool threaded = true) {
 
 			IsCompleted = false;
+			_threaded = threaded;
 			_callback = callback;
 			_timeOut = timeOut;
 			_requestUrl = url;
 
 			setupRequest();
-			getResponseAsync(_request, EvaluateResponse);
+
+			if (_threaded) {
+				getResponseThreaded(_request, EvaluateResponse);
+			} else {
+				getResponseNonThreaded(_request, EvaluateResponse);
+			}
 		}
 
 
@@ -83,7 +90,7 @@ namespace Mapbox.Platform {
 			// set ConnectionLimit per request
 			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest(v=vs.90).aspx#Remarks
 			// use a value that is 12 times the number of CPUs on the local computer
-			_request.ServicePoint.ConnectionLimit  = Environment.ProcessorCount * 6;
+			_request.ServicePoint.ConnectionLimit = Environment.ProcessorCount * 6;
 
 			_request.ServicePoint.UseNagleAlgorithm = true;
 			_request.ServicePoint.Expect100Continue = false;
@@ -117,7 +124,6 @@ namespace Mapbox.Platform {
 
 
 #if NETFX_CORE
-
 		private async void getResponseAsync(HttpClient request, Action<HttpResponseMessage, Exception> gotResponse) {
 
 			// TODO: implement a strategy similar to the full .Net one to avoid blocking of 'GetAsync()'
@@ -221,7 +227,21 @@ namespace Mapbox.Platform {
 
 
 #if !NETFX_CORE
-		private void getResponseAsync(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
+
+		private void getResponseNonThreaded(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
+
+			HttpWebResponse response = null;
+			try {
+				response = (HttpWebResponse)request.GetResponse();
+				gotResponse(response, null);
+			}
+			catch (Exception ex) {
+				gotResponse(response, ex);
+			}
+		}
+
+
+		private void getResponseThreaded(HttpWebRequest request, Action<HttpWebResponse, Exception> gotResponse) {
 
 			// create an additional action wrapper, because of:
 			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.begingetresponse.aspx
@@ -353,18 +373,24 @@ namespace Mapbox.Platform {
 			// post (async) callback back to the main/UI thread
 			// Unity: SynchronizationContext doesn't do anything
 			//        use the Dispatcher
-#if !UNITY
-			_sync.Post(delegate {
+			if (!_threaded) {
 				_callback(response);
 				IsCompleted = true;
 				_callback = null;
+			} else {
+
+#if !UNITY
+				_sync.Post(delegate {
+					_callback(response);
+					IsCompleted = true;
+					_callback = null;
 #if NETFX_CORE
 				if (null != _request) {
 					_request.Dispose();
 					_request = null;
 				}
 #endif
-			}, null);
+				}, null);
 #else
 			UnityToolbag.Dispatcher.InvokeAsync(() => {
 				_callback(response);
@@ -378,6 +404,7 @@ namespace Mapbox.Platform {
 #endif
 			});
 #endif
+			}
 		}
 #endif
 

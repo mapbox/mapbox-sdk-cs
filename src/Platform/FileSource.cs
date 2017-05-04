@@ -54,6 +54,8 @@ namespace Mapbox.Platform {
 			, Action<Response> callback
 			, Action<int> progressCallback = null
 			, Action finishedCallback = null
+			, int timeout = 10
+			, bool threaded = true
 		) {
 			if (_accessToken != null) {
 				url += "?access_token=" + _accessToken;
@@ -64,10 +66,11 @@ namespace Mapbox.Platform {
 			// * evaluate rate limits (headers and status code)
 			// * throttle requests accordingly
 			//var request = new HTTPRequest(url, callback);
-			IEnumerator<HTTPRequest> proxy = proxyResponse(url, callback, progressCallback, finishedCallback);
+			IEnumerator<HTTPRequest> proxy = proxyResponse(url, callback, progressCallback, finishedCallback, timeout, threaded);
 			proxy.MoveNext();
 			HTTPRequest request = proxy.Current;
-
+			proxy.Dispose();
+			proxy = null;
 			return request;
 		}
 
@@ -78,9 +81,11 @@ namespace Mapbox.Platform {
 			, Action<Response> callback
 			, Action<int> progressCallback
 			, Action finishedCallback
+			, int timeout
+			, bool threaded
 		) {
 
-			// TODO: plugin caching somewhere around here
+			// TODO: insert caching somewhere around here
 
 			var request = new HTTPRequest(url, (Response response) => {
 				if (response.XRateLimitInterval.HasValue) { XRateLimitInterval = response.XRateLimitInterval; }
@@ -104,9 +109,15 @@ namespace Mapbox.Platform {
 						System.Diagnostics.Debug.WriteLine(ex);
 					}
 				}
-			});
+			}
+			, timeout
+			, threaded
+			);
 			lock (_lock) {
-				_requests.Add(request, 0);
+				//if the request is fast and has a light callback only it may have finished before we get here
+				if (!request.IsCompleted) {
+					_requests.Add(request, 0);
+				}
 			}
 			yield return request;
 		}

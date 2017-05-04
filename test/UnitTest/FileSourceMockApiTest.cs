@@ -185,5 +185,20 @@ namespace Mapbox.UnitTest {
 		}
 
 
+		[Test]
+		public void NonThreaded() {
+
+			_fs.Request(
+				_mockBaseUrl + _testUrl.simpleJson
+				, (Response r) => {
+					Assert.AreEqual(200, r.StatusCode);
+				}
+				, threaded: false
+			);
+
+			_fs.WaitForAllRequests();
+		}
+
+
 	}
 }
