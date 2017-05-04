@@ -4,8 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Platform
-{
+namespace Mapbox.Platform {
 	using System;
 
 	/// <summary>
@@ -14,8 +13,7 @@ namespace Mapbox.Platform
 	///     IFileSource could fetch the data from the network, disk cache or even generate
 	///     the data at runtime.
 	/// </summary>
-	public interface IFileSource
-	{
+	public interface IFileSource {
 		/// <summary> Performs a request asynchronously. </summary>
 		/// <param name="uri"> The resource description in the URI format. </param>
 		/// <param name="callback"> Callback to be called after the request is completed. </param>
@@ -24,6 +22,6 @@ namespace Mapbox.Platform
 		///     request. This handle can be completely ignored if there is no intention of ever
 		///     canceling the request.
 		/// </returns>
-		IAsyncRequest Request(string uri, Action<Response> callback);
+		IAsyncRequest Request(string uri, Action<Response> callback, Action<int> progressCallback = null, Action finishedCallback = null);
 	}
 }

@@ -67,7 +67,7 @@ namespace Mapbox.UnitTest {
 			private Dictionary<string, Response> responses = new Dictionary<string, Response>();
 			private List<MockRequest> requests = new List<MockRequest>();
 
-			public IAsyncRequest Request(string uri, Action<Response> callback) {
+			public IAsyncRequest Request(string uri, Action<Response> callback, Action<int> progress = null, Action finished = null) {
 				var response = new Response();
 				if (this.responses.ContainsKey(uri)) {
 					response = this.responses[uri];

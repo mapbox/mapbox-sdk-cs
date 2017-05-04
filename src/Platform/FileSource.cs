@@ -49,7 +49,12 @@ namespace Mapbox.Platform {
 		///     request. This handle can be completely ignored if there is no intention of ever
 		///     canceling the request.
 		/// </returns>
-		public IAsyncRequest Request(string url, Action<Response> callback) {
+		public IAsyncRequest Request(
+			string url
+			, Action<Response> callback
+			, Action<int> progressCallback = null
+			, Action finishedCallback = null
+		) {
 			if (_accessToken != null) {
 				url += "?access_token=" + _accessToken;
 			}
@@ -59,7 +64,7 @@ namespace Mapbox.Platform {
 			// * evaluate rate limits (headers and status code)
 			// * throttle requests accordingly
 			//var request = new HTTPRequest(url, callback);
-			IEnumerator<HTTPRequest> proxy = proxyResponse(url, callback);
+			IEnumerator<HTTPRequest> proxy = proxyResponse(url, callback, progressCallback, finishedCallback);
 			proxy.MoveNext();
 			HTTPRequest request = proxy.Current;
 
@@ -68,7 +73,12 @@ namespace Mapbox.Platform {
 
 
 		// TODO: look at requests and implement throttling if needed
-		private IEnumerator<HTTPRequest> proxyResponse(string url, Action<Response> callback) {
+		private IEnumerator<HTTPRequest> proxyResponse(
+			string url
+			, Action<Response> callback
+			, Action<int> progressCallback
+			, Action finishedCallback
+		) {
 
 			// TODO: plugin caching somewhere around here
 
@@ -80,7 +90,15 @@ namespace Mapbox.Platform {
 				lock (_lock) {
 					//another place to catch if request has been cancelled
 					try {
+						//remove requests as they come back to be gentle on memory
 						_requests.Remove(response.Request);
+						int reqsLeft = _requests.Count;
+						if (null != progressCallback) {
+							progressCallback(reqsLeft);
+						}
+						if (0 == reqsLeft && null != finishedCallback) {
+							finishedCallback();
+						}
 					}
 					catch (Exception ex) {
 						System.Diagnostics.Debug.WriteLine(ex);
@@ -107,7 +125,7 @@ namespace Mapbox.Platform {
 							try {
 								_requests.Remove(req.Key);
 							}
-							catch(Exception ex) {
+							catch (Exception ex) {
 								System.Diagnostics.Debug.WriteLine(ex);
 							}
 						}

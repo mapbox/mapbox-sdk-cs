@@ -154,5 +154,36 @@ namespace Mapbox.UnitTest {
 		}
 
 
+		[Test]
+		public void ProgressAndFinishedCallback() {
+
+			int responsesCount = 0;
+			int progressCount = 0;
+			bool finishReceived = false;
+
+
+			for (int i = 0; i < 3; i++) {
+				_fs.Request(
+					_mockBaseUrl + _testUrl.simpleJson
+					, (Response r) => {
+						responsesCount++;
+					}
+					, (int requestsLeft) => {
+						progressCount++;
+					}
+					, () => {
+						finishReceived = true;
+					}
+				);
+			}
+
+			_fs.WaitForAllRequests();
+
+			Assert.AreEqual(3, progressCount, "number of progress callbacks does not match");
+			Assert.AreEqual(3, responsesCount, "number of responses does not match");
+			Assert.IsTrue(finishReceived, "finished callback did not fire");
+		}
+
+
 	}
 }
