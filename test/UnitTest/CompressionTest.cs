@@ -4,43 +4,37 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.UnitTest
-{
-    using System.Text;
-    using Mapbox.Platform;
-    using Mapbox.Utils;
-    using NUnit.Framework;
+namespace Mapbox.UnitTest {
+	using System.Text;
+	using Mapbox.Platform;
+	using Mapbox.Utils;
+	using NUnit.Framework;
 
-    [TestFixture]
-	internal class CompressionTest
-	{
+	[TestFixture]
+	internal class CompressionTest {
 		[Test]
-		public void Empty()
-		{
+		public void Empty() {
 			var buffer = new byte[] { };
 			Assert.AreEqual(buffer, Compression.Decompress(buffer));
 		}
 
 		[Test]
-		public void NotCompressed()
-		{
+		public void NotCompressed() {
 			var buffer = Encoding.ASCII.GetBytes("foobar");
 			Assert.AreEqual(buffer, Compression.Decompress(buffer));
 		}
 
 		[Test]
-		public void Corrupt()
-		{
-			var fs = new Mono.FileSource();
+		public void Corrupt() {
+			var fs = new FileSource();
 			var buffer = new byte[] { };
 
 			// Vector tiles are compressed.
 			fs.Request(
 				"https://api.mapbox.com/v4/mapbox.mapbox-streets-v7/0/0/0.vector.pbf",
-				(Response res) =>
-					{
-						buffer = res.Data;
-					});
+				(Response res) => {
+					buffer = res.Data;
+				});
 
 			fs.WaitForAllRequests();
 
@@ -54,22 +48,25 @@ namespace Mapbox.UnitTest
 		}
 
 		[Test]
-		public void Decompress()
-		{
-			var fs = new Mono.FileSource();
+		public void Decompress() {
+			var fs = new FileSource();
 			var buffer = new byte[] { };
 
 			// Vector tiles are compressed.
 			fs.Request(
 				"https://api.mapbox.com/v4/mapbox.mapbox-streets-v7/0/0/0.vector.pbf",
-				(Response res) =>
-					{
-						buffer = res.Data;
-					});
+				(Response res) => {
+					buffer = res.Data;
+				});
 
 			fs.WaitForAllRequests();
 
+			//tiles are automatically decompressed during HttpRequest on full .Net framework
+#if NETFX_CORE
 			Assert.Less(buffer.Length, Compression.Decompress(buffer).Length);
+#else
+			Assert.AreEqual(buffer.Length, Compression.Decompress(buffer).Length);
+#endif
 		}
 	}
 }

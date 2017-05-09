@@ -34,6 +34,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HttpMock, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HttpMock.2.0.1\lib\net45\HttpMock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kayak, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Kayak.0.7.2\lib\Kayak.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Mapbox.Json">
       <HintPath>..\..\3rdparty\Json.Net.Unity3D\Net35\Mapbox.Json.dll</HintPath>
     </Reference>
@@ -58,8 +70,10 @@
       <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileSourceMockApiTest.cs" />
     <Compile Include="FileSourceTest.cs" />
     <Compile Include="ForwardGeocodeResourceTest.cs" />
     <Compile Include="ReverseGeocodeResourceTest.cs" />
@@ -90,10 +104,6 @@
       <Project>{89F8BAB2-2E7A-425E-B715-2CC4519D561F}</Project>
       <Name>Geocoding</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Mono\Mono.csproj">
-      <Project>{346B1208-1587-490B-A7DE-A96B86E81CD6}</Project>
-      <Name>Mono</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Platform\Platform.csproj">
       <Project>{FE49745C-01F6-4A3F-BF08-828113D3E19F}</Project>
       <Name>Platform</Name>
@@ -108,6 +118,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
