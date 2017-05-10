@@ -8,6 +8,7 @@
 		int _maxCacheSize;
 		protected Dictionary<string, byte[]> _cachedResponses;
 
+		// TODO: add support for disposal strategy (timestamp, distance, etc.)
 		public MemoryCachingAsyncRequestHandler(int maxCacheSize)
 		{
 			_maxCacheSize = maxCacheSize;
@@ -27,14 +28,20 @@
 
 		public override bool ShouldCache(string key, Response response)
 		{
-			return _cachedResponses.Count < _maxCacheSize && !_cachedResponses.ContainsKey(key);
+			return !_cachedResponses.ContainsKey(key);
 		}
 
 		public override void Cache(string key, Response response)
 		{
+			if (_cachedResponses.Count >= _maxCacheSize)
+			{
+				// TODO: fully implement. If the cache is full, we need to dispose older items.
+				return;
+			}
+
 			_cachedResponses.Add(key, response.Data);
 		}
-		
+
 		class MemoryCacheAsyncRequest : IAsyncRequest
 		{
 			public bool IsCompleted

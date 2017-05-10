@@ -94,6 +94,7 @@ namespace Mapbox.Platform {
 			_exceptions.Add(ex);
 		}
 
+		// TODO: we should store timestamp of the cache!
 		public static Response FromCache(byte[] data)
 		{
 			Response response = new Response();
