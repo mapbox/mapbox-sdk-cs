@@ -46,6 +46,7 @@ namespace Mapbox.Platform {
 			get { return _exceptions == null ? false : _exceptions.Count > 0; }
 		}
 
+		public bool LoadedFromCache;
 
 		public int? StatusCode;
 
@@ -93,12 +94,11 @@ namespace Mapbox.Platform {
 			_exceptions.Add(ex);
 		}
 
-		// HACK: obviously the request is not being set.
 		public static Response FromCache(byte[] data)
 		{
 			Response response = new Response();
 			response.Data = data;
-
+			response.LoadedFromCache = true;
 			return response;
 		}
 
