@@ -78,6 +78,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="IAsyncRequestHandler.cs" />
+    <Compile Include="AbstractCachingAyncRequestHandler.cs" />
+    <Compile Include="MemoryCachingAsyncRequestHandler.cs" />
+    <Compile Include="IResponseCachingStrategy.cs" />
+
     <EmbeddedResource Include="Properties\PlatformUWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
