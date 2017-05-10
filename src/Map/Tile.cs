@@ -104,8 +104,8 @@ namespace Mapbox.Map {
 
 			_state = State.Loading;
 			_id = param.Id;
-			_request = param.Fs.Request(MakeTileResource(param.MapId).GetUrl(), HandleTileResponse);
 			_callback = callback;
+			_request = param.Fs.Request(MakeTileResource(param.MapId).GetUrl(), HandleTileResponse);
 		}
 
 
