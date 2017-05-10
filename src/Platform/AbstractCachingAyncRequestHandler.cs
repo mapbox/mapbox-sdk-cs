@@ -17,24 +17,24 @@
 		{
 			if (CanHandle(url))
 			{
-				return Handle(url, callback, timeout);
+				return Handle(url, (response) =>
+				{
+					if (ShouldCache(url, response))
+					{
+						Cache(url, response);
+					}
+					callback(response);
+				}, timeout);
 			}
 
-			return _nextHandler.Request(url, (response) =>
-			 {
-				 if (ShouldCache(url))
-				 {
-					 Cache(url, response);
-				 }
-				 callback(response);
-			 }, timeout);
+			return _nextHandler.Request(url, callback, timeout);
 		}
 
 		protected abstract bool CanHandle(string url);
 
 		protected abstract IAsyncRequest Handle(string uri, Action<Response> callback, int timeout = 10);
 
-		public abstract bool ShouldCache(string key);
+		public abstract bool ShouldCache(string key, Response response);
 
 		public abstract void Cache(string key, Response response);
 	}

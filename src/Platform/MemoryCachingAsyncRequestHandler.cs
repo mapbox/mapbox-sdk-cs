@@ -25,7 +25,7 @@
 			return new MemoryCacheAsyncRequest();
 		}
 
-		public override bool ShouldCache(string key)
+		public override bool ShouldCache(string key, Response response)
 		{
 			return _cachedResponses.Count < _maxCacheSize && !_cachedResponses.ContainsKey(key);
 		}
