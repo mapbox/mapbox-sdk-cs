@@ -93,6 +93,14 @@ namespace Mapbox.Platform {
 			_exceptions.Add(ex);
 		}
 
+		// HACK: obviously the request is not being set.
+		public static Response FromCache(byte[] data)
+		{
+			Response response = new Response();
+			response.Data = data;
+
+			return response;
+		}
 
 #if !NETFX_CORE && !UNITY // full .NET Framework
 		public static Response FromWebResponse(IAsyncRequest request, HttpWebResponse apiResponse, Exception apiEx) {
