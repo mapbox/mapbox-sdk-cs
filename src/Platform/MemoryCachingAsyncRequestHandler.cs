@@ -1,18 +1,27 @@
 ﻿namespace Mapbox.Platform
 {
 	using System;
+	using System.Linq;
 	using System.Collections.Generic;
 
 	public class MemoryCachingAsyncRequestHandler : AbstractCachingAyncRequestHandler
 	{
+
+		protected struct CacheItem
+		{
+			public long Timestamp;
+			public byte[] Data;
+		}
+
 		int _maxCacheSize;
-		protected Dictionary<string, byte[]> _cachedResponses;
+		private object _lock = new object();
+		protected Dictionary<string, CacheItem> _cachedResponses;
 
 		// TODO: add support for disposal strategy (timestamp, distance, etc.)
 		public MemoryCachingAsyncRequestHandler(int maxCacheSize)
 		{
 			_maxCacheSize = maxCacheSize;
-			_cachedResponses = new Dictionary<string, byte[]>();
+			_cachedResponses = new Dictionary<string, CacheItem>();
 		}
 
 		protected override bool CanHandle(string url)
@@ -22,7 +31,7 @@
 
 		protected override IAsyncRequest Handle(string uri, Action<Response> callback, int timeout = 10)
 		{
-			callback(Response.FromCache(_cachedResponses[uri]));
+			callback(Response.FromCache(_cachedResponses[uri].Data));
 			return new MemoryCacheAsyncRequest();
 		}
 
@@ -33,13 +42,15 @@
 
 		public override void Cache(string key, Response response)
 		{
-			if (_cachedResponses.Count >= _maxCacheSize)
+			lock (_lock)
 			{
-				// TODO: fully implement. If the cache is full, we need to dispose older items.
-				return;
-			}
+				if (_cachedResponses.Count >= _maxCacheSize)
+				{
+					_cachedResponses.Remove(_cachedResponses.OrderBy(c => c.Value.Timestamp).First().Key);
+				}
 
-			_cachedResponses.Add(key, response.Data);
+				_cachedResponses.Add(key, new CacheItem() { Timestamp = DateTime.Now.Ticks, Data = response.Data });
+			}
 		}
 
 		class MemoryCacheAsyncRequest : IAsyncRequest
