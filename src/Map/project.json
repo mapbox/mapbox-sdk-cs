@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Mapbox.VectorTile": "1.0.4-alpha1",
+    "Mapbox.VectorTile": "1.0.4-alpha2",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0"
   },
   "frameworks": {

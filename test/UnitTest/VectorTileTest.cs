@@ -37,7 +37,7 @@ namespace Mapbox.UnitTest {
 			// Helsinki city center.
 			map.Center = new Vector2d(60.163200, 24.937700);
 
-			for (int zoom = 0; zoom < 15; ++zoom) {
+			for (int zoom = 15; zoom > 0; zoom--) {
 				map.Zoom = zoom;
 				map.Update();
 				_fs.WaitForAllRequests();
@@ -47,13 +47,13 @@ namespace Mapbox.UnitTest {
 			Assert.AreEqual(15, mapObserver.Tiles.Count);
 
 			foreach (var tile in mapObserver.Tiles) {
-				Assert.Greater(tile.GeoJson.Length, 1000);
 				Assert.Greater(tile.LayerNames().Count, 0, "Tile contains at least one layer");
 				Mapbox.VectorTile.VectorTileLayer layer = tile.GetLayer("water");
 				Assert.NotNull(layer, "Tile contains 'water' layer. Layers: {0}", string.Join(",", tile.LayerNames().ToArray()));
 				Assert.Greater(layer.FeatureCount(), 0, "Water layer has features");
 				Mapbox.VectorTile.VectorTileFeature feature = layer.GetFeature(0);
-				Assert.Greater(feature.Geometry<int>().Count, 0, "Feature has geometry");
+				Assert.Greater(feature.Geometry<long>().Count, 0, "Feature has geometry");
+				Assert.Greater(tile.GeoJson.Length, 1000);
 			}
 
 			map.Unsubscribe(mapObserver);
