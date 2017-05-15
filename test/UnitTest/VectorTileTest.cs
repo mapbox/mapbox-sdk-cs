@@ -53,7 +53,7 @@ namespace Mapbox.UnitTest {
 				Assert.NotNull(layer, "Tile contains 'water' layer. Layers: {0}", string.Join(",", tile.LayerNames().ToArray()));
 				Assert.Greater(layer.FeatureCount(), 0, "Water layer has features");
 				Mapbox.VectorTile.VectorTileFeature feature = layer.GetFeature(0);
-				Assert.Greater(feature.Geometry.Count, 0, "Feature has geometry");
+				Assert.Greater(feature.Geometry<int>().Count, 0, "Feature has geometry");
 			}
 
 			map.Unsubscribe(mapObserver);
