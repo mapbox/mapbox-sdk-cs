@@ -1,2 +1,2 @@
 dlls:1.2.0.0
-nupkg:1.1.1-alpha1
+nupkg:1.1.2-beta1

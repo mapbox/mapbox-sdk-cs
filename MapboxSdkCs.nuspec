@@ -12,7 +12,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Core modules for accessing Mapbox services</description>
 		<summary>Core modules for accessing Mapbox services</summary>
-		<releaseNotes>Don't pack intermediate build files (TemporaryGeneratedFile_*.cs)</releaseNotes>
+		<releaseNotes>Update to Mapbox.VectorTile.1.0.4-alpha2</releaseNotes>
 		<copyright>Copyright 2017</copyright>
 		<tags>Mapbox SDK CSharp Geocoding Directions Vectortiles</tags>
 	</metadata>
@@ -52,10 +52,10 @@
 		<file src="bin\Debug\uap10\Mapbox.VectorTile.PbfReader.dll" target="lib\uap10\"></file>
 		<file src="bin\Debug\uap10\Mapbox.VectorTile.VectorTileReader.dll" target="lib\uap10\"></file>
 -->
-		<file src="packages\Mapbox.VectorTile.1.0.4-alpha1\lib\uap10\Mapbox.VectorTile.ExtensionMethods.dll" target="lib\uap10\"></file>
-		<file src="packages\Mapbox.VectorTile.1.0.4-alpha1\lib\uap10\Mapbox.VectorTile.Geometry.dll" target="lib\uap10\"></file>
-		<file src="packages\Mapbox.VectorTile.1.0.4-alpha1\lib\uap10\Mapbox.VectorTile.PbfReader.dll" target="lib\uap10\"></file>
-		<file src="packages\Mapbox.VectorTile.1.0.4-alpha1\lib\uap10\Mapbox.VectorTile.VectorTileReader.dll" target="lib\uap10\"></file>
+		<file src="packages\Mapbox.VectorTile.1.0.4-alpha2\lib\uap10\Mapbox.VectorTile.ExtensionMethods.dll" target="lib\uap10\"></file>
+		<file src="packages\Mapbox.VectorTile.1.0.4-alpha2\lib\uap10\Mapbox.VectorTile.Geometry.dll" target="lib\uap10\"></file>
+		<file src="packages\Mapbox.VectorTile.1.0.4-alpha2\lib\uap10\Mapbox.VectorTile.PbfReader.dll" target="lib\uap10\"></file>
+		<file src="packages\Mapbox.VectorTile.1.0.4-alpha2\lib\uap10\Mapbox.VectorTile.VectorTileReader.dll" target="lib\uap10\"></file>
 
 		<file src="bin\Debug\uap10\Mapbox.Directions.dll" target="lib\uap10\"></file>
 		<file src="bin\Debug\uap10\Mapbox.Geocoding.dll" target="lib\uap10\"></file>
